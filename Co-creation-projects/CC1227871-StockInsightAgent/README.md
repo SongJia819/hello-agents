@@ -73,7 +73,7 @@ LLM_BASE_URL=https://api.deepseek.com/v1
 
 ```bash
 python main.py               # 命令行交互模式
-python app.py                # Web 前端 → http://127.0.0.1:7861
+python server_app.py                # Web 前端 → http://127.0.0.1:7861
 python main.py "茅台怎么样"   # 命令行快速分析
 ```
 

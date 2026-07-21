@@ -62,7 +62,7 @@ PORT=8000
 启动后端服务，配合前端界面使用。
 
 ```bash
-python src/app.py
+python src/server_app.py
 # 或者
 uvicorn src.app:app --reload
 ```
