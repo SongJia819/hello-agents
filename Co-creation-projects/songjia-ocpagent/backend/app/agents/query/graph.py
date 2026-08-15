@@ -16,17 +16,11 @@ class QueryGraph:
             query_nodes.resolve_cluster
         )
 
-        builder.add_node(
-            "list_node",
-            query_nodes.list_nodes
-        )
-
-
+        builder.add_node("list", query_nodes.list)
 
         builder.add_edge(START, "resolve_cluster")
 
-        builder.add_edge("resolve_cluster", "list_node")
-
-        builder.add_edge("list_node", END)
+        builder.add_edge("resolve_cluster", "list")
+        builder.add_edge("list", END)
 
         self.graph = builder.compile()

@@ -24,8 +24,11 @@ class RouterNodes:
         print("======= Router Result =======")
         print(result)
 
+        route = result.model_dump()
+        route["resource"] = route["resources"][0]
+
         return {
-        **result.model_dump(),
+        **route,
 
         "messages": [
             AIMessage(
@@ -36,18 +39,30 @@ class RouterNodes:
     }
 
     def capability_check(self, state):
-        agent = AgentType(state["agent"])
-        resource = state["resource"]
+        try:
+            agent = AgentType(state["agent"])
+        except ValueError:
+            agent = None
 
-        supported = resource in CAPABILITIES.get(agent, {})
+        action = state.get("action")
+        resources = state.get("resources") or ([state["resource"]] if state.get("resource") else [])
+        supported_resources = CAPABILITIES.get(agent, {}).get(action, {})
+        unsupported_resources = [
+            resource for resource in resources if resource not in supported_resources
+        ]
+        supported = bool(resources) and not unsupported_resources
+
+        if not supported:
+            if agent is None:
+                message = f"当前版本暂不支持 '{state.get('agent', '')}' Agent。"
+            elif action not in CAPABILITIES.get(agent, {}):
+                message = f"当前版本暂不支持 '{action}' 操作。"
+            else:
+                message = f"当前版本暂不支持 '{', '.join(unsupported_resources)}' 功能。"
 
         return {
             "supported": supported,
-            "messages": (
-                ""
-                if supported
-                else f"当前版本暂不支持 '{resource}' 功能。"
-            )
+            "messages": "" if supported else message,
         }
 
     def unsupported(slef, state):

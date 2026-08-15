@@ -1,6 +1,6 @@
 from app.models.node import Node
 from app.mcp.server_app import mcp
-from app.models.cluster import ClusterSummary
+from app.models.cluster import ClusterSummary, Pod
 
 
 @mcp.tool
@@ -41,6 +41,20 @@ def list_clusters() -> list[ClusterSummary]:
         cluster_name="Cluster 1"
     ))
     return clusters
+
+
+@mcp.tool
+def list_pods(cluster_id: str) -> list[Pod]:
+    return [
+        Pod(
+            pod_name=f"{cluster_id}-api-7d8f9c6b5d-xk2lm",
+            pod_ip="10.128.0.21",
+        ),
+        Pod(
+            pod_name=f"{cluster_id}-worker-6b7c8d9e4f-pq3rs",
+            pod_ip="10.128.0.22",
+        ),
+    ]
 
 @mcp.tool
 def health() -> str:

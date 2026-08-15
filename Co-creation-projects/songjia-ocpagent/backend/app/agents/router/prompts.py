@@ -14,7 +14,8 @@ Schema:
 {
     "agent": "<query|planner|execution>",
     "action": "<list|create|delete|add|drain|upgrade|unknown>",
-    "resource": "<cluster|node|pod|namespace|deployment|service|secret|unknown>"
+    "resource": "<primary cluster|node|pod|namespace|deployment|service|secret|unknown resource>",
+    "resources": ["<all requested resources, or a single resource>"]
 }
 
 Examples:
@@ -25,7 +26,8 @@ list all nodes
 {
     "agent":"query",
     "action":"list",
-    "resource":"node"
+    "resource":"node",
+    "resources":["node"]
 }
 
 User:
@@ -34,7 +36,18 @@ show pod
 {
     "agent":"query",
     "action":"list",
-    "resource":"pod"
+    "resource":"pod",
+    "resources":["pod"]
+}
+
+User:
+list node and pod
+
+{
+    "agent":"query",
+    "action":"list",
+    "resource":"node",
+    "resources":["node", "pod"]
 }
 
 User:

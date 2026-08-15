@@ -9,12 +9,13 @@ class AgentType(str, Enum):
 
 CAPABILITIES = {
     AgentType.QUERY: {
-        "node": "list_nodes",
-        # 第二阶段再打开
-        # "pod": "list_pods",
-        # "deployment": "list_deployments",
-        # "namespace": "list_namespaces",
-        # "service": "list_services",
+        "list": {
+            "node": "list_nodes",
+            "pod": "list_pods",
+            # "deployment": "list_deployments",
+            # "namespace": "list_namespaces",
+            # "service": "list_services",
+        },
     },
 
     AgentType.PLAN: {

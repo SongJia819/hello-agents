@@ -1,3 +1,5 @@
+import asyncio
+
 from app.services.cluster_service import ClusterService
 from app.models.cluster import ClusterSummary
 
@@ -21,10 +23,18 @@ class QueryNodes:
             "current_cluster": cluster
         }
 
-    async def list_nodes(self, state):
+    async def list(self, state):
+        cluster_id = state["current_cluster"].cluster_id
+        resources = state["resources"]
+        operations = {
+            "node": self.cluster_service.list_nodes,
+            "pod": self.cluster_service.list_pods,
+        }
 
-        nodes = await self.cluster_service.list_nodes(state["current_cluster"].cluster_id)
+        results = await asyncio.gather(
+            *(operations[resource](cluster_id) for resource in resources)
+        )
 
         return {
-            "tool_result": nodes
+            "tool_result": dict(zip(resources, results, strict=True))
         }

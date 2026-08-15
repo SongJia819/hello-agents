@@ -13,6 +13,7 @@ class AgentState(TypedDict):
     agent: str
     user_query: str
     resource: str
+    resources: List[str]
     supported: bool
     tool_result: Any
     answer: str

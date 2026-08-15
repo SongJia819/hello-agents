@@ -10,8 +10,14 @@ class RouterResult(BaseModel):
         description="Operation such as list, create, delete, add"
     )
 
+    resources: list[str] = Field(
+        min_length=1,
+        description="Ordered target resources, such as node or node and pod",
+    )
+
     resource: str = Field(
-        description="Target resource such as cluster, node, pod, deployment"
+        default="",
+        description="Deprecated primary resource retained for state compatibility",
     )
 
     resource_name: str = Field(
