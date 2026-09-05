@@ -1,0 +1,2006 @@
+{
+  "fixture_version": 1,
+  "default_document_version": "4.22",
+  "cases": [
+    {
+      "id": "architecture-control-plane",
+      "question": "What components make up the OpenShift control plane?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "13465663-d00d-5f6d-8c73-dc0c9eb9c770"
+      ]
+    },
+    {
+      "id": "installation-cluster-type",
+      "question": "How do I choose an OpenShift cluster installation type?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "26c55cd5-16a6-586c-9d1e-3b89f44cbace"
+      ]
+    },
+    {
+      "id": "installation-capabilities",
+      "question": "How can cluster capabilities be enabled during installation?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "8e7fe99d-e3b5-58d3-81bd-a8eccad2b085"
+      ]
+    },
+    {
+      "id": "installation-fips",
+      "question": "What is required for an FIPS-capable OpenShift installation?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "3c7e49be-3b7a-5f27-a860-b95015f78d3d"
+      ]
+    },
+    {
+      "id": "installation-butane",
+      "question": "How do I create a MachineConfig with Butane?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "28e9a156-fe5a-5426-b334-6dab60337bb4"
+      ]
+    },
+    {
+      "id": "installation-firewall",
+      "question": "How should I configure the firewall for OpenShift Container Platform?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "c43ba670-454c-5725-8267-6aee4b080b53"
+      ]
+    },
+    {
+      "id": "nodes-operations",
+      "question": "What node operations are available in OpenShift?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "14b97444-ffe1-5fb9-800a-290d53c6b9cc"
+      ]
+    },
+    {
+      "id": "nodes-hpa",
+      "question": "How do I automatically scale pods with the horizontal pod autoscaler?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "08ac59bc-94f0-5121-a81e-bf8f2744f9de"
+      ]
+    },
+    {
+      "id": "nodes-vpa",
+      "question": "How do I automatically adjust pod resources with the vertical pod autoscaler?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "10b3df4a-c34a-58ec-9840-0cbab2da69af"
+      ]
+    },
+    {
+      "id": "network-core-layers",
+      "question": "What are the core network layers and components in OpenShift?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "8a79346f-ccde-58d4-ac55-f222e37fa23c"
+      ]
+    },
+    {
+      "id": "network-internal-traffic",
+      "question": "How is traffic managed within an OpenShift cluster?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "93f1a12d-b305-50fd-834d-1c48401a1838"
+      ]
+    },
+    {
+      "id": "network-service-cidr",
+      "question": "What is the service CIDR range in OpenShift networking?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "c093be29-f9d2-5f4a-aea5-bc9303b70a99"
+      ]
+    },
+    {
+      "id": "network-pod-cidr",
+      "question": "What is the pod CIDR range in OpenShift networking?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "6bfe72ff-49c1-5492-b777-6bc05c6fa6f0"
+      ]
+    },
+    {
+      "id": "storage-csi",
+      "question": "What is the Container Storage Interface in OpenShift?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "fc08ac21-31ca-50cb-b649-334863afc658"
+      ]
+    },
+    {
+      "id": "storage-dynamic-provisioning",
+      "question": "How does dynamic provisioning work for OpenShift storage?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "fbc8212e-0241-5fe4-984f-a044faba754d"
+      ]
+    },
+    {
+      "id": "storage-persistent-overview",
+      "question": "What is persistent storage in OpenShift?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "3b242797-c33e-52ef-9763-8625dfc47314"
+      ]
+    },
+    {
+      "id": "storage-pvc",
+      "question": "How do persistent volume claims work in OpenShift?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "8140fdf4-176b-5eca-808b-f0cb1e734f27"
+      ]
+    },
+    {
+      "id": "security-authentication",
+      "question": "How does authentication work in OpenShift Container Platform?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "430ad4df-f1a1-5c7c-a317-6d9091d7b5fb"
+      ]
+    },
+    {
+      "id": "security-authorization",
+      "question": "How does authorization work in OpenShift Container Platform?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "99cfd305-1539-52df-ba63-edaa17e8bced"
+      ]
+    },
+    {
+      "id": "security-users",
+      "question": "How are users represented in OpenShift authentication?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "d5b1462c-148d-5455-96ac-4e1765cacf4a"
+      ]
+    },
+    {
+      "id": "security-groups",
+      "question": "How are groups used in OpenShift authentication?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "f603bd9e-0235-5172-8fac-3797316a2d59"
+      ]
+    },
+    {
+      "id": "security-oauth-flows",
+      "question": "What OAuth token request flows are supported by OpenShift?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "94b4f452-edee-57d5-8300-0e0274173d7a"
+      ]
+    },
+    {
+      "id": "operators-overview",
+      "question": "What are Operators in OpenShift?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "8f3e0dd0-fb00-5e6d-ae95-91b41ea6fad6"
+      ]
+    },
+    {
+      "id": "operators-packaging",
+      "question": "What is the Operator Framework packaging format?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "a7e2bc8e-378c-5ca0-b119-2d39211b28e3"
+      ]
+    },
+    {
+      "id": "operators-olm",
+      "question": "What is Operator Lifecycle Manager?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "d593c934-a567-594c-b380-da8a9681a07e"
+      ]
+    },
+    {
+      "id": "operators-crds",
+      "question": "What are custom resource definitions for Operators?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "0951f16b-9db3-5bbf-bd72-f2f586d50e2d"
+      ]
+    },
+    {
+      "id": "operators-install-namespace",
+      "question": "How do I install an Operator in a namespace?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "83e1389c-3e95-5ec5-9182-a5e575b0e8ab"
+      ]
+    },
+    {
+      "id": "observability-monitoring",
+      "question": "What monitoring is provided by OpenShift Container Platform?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "f321f5cc-cbff-5600-b83f-f4899ec73083"
+      ]
+    },
+    {
+      "id": "observability-logging",
+      "question": "What logging capabilities are available in OpenShift?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "4c532e18-b67c-5359-b034-a0907cd874a5"
+      ]
+    },
+    {
+      "id": "backup-control-plane",
+      "question": "How do control plane backup and restore operations work?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "0a3cad35-252c-5dc6-b5a4-a15e82baf07a"
+      ]
+    },
+    {
+      "id": "backup-application",
+      "question": "How do application backup and restore operations work?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "6e591022-a8eb-596a-ab66-472d3f608957"
+      ]
+    },
+    {
+      "id": "backup-graceful-shutdown",
+      "question": "How do I shut down an OpenShift cluster gracefully?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "b64f610a-7cef-5944-8e18-e72beb2abb51"
+      ]
+    },
+    {
+      "id": "backup-oadp",
+      "question": "What is OpenShift API for Data Protection (OADP)?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "eefde02b-0d2f-563a-995c-20564bda99d5"
+      ]
+    },
+    {
+      "id": "updates-mechanics",
+      "question": "How do OpenShift cluster updates work?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "1b6085a5-47d1-5156-8f3f-6d566f1e9633"
+      ]
+    },
+    {
+      "id": "updates-channels",
+      "question": "How do OpenShift update channels and releases work?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "b6bae24f-cff4-5f0e-8249-a6b115b56724"
+      ]
+    },
+    {
+      "id": "updates-prepare-422",
+      "question": "How do I prepare a cluster to update to OpenShift 4.22?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "0fc41488-7116-5d00-a951-27b610354fa6"
+      ]
+    },
+    {
+      "id": "updates-cli",
+      "question": "How do I update an OpenShift cluster using the CLI?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "6c6d609e-b380-5b0a-b640-640817748a47"
+      ]
+    },
+    {
+      "id": "updates-disconnected",
+      "question": "How do I update an OpenShift cluster in a disconnected environment?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "aebe89fe-63b9-5ce6-857c-c3a05365ff76"
+      ]
+    },
+    {
+      "id": "machines-machine-api",
+      "question": "What is the Machine API in OpenShift?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "ffe555a9-46cb-5f45-ad79-ab0a63998fd3"
+      ]
+    },
+    {
+      "id": "machines-autoscaling",
+      "question": "How does cluster autoscaling work for OpenShift machines?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "20755582-df24-52ee-85c8-309d77cdfad4"
+      ]
+    },
+    {
+      "id": "machineset-aws",
+      "question": "How do I create a compute MachineSet on AWS?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "6dd30eb2-e5f0-5762-82ab-e74de5c5d88f"
+      ]
+    },
+    {
+      "id": "machineset-vsphere",
+      "question": "How do I create a compute MachineSet on vSphere?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "f12dc712-9366-511e-8546-c5a63c4fc1b1"
+      ]
+    },
+    {
+      "id": "workloads-buildconfig",
+      "question": "What is the BuildConfig workload API?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "578db6bc-f6df-539d-b7bb-1abb22c4abfc"
+      ]
+    },
+    {
+      "id": "workloads-cronjob",
+      "question": "What is the CronJob workload API?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "8b0c5464-b271-522e-9e44-32032ec320ef"
+      ]
+    },
+    {
+      "id": "workloads-deployment",
+      "question": "What is the Deployment workload API?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "39c6bbb9-de1f-57d0-b08f-81a9ab83e87f"
+      ]
+    },
+    {
+      "id": "workloads-pod",
+      "question": "What is the Pod workload API?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "6986ef3f-df3e-554b-960e-8287587551b1"
+      ]
+    },
+    {
+      "id": "ingress-basic-route",
+      "question": "How do I create a basic OpenShift route?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "9c12f617-eb4d-53eb-9566-20d859a99cd8"
+      ]
+    },
+    {
+      "id": "ingress-secure-route",
+      "question": "How do I secure an OpenShift route?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "9e3d817c-a593-518e-8a11-f5af50b4316f"
+      ]
+    },
+    {
+      "id": "ingress-external-ip",
+      "question": "How do I configure ExternalIPs for services?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "56393362-3718-563c-b0d1-362184d80e4b"
+      ]
+    },
+    {
+      "id": "ingress-endpoint-strategy",
+      "question": "What Ingress Controller endpoint publishing strategies are available?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "f98209c8-9f55-532e-b621-e251ba433bb4"
+      ]
+    },
+    {
+      "id": "corpus-advanced-networking-2",
+      "question": "How does OpenShift Container Platform document Specialized and advanced networking topics in OpenShift Container Platform?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "6d4c9a01-183d-5830-9f41-8f89f39755c9"
+      ]
+    },
+    {
+      "id": "corpus-ai-applications-2",
+      "question": "How does OpenShift Container Platform document Using AI applications on OpenShift Container Platform?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "e726cde9-bf0d-5424-a75d-b17f6c9455a6"
+      ]
+    },
+    {
+      "id": "corpus-ai-workloads-2",
+      "question": "How does OpenShift Container Platform document Running AI workloads on OpenShift Container Platform?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "a797913b-3012-57a6-9136-972bda3f2183"
+      ]
+    },
+    {
+      "id": "corpus-api-overview-2",
+      "question": "How does OpenShift Container Platform document Overview content for the OpenShift Container Platform API?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "e76f21b1-6e59-5d76-8010-bd5e01e02c92"
+      ]
+    },
+    {
+      "id": "corpus-architecture-2",
+      "question": "How does OpenShift Container Platform document An overview of the architecture for OpenShift Container Platform?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "5d6617ec-1789-5858-a380-aecc3c03aa2e"
+      ]
+    },
+    {
+      "id": "corpus-authentication-and-authorization-3",
+      "question": "How does OpenShift Container Platform document Chapter1.Overview of authentication and authorization?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "483b7b09-0a84-5b6b-90df-c3a43bed4e93"
+      ]
+    },
+    {
+      "id": "corpus-authorization-apis-2",
+      "question": "How does OpenShift Container Platform document Reference guide for authorization APIs?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "44a57bdf-2c38-5345-94ec-ac2bd9739fc6"
+      ]
+    },
+    {
+      "id": "corpus-autoscale-apis-2",
+      "question": "How does OpenShift Container Platform document Reference guide for autoscale APIs?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "a1b8eb78-2362-55b1-a776-eec474282f15"
+      ]
+    },
+    {
+      "id": "corpus-backup-and-restore-2",
+      "question": "How does OpenShift Container Platform document Backing up and restoring your OpenShift Container Platform cluster?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "c681963c-27bb-5e4f-8461-bb49c966506f"
+      ]
+    },
+    {
+      "id": "corpus-building-applications-2",
+      "question": "How does OpenShift Container Platform document Creating and managing applications on OpenShift Container Platform?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "46ed4ef1-971b-508b-93fd-17193a7ca6a9"
+      ]
+    },
+    {
+      "id": "corpus-builds-using-buildconfig-3",
+      "question": "How does OpenShift Container Platform document 1.1.Builds?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "01be7a1d-3fa7-537a-8cec-003a3d7c189f"
+      ]
+    },
+    {
+      "id": "corpus-builds-using-shipwright-2",
+      "question": "How does OpenShift Container Platform document An extensible build framework to build container images on an OpenShift cluster?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "651ddd99-c2f9-5793-9e46-b15f6c2bd6b9"
+      ]
+    },
+    {
+      "id": "corpus-cicd-overview-2",
+      "question": "How does OpenShift Container Platform document Contains information about CI/CD for OpenShift Container Platform?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "dcc1119a-ff32-555e-b9ef-23a471e4add8"
+      ]
+    },
+    {
+      "id": "corpus-cli-tools-2",
+      "question": "How does OpenShift Container Platform document Learning how to use the command-line tools for OpenShift Container Platform?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "2b2b0165-aa9f-52a9-a006-92c1706043a0"
+      ]
+    },
+    {
+      "id": "corpus-cluster-apis-2",
+      "question": "How does OpenShift Container Platform document Reference guide for cluster APIs?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "e6c41450-0fe1-5753-9fb5-c60da524ab45"
+      ]
+    },
+    {
+      "id": "corpus-cluster-observability-operator-2",
+      "question": "How does OpenShift Container Platform document Configuring and using the Cluster Observability Operator in OpenShift Container Platform?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "f1dec798-b76b-5158-95fe-8da4a66f6378"
+      ]
+    },
+    {
+      "id": "corpus-common-object-reference-2",
+      "question": "How does OpenShift Container Platform document Reference guide common API objects?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "63aec8a6-33ce-57c7-8afb-06b3c690600e"
+      ]
+    },
+    {
+      "id": "corpus-config-apis-2",
+      "question": "How does OpenShift Container Platform document Reference guide for config APIs?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "d1ae4432-c7b0-5506-9f50-c7c205b96dba"
+      ]
+    },
+    {
+      "id": "corpus-configuring-network-settings-2",
+      "question": "How does OpenShift Container Platform document General networking configuration processes in OpenShift Container Platform?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "f741081f-2b5f-54db-9d54-dfb08627f439"
+      ]
+    },
+    {
+      "id": "corpus-console-apis-2",
+      "question": "How does OpenShift Container Platform document Reference guide for console APIs?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "d34a1045-05a4-510b-a425-080bc74f6631"
+      ]
+    },
+    {
+      "id": "corpus-disconnected-environments-2",
+      "question": "How does OpenShift Container Platform document Managing OpenShift Container Platform clusters in a disconnected environment?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "7e211c51-03f5-54f6-8607-ac63e70aabcf"
+      ]
+    },
+    {
+      "id": "corpus-distributed-tracing-2",
+      "question": "How does OpenShift Container Platform document Configuring and using distributed tracing in OpenShift Container Platform?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "8da37ae7-1013-5b0f-ae45-6e805645052c"
+      ]
+    },
+    {
+      "id": "corpus-edge-computing-2",
+      "question": "How does OpenShift Container Platform document Configure and deploy OpenShift Container Platform clusters at the network edge?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "e97055d6-6c2e-5b45-91e5-756f86b959d4"
+      ]
+    },
+    {
+      "id": "corpus-etcd-2",
+      "question": "How does OpenShift Container Platform document Providing redundancy with etcd?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "fb807836-6f26-5dfd-9d71-c283e2cfa024"
+      ]
+    },
+    {
+      "id": "corpus-extension-apis-2",
+      "question": "How does OpenShift Container Platform document Reference guide for extension APIs?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "449b3edc-5522-55e3-a06b-5a1fb60fd2f3"
+      ]
+    },
+    {
+      "id": "corpus-extensions-2",
+      "question": "How does OpenShift Container Platform document Working with extensions in OpenShift Container Platform using Operator Lifecycle Manager (OLM) v1.?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "f7817d29-59cb-5e7e-8c38-3b93eadbaa9e"
+      ]
+    },
+    {
+      "id": "corpus-gitops-2",
+      "question": "How does OpenShift Container Platform document A declarative way to implement continuous deployment for cloud native applications.?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "7439a5de-4091-5974-bb6e-d2e28ecfe3c4"
+      ]
+    },
+    {
+      "id": "corpus-hardware-accelerators-2",
+      "question": "How does OpenShift Container Platform document Hardware accelerators?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "efe72277-e863-5717-be18-3446659b193b"
+      ]
+    },
+    {
+      "id": "corpus-hardware-networks-2",
+      "question": "How does OpenShift Container Platform document Configuring hardware-specific networking features in OpenShift Container Platform?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "b3ae06b7-503a-5b8a-a9de-190f25bf1e8e"
+      ]
+    },
+    {
+      "id": "corpus-hosted-control-planes-2",
+      "question": "How does OpenShift Container Platform document Using hosted control planes with OpenShift Container Platform?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "97f14b7e-6fb9-5af9-8482-baa185da9db8"
+      ]
+    },
+    {
+      "id": "corpus-image-apis-2",
+      "question": "How does OpenShift Container Platform document Reference guide for image APIs?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "01378752-bcba-5b40-bbb5-a9e4f21f26cf"
+      ]
+    },
+    {
+      "id": "corpus-images-2",
+      "question": "How does OpenShift Container Platform document Creating and managing images and imagestreams in OpenShift Container Platform?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "2d37dd44-deed-5a47-bb08-772676b96949"
+      ]
+    },
+    {
+      "id": "corpus-ingress-and-load-balancing-2",
+      "question": "How does OpenShift Container Platform document Exposing services and managing external traffic in OpenShift Container Platform?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "aeb316dd-8324-5466-96e7-b50216f67eba"
+      ]
+    },
+    {
+      "id": "corpus-installation-configuration-2",
+      "question": "How does OpenShift Container Platform document Cluster-wide configuration during installations?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "e67a501e-c58e-56ac-b490-6080c3ff7167"
+      ]
+    },
+    {
+      "id": "corpus-installation-overview-2",
+      "question": "How does OpenShift Container Platform document Overview content for installing OpenShift Container Platform?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "52c58389-178b-5c15-8ed0-c686feaea548"
+      ]
+    },
+    {
+      "id": "corpus-installing-a-two-node-openshift-cluster-2",
+      "question": "How does OpenShift Container Platform document Installing OpenShift Container Platform on two nodes?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "984e6e13-c15d-5118-a037-381cffd2fcca"
+      ]
+    },
+    {
+      "id": "corpus-installing-an-on-premise-cluster-with-the-agent-based-installer-2",
+      "question": "How does OpenShift Container Platform document Installing an on-premise OpenShift Container Platform cluster with the Agent-based Installer?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "9877efbc-dcd2-55d3-9f04-44fbdf59f7d3"
+      ]
+    },
+    {
+      "id": "corpus-installing-ibm-cloud-bare-metal-classic-2",
+      "question": "How does OpenShift Container Platform document Installing OpenShift Container Platform on IBM Cloud Bare Metal (Classic)?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "7222659b-8d19-526d-abe5-58d02df8e46d"
+      ]
+    },
+    {
+      "id": "corpus-installing-on-premise-with-assisted-installer-2",
+      "question": "How does OpenShift Container Platform document Installing OpenShift Container Platform on-premise with the Assisted Installer?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "94e34536-1d0e-53dc-bb09-e12da9c56b8f"
+      ]
+    },
+    {
+      "id": "corpus-installing-on-a-single-node-2",
+      "question": "How does OpenShift Container Platform document Installing OpenShift Container Platform on a single node?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "e775a89d-d659-5d00-8fb5-cb89d0977449"
+      ]
+    },
+    {
+      "id": "corpus-installing-on-alibaba-cloud-2",
+      "question": "How does OpenShift Container Platform document Installing OpenShift Container Platform on Alibaba Cloud?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "b75b40a3-f0e6-552b-94e6-18193a3898bd"
+      ]
+    },
+    {
+      "id": "corpus-installing-on-any-platform-2",
+      "question": "How does OpenShift Container Platform document Installing OpenShift Container Platform on any platform?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "c2d086c3-ce90-500e-bfb2-a923a1c5b019"
+      ]
+    },
+    {
+      "id": "corpus-installing-on-aws-2",
+      "question": "How does OpenShift Container Platform document Installing OpenShift Container Platform on Amazon Web Services?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "507a0cd1-1fa1-5bdf-9ec5-7d371d4d13fd"
+      ]
+    },
+    {
+      "id": "corpus-installing-on-azure-2",
+      "question": "How does OpenShift Container Platform document Installing OpenShift Container Platform on Azure?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "2643250e-5baa-583b-b070-6fbe83bf5c77"
+      ]
+    },
+    {
+      "id": "corpus-installing-on-azure-stack-hub-2",
+      "question": "How does OpenShift Container Platform document Installing OpenShift Container Platform on Azure Stack Hub?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "f19ddb55-a1a0-5c6c-8844-70ecf3acc9ba"
+      ]
+    },
+    {
+      "id": "corpus-installing-on-bare-metal-2",
+      "question": "How does OpenShift Container Platform document Installing OpenShift Container Platform on bare metal?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "12efa61a-ddd3-50c2-93d2-cce8e35c8298"
+      ]
+    },
+    {
+      "id": "corpus-installing-on-google-cloud-2",
+      "question": "How does OpenShift Container Platform document Installing OpenShift Container Platform on Google Cloud?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "5449a7b3-1311-50aa-8c3b-a00cc0529a35"
+      ]
+    },
+    {
+      "id": "corpus-installing-on-ibm-cloud-2",
+      "question": "How does OpenShift Container Platform document Installing OpenShift Container Platform on IBM Cloud Bare Metal (Classic)?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "fe4dd2ac-a393-59d3-9125-fb75933b0529"
+      ]
+    },
+    {
+      "id": "corpus-installing-on-ibm-power-2",
+      "question": "How does OpenShift Container Platform document Installing OpenShift Container Platform on IBM Power?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "89389d95-495d-5611-ac71-fa2e7c985088"
+      ]
+    },
+    {
+      "id": "corpus-installing-on-ibm-power-virtual-server-2",
+      "question": "How does OpenShift Container Platform document Installing OpenShift Container Platform on IBM Power Virtual Server?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "9b437025-830f-5e34-ab75-07ee52fc97a5"
+      ]
+    },
+    {
+      "id": "corpus-installing-on-ibm-powervc-2",
+      "question": "How does OpenShift Container Platform document Installing OpenShift Container Platform on IBM PowerVC?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "ca4751a8-63fd-5016-a6f4-33c5e441c801"
+      ]
+    },
+    {
+      "id": "corpus-installing-on-ibm-z-and-ibm-linuxone-2",
+      "question": "How does OpenShift Container Platform document Installing OpenShift Container Platform on IBM Z and IBM LinuxONE?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "eef7ef3d-a263-5dd1-867f-ea331bde63ae"
+      ]
+    },
+    {
+      "id": "corpus-installing-on-nutanix-2",
+      "question": "How does OpenShift Container Platform document Installing OpenShift Container Platform on Nutanix?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "2533d4a8-bc15-5a1e-9b85-f8b0e326f359"
+      ]
+    },
+    {
+      "id": "corpus-installing-on-openstack-2",
+      "question": "How does OpenShift Container Platform document Installing OpenShift Container Platform on OpenStack?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "272cb21a-fc44-56d2-9de6-095e5a736789"
+      ]
+    },
+    {
+      "id": "corpus-installing-on-oracle-database-appliance-2",
+      "question": "How does OpenShift Container Platform document Installing OpenShift Container Platform on Installing on Oracle Database Appliance?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "2a675940-64ff-5403-8209-990058797cea"
+      ]
+    },
+    {
+      "id": "corpus-installing-on-oracle-distributed-cloud-2",
+      "question": "How does OpenShift Container Platform document Installing OpenShift Container Platform on Oracle Distributed Cloud?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "eac4261f-2460-503f-94f0-c5329f9018d5"
+      ]
+    },
+    {
+      "id": "corpus-installing-on-oracle-edge-cloud-2",
+      "question": "How does OpenShift Container Platform document Installing OpenShift Container Platform on Oracle Edge Cloud?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "eb7235ff-a939-5bde-a133-635edbde7ae8"
+      ]
+    },
+    {
+      "id": "corpus-installing-on-vmware-vsphere-2",
+      "question": "How does OpenShift Container Platform document Installing OpenShift Container Platform on vSphere?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "d97adff8-6154-56a2-bd9a-6416cd6093c2"
+      ]
+    },
+    {
+      "id": "corpus-jenkins-3",
+      "question": "How does OpenShift Container Platform document Chapter1.Configuring Jenkins images?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "852c9e50-4c3f-55fc-a2c2-7de02ab95469"
+      ]
+    },
+    {
+      "id": "corpus-kubernetes-nmstate-2",
+      "question": "How does OpenShift Container Platform document Observing and updating node network state and configuration using Kubernetes NMState in OpenShift Container Platform?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "f0e90a67-5732-5da5-9ae3-00e25a5b5dea"
+      ]
+    },
+    {
+      "id": "corpus-logging-2",
+      "question": "How does OpenShift Container Platform document Configuring and using logging in OpenShift Container Platform?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "03572e96-a6e1-54d9-be9c-5bdd1cc28742"
+      ]
+    },
+    {
+      "id": "corpus-machine-apis-2",
+      "question": "How does OpenShift Container Platform document Reference guide for machine APIs?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "01feaa64-52d1-5311-be91-638189b9d982"
+      ]
+    },
+    {
+      "id": "corpus-machine-configuration-2",
+      "question": "How does OpenShift Container Platform document Managing and applying configuration and updates of the base operating system and container runtimes in OpenShift Container Platform?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "2a23a7d9-4976-5501-86e4-669c9956d90f"
+      ]
+    },
+    {
+      "id": "corpus-machine-management-2",
+      "question": "How does OpenShift Container Platform document Adding and maintaining cluster machines?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "bb43a1c4-4251-555f-9399-5f0283105079"
+      ]
+    },
+    {
+      "id": "corpus-metadata-apis-2",
+      "question": "How does OpenShift Container Platform document Reference guide for metadata APIs?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "a4702c78-4647-5eb3-89df-60d31f85aba1"
+      ]
+    },
+    {
+      "id": "corpus-migrating-from-version-3-to-4-2",
+      "question": "How does OpenShift Container Platform document Migrating to OpenShift Container Platform 4?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "6f70c094-6de6-5835-a27a-0e7d656db268"
+      ]
+    },
+    {
+      "id": "corpus-monitoring-2",
+      "question": "How does OpenShift Container Platform document Configuring and using the monitoring stack in OpenShift Container Platform?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "16289132-d267-551c-91d1-e388cbe1ce32"
+      ]
+    },
+    {
+      "id": "corpus-monitoring-apis-2",
+      "question": "How does OpenShift Container Platform document Reference guide for monitoring APIs?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "a051b20f-a822-51f8-94eb-a7b71880f454"
+      ]
+    },
+    {
+      "id": "corpus-multiple-networks-2",
+      "question": "How does OpenShift Container Platform document Configuring and managing multiple network interfaces and virtual routing in OpenShift Container Platform?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "4e19c74c-61b0-513e-8814-a5c41cecbe5e"
+      ]
+    },
+    {
+      "id": "corpus-network-apis-2",
+      "question": "How does OpenShift Container Platform document Reference guide for network APIs?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "0647b25d-1ebd-567f-8b73-0c1daa0afd87"
+      ]
+    },
+    {
+      "id": "corpus-network-observability-2",
+      "question": "How does OpenShift Container Platform document Configuring and using the Network Observability Operator in OpenShift Container Platform?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "e4fd75c8-5748-51f6-bce1-321e66d5dae7"
+      ]
+    },
+    {
+      "id": "corpus-network-observability-operator-2",
+      "question": "How does OpenShift Container Platform document Network Observability Operator for OpenShift Container Platform?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "eba32b63-c941-5c61-a7fd-ab1e65cc81fd"
+      ]
+    },
+    {
+      "id": "corpus-network-security-2",
+      "question": "How does OpenShift Container Platform document Securing network traffic and enforcing network policies in OpenShift Container Platform?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "afecc12a-942c-509f-bdad-a987f4ee6d45"
+      ]
+    },
+    {
+      "id": "corpus-networking-operators-2",
+      "question": "How does OpenShift Container Platform document Managing networking-specific Operators in OpenShift Container Platform?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "7ffe0602-12ca-5010-8a3e-fd74e30c981c"
+      ]
+    },
+    {
+      "id": "corpus-networking-overview-2",
+      "question": "How does OpenShift Container Platform document Understanding fundamental networking concepts and general tasks in OpenShift Container Platform?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "507af079-dae6-536f-865c-4d6c11e29827"
+      ]
+    },
+    {
+      "id": "corpus-node-apis-2",
+      "question": "How does OpenShift Container Platform document Reference guide for node APIs?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "f50ac9a4-94d4-5c7d-91e9-bc8d41a3aae2"
+      ]
+    },
+    {
+      "id": "corpus-nodes-2",
+      "question": "How does OpenShift Container Platform document Configuring and managing nodes in OpenShift Container Platform?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "aa6a0fa3-8411-5c5b-8142-54e94fe8fb60"
+      ]
+    },
+    {
+      "id": "corpus-oauth-apis-2",
+      "question": "How does OpenShift Container Platform document Reference guide for Oauth APIs?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "45e421e4-0f5a-507f-b183-ffc06d9a0ec0"
+      ]
+    },
+    {
+      "id": "corpus-observability-overview-2",
+      "question": "How does OpenShift Container Platform document Contains information about observability for OpenShift Container Platform?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "a870e122-fffd-5cbe-8ac3-048137f48f3b"
+      ]
+    },
+    {
+      "id": "corpus-openshift-lightspeed-2",
+      "question": "How does OpenShift Container Platform document About OpenShift Lightspeed?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "8e399fa6-8f37-5ee7-ba8e-301f23154d2d"
+      ]
+    },
+    {
+      "id": "corpus-openshift-sandboxed-containers-2",
+      "question": "How does OpenShift Container Platform document OpenShift sandboxed containers guide?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "cd442f4e-9ba3-523f-920b-f8dc7fe24239"
+      ]
+    },
+    {
+      "id": "corpus-operator-apis-2",
+      "question": "How does OpenShift Container Platform document Reference guide for Operator APIs?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "0cc80091-c566-5d0b-9fd8-b61af93751a1"
+      ]
+    },
+    {
+      "id": "corpus-operatorhub-apis-2",
+      "question": "How does OpenShift Container Platform document Reference guide for OperatorHub APIs?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "d39bbe45-3314-5da3-b701-a2d87f88fb68"
+      ]
+    },
+    {
+      "id": "corpus-operators-2",
+      "question": "How does OpenShift Container Platform document Working with Operators in OpenShift Container Platform?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "dfed1bf6-6e52-5a6e-a5a1-1abfdc3e5e1f"
+      ]
+    },
+    {
+      "id": "corpus-overview-2",
+      "question": "How does OpenShift Container Platform document Introduction to OpenShift Container Platform?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "2b3cfb52-0315-5200-bb8b-d6447317f904"
+      ]
+    },
+    {
+      "id": "corpus-ovn-kubernetes-network-plugin-2",
+      "question": "How does OpenShift Container Platform document In-depth configuration and troubleshooting for the OVN-Kubernetes network plugin in OpenShift Container Platform?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "a75c6431-1926-5aaa-aba2-0f305b584bb8"
+      ]
+    },
+    {
+      "id": "corpus-pipelines-2",
+      "question": "How does OpenShift Container Platform document Contains information about Pipelines for OpenShift Container Platform?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "876f7381-d6d4-5a73-b4f3-a31473484051"
+      ]
+    },
+    {
+      "id": "corpus-policy-apis-2",
+      "question": "How does OpenShift Container Platform document Reference guide for policy APIs?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "0e8941cf-e232-5549-8072-50ffa5f139c1"
+      ]
+    },
+    {
+      "id": "corpus-postinstallation-configuration-2",
+      "question": "How does OpenShift Container Platform document Day 2 operations for OpenShift Container Platform?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "ac5e2d25-4578-52ea-b981-335ad30eaa15"
+      ]
+    },
+    {
+      "id": "corpus-power-monitoring-2",
+      "question": "How does OpenShift Container Platform document Configuring and using power monitoring for OpenShift Container Platform?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "5dae9f97-8693-5df1-ada2-911eb036dbba"
+      ]
+    },
+    {
+      "id": "corpus-project-apis-2",
+      "question": "How does OpenShift Container Platform document Reference guide for project APIs?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "12550d39-b552-5d17-99d7-383a5aabd41d"
+      ]
+    },
+    {
+      "id": "corpus-provisioning-apis-2",
+      "question": "How does OpenShift Container Platform document Reference guide for provisioning APIs?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "f0a0f102-9a49-50be-9bc9-b20ee886b55f"
+      ]
+    },
+    {
+      "id": "corpus-rbac-apis-2",
+      "question": "How does OpenShift Container Platform document Reference guide for RBAC APIs?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "d55aea3c-7bcb-5711-b83d-224d2f0086d2"
+      ]
+    },
+    {
+      "id": "corpus-red-hat-build-of-opentelemetry-2",
+      "question": "How does OpenShift Container Platform document Configuring and using the Red Hat build of OpenTelemetry in OpenShift Container Platform?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "2e5e1929-3c24-5b44-840d-7eb0b94199f8"
+      ]
+    },
+    {
+      "id": "corpus-registry-2",
+      "question": "How does OpenShift Container Platform document Configuring registries for OpenShift Container Platform?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "b3362800-7d34-5ff0-8aa5-0fa777bdf606"
+      ]
+    },
+    {
+      "id": "corpus-release-notes-2",
+      "question": "How does OpenShift Container Platform document Highlights of what is new and what has changed with this OpenShift Container Platform release?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "e58987e6-abbd-5169-8fbc-52fae6e0e3db"
+      ]
+    },
+    {
+      "id": "corpus-role-apis-2",
+      "question": "How does OpenShift Container Platform document Reference guide for role APIs?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "a5484249-da59-5e7b-b31b-e0c4a670b6f6"
+      ]
+    },
+    {
+      "id": "corpus-scalability-and-performance-2",
+      "question": "How does OpenShift Container Platform document Scaling your OpenShift Container Platform cluster and tuning performance in production environments?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "67b4fcc0-9697-5b43-885b-d7f37a632473"
+      ]
+    },
+    {
+      "id": "corpus-schedule-and-quota-apis-2",
+      "question": "How does OpenShift Container Platform document Reference guide for schedule and quota APIs?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "7025d13a-ebfd-5b0e-a5fe-acf61b05762a"
+      ]
+    },
+    {
+      "id": "corpus-security-and-compliance-2",
+      "question": "How does OpenShift Container Platform document Learning about and managing security for OpenShift Container Platform?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "405b6e83-7846-562b-b674-25124368f657"
+      ]
+    },
+    {
+      "id": "corpus-security-apis-2",
+      "question": "How does OpenShift Container Platform document Reference guide for security APIs?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "6c9e547f-2c6f-590a-8930-f5483c93e59b"
+      ]
+    },
+    {
+      "id": "corpus-serverless-2",
+      "question": "How does OpenShift Container Platform document OpenShift Serverless installation, usage, and release notes?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "ea6ea31d-b74e-58b5-ba8e-a1336615a489"
+      ]
+    },
+    {
+      "id": "corpus-service-mesh-2",
+      "question": "How does OpenShift Container Platform document Service Mesh installation, usage, and release notes?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "b41aa73d-88f3-5c09-9db7-d58ac4002e06"
+      ]
+    },
+    {
+      "id": "corpus-specialized-hardware-and-driver-enablement-2",
+      "question": "How does OpenShift Container Platform document Learn about hardware enablement on OpenShift Container Platform?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "472c788d-674c-572c-b7ba-43470151b223"
+      ]
+    },
+    {
+      "id": "corpus-storage-2",
+      "question": "How does OpenShift Container Platform document Configuring and managing storage in OpenShift Container Platform?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "332810e1-67f3-5288-a876-deb1168d67ba"
+      ]
+    },
+    {
+      "id": "corpus-storage-apis-2",
+      "question": "How does OpenShift Container Platform document Reference guide for storage APIs?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "0db9c415-f766-591b-9084-0c3a6a6839b8"
+      ]
+    },
+    {
+      "id": "corpus-support-2",
+      "question": "How does OpenShift Container Platform document Getting support for OpenShift Container Platform?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "6d46e700-7b17-516e-a9bd-3ad44a28ef95"
+      ]
+    },
+    {
+      "id": "corpus-template-apis-2",
+      "question": "How does OpenShift Container Platform document Reference guide for template APIs?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "e310c8e9-6494-5ce9-8bd3-822283f11639"
+      ]
+    },
+    {
+      "id": "corpus-tutorials-2",
+      "question": "How does OpenShift Container Platform document Getting started in OpenShift Container Platform?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "33cf6a4d-a0a7-5125-a9be-2899877f87b5"
+      ]
+    },
+    {
+      "id": "corpus-updating-clusters-2",
+      "question": "How does OpenShift Container Platform document Updating OpenShift Container Platform clusters?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "79af0c06-4004-54f6-833b-3e9aa1c61905"
+      ]
+    },
+    {
+      "id": "corpus-user-and-group-apis-2",
+      "question": "How does OpenShift Container Platform document Reference guide for user and group APIs?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "c797f5eb-f966-5e34-b0dd-48f295bf7ea8"
+      ]
+    },
+    {
+      "id": "corpus-validation-and-troubleshooting-2",
+      "question": "How does OpenShift Container Platform document Validating and troubleshooting an OpenShift Container Platform installation?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "753a60db-8f0e-5d7a-9c4e-be68dfa84b51"
+      ]
+    },
+    {
+      "id": "corpus-virtualization-2",
+      "question": "How does OpenShift Container Platform document OpenShift Virtualization installation, usage, and release notes?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "cac5e3ed-2125-5139-934f-4bba3b356e46"
+      ]
+    },
+    {
+      "id": "corpus-virtualized-control-planes-2",
+      "question": "How does OpenShift Container Platform document Deploying OpenShift Container Platform clusters with virtualized control planes?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "5bd237dc-fe60-5300-8216-a9a657738707"
+      ]
+    },
+    {
+      "id": "corpus-web-console-2",
+      "question": "How does OpenShift Container Platform document Getting started with the web console in OpenShift Container Platform?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "9453b745-0975-5a6d-bba5-7de3b6b530d4"
+      ]
+    },
+    {
+      "id": "corpus-windows-container-support-for-openshift-2",
+      "question": "How does OpenShift Container Platform document Red Hat OpenShift for Windows Containers Guide?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "7845e78c-66f1-5772-bacd-d813225b973b"
+      ]
+    },
+    {
+      "id": "corpus-workloads-apis-2",
+      "question": "How does OpenShift Container Platform document Reference guide for workloads APIs?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "349797a4-9fc0-5591-91bf-abfe954f3860"
+      ]
+    },
+    {
+      "id": "corpus-advanced-networking-3",
+      "question": "How does OpenShift Container Platform document Chapter1.Verifying connectivity to an endpoint?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "65b49d58-d7d6-52ff-acf0-481a962af645"
+      ]
+    },
+    {
+      "id": "corpus-ai-applications-3",
+      "question": "How does OpenShift Container Platform document 1.1.Inspect clusters with MCP server for Red Hat OpenShift?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "c0c06e55-c972-5a13-8aab-c2f87a25ec8e"
+      ]
+    },
+    {
+      "id": "corpus-ai-workloads-3",
+      "question": "How does OpenShift Container Platform document Chapter1.Overview of AI workloads on OpenShift Container Platform?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "71d01548-21e2-522b-9121-1db05498f0d0"
+      ]
+    },
+    {
+      "id": "corpus-api-overview-3",
+      "question": "How does OpenShift Container Platform document Chapter1.Understanding API tiers?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "d144675a-71c4-573f-8cbf-a04b2f5c633c"
+      ]
+    },
+    {
+      "id": "corpus-architecture-3",
+      "question": "How does OpenShift Container Platform document Chapter1.Architecture overview?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "ab01e557-0ca7-5d92-9d50-15aa69408e1f"
+      ]
+    },
+    {
+      "id": "corpus-authentication-and-authorization-4",
+      "question": "How does OpenShift Container Platform document 1.1.Glossary of common terms for OpenShift Container Platform authentication and authorization?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "9ad4c260-fa42-59b8-80f6-a5d2eec5d3ca"
+      ]
+    },
+    {
+      "id": "corpus-authorization-apis-3",
+      "question": "How does OpenShift Container Platform document [1.1.LocalResourceAccessReview [authorization.openshift.io/v1]](#localresourceaccessreview-authorization-openshift-iov1)?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "4c15a7b6-b2f2-5163-941e-24d988f561e2"
+      ]
+    },
+    {
+      "id": "corpus-autoscale-apis-3",
+      "question": "How does OpenShift Container Platform document [1.1.ClusterAutoscaler [autoscaling.openshift.io/v1]](#clusterautoscaler-autoscaling-openshift-iov1)?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "5762542d-ea9f-5f5f-8ebb-318cfd47dec6"
+      ]
+    },
+    {
+      "id": "corpus-backup-and-restore-3",
+      "question": "How does OpenShift Container Platform document Chapter1.Backup and restore?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "987380f9-f164-5728-9141-559790cb7069"
+      ]
+    },
+    {
+      "id": "corpus-building-applications-3",
+      "question": "How does OpenShift Container Platform document Chapter1.Building applications overview?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "cd7122bd-4861-5907-8a1b-a5f318b19d8f"
+      ]
+    },
+    {
+      "id": "corpus-builds-using-buildconfig-5",
+      "question": "How does OpenShift Container Platform document 1.1.1.Docker build?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "2de9267a-6b39-545f-91ae-0e7833009f30"
+      ]
+    },
+    {
+      "id": "corpus-builds-using-shipwright-3",
+      "question": "How does OpenShift Container Platform document Chapter1.Overview of Builds?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "0e53378e-3fa4-5aba-833a-809b7c5772da"
+      ]
+    },
+    {
+      "id": "corpus-cicd-overview-3",
+      "question": "How does OpenShift Container Platform document Chapter1.About CI/CD?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "4551cb38-96c0-57de-8031-43f7b29a54e7"
+      ]
+    },
+    {
+      "id": "corpus-cli-tools-3",
+      "question": "How does OpenShift Container Platform document Chapter1.OpenShift Container Platform CLI tools overview?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "9cfedc56-d40b-5d64-b436-39dc7dbcb977"
+      ]
+    },
+    {
+      "id": "corpus-cluster-apis-3",
+      "question": "How does OpenShift Container Platform document [1.1.IPAddress [ipam.cluster.x-k8s.io/v1beta1]](#ipaddress-ipam-cluster-x-k8s-iov1beta1)?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "23b5ad5e-68c7-5fd3-b68a-907302c8ecd3"
+      ]
+    },
+    {
+      "id": "corpus-cluster-observability-operator-3",
+      "question": "How does OpenShift Container Platform document Chapter1.Cluster Observability Operator overview?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "6f68f926-1ee0-509b-bef1-5b795511d222"
+      ]
+    },
+    {
+      "id": "corpus-common-object-reference-3",
+      "question": "How does OpenShift Container Platform document 1.1.com.coreos.monitoring.v1.AlertmanagerList schema?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "ed9f6bcc-46f1-502b-acc1-56687d16b3fc"
+      ]
+    },
+    {
+      "id": "corpus-config-apis-3",
+      "question": "How does OpenShift Container Platform document [1.1.APIServer [config.openshift.io/v1]](#apiserver-config-openshift-iov1)?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "fcae96e9-3a23-518d-b191-69ebf26ea43e"
+      ]
+    },
+    {
+      "id": "corpus-configuring-network-settings-3",
+      "question": "How does OpenShift Container Platform document Chapter1.Configuring system controls and interface attributes using the tuning plugin?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "aea45e71-8964-5bc3-92e7-e6557d60dc8d"
+      ]
+    },
+    {
+      "id": "corpus-console-apis-3",
+      "question": "How does OpenShift Container Platform document [1.1.ConsoleCLIDownload [console.openshift.io/v1]](#consoleclidownload-console-openshift-iov1)?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "c0e865ae-7f68-5a5c-bc65-bdab3d323a40"
+      ]
+    },
+    {
+      "id": "corpus-disconnected-environments-3",
+      "question": "How does OpenShift Container Platform document Chapter1.About disconnected environments?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "68515748-db0c-5456-9cf2-961351082f54"
+      ]
+    },
+    {
+      "id": "corpus-distributed-tracing-3",
+      "question": "How does OpenShift Container Platform document Chapter1.About the Distributed Tracing Platform?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "6e4201b7-d7fe-5df7-af44-c33f9721fd38"
+      ]
+    },
+    {
+      "id": "corpus-edge-computing-3",
+      "question": "How does OpenShift Container Platform document Chapter1.Challenges of the network far edge?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "9308a0d4-28b9-54a9-9d9f-5ff368a8de2d"
+      ]
+    },
+    {
+      "id": "corpus-etcd-3",
+      "question": "How does OpenShift Container Platform document Chapter1.Overview of etcd?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "cb07bd4f-f6dd-5575-813a-757a481cef52"
+      ]
+    },
+    {
+      "id": "corpus-extension-apis-3",
+      "question": "How does OpenShift Container Platform document [1.1.APIService [apiregistration.k8s.io/v1]](#apiservice-apiregistration-k8s-iov1)?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "58322bfd-1625-56fe-a131-f476ab75678f"
+      ]
+    },
+    {
+      "id": "corpus-extensions-3",
+      "question": "How does OpenShift Container Platform document Chapter1.Extensions overview?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "3e0957c9-d14c-5f36-b2f0-812bf71282af"
+      ]
+    },
+    {
+      "id": "corpus-gitops-3",
+      "question": "How does OpenShift Container Platform document Chapter1.About RedHat OpenShift GitOps?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "18955a40-b23d-5dcc-8425-a7b36e22dcac"
+      ]
+    },
+    {
+      "id": "corpus-hardware-accelerators-3",
+      "question": "How does OpenShift Container Platform document Chapter1.About hardware accelerators?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "d6f5f6ff-5877-5a34-bb11-076d08ecf7ac"
+      ]
+    },
+    {
+      "id": "corpus-hardware-networks-3",
+      "question": "How does OpenShift Container Platform document Chapter1.About Single Root I/O Virtualization (SR-IOV) hardware networks?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "bdb22800-7a69-5c79-a968-d64045535da1"
+      ]
+    },
+    {
+      "id": "corpus-hosted-control-planes-3",
+      "question": "How does OpenShift Container Platform document Chapter1.Hosted control planes release notes?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "80f9e716-60f8-5b7e-9aea-0fc5ff201ae1"
+      ]
+    },
+    {
+      "id": "corpus-image-apis-3",
+      "question": "How does OpenShift Container Platform document [1.1.Image [image.openshift.io/v1]](#image-image-openshift-iov1)?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "72451032-9898-5f5f-b16f-6b0d650284b7"
+      ]
+    },
+    {
+      "id": "corpus-images-3",
+      "question": "How does OpenShift Container Platform document Chapter1.Overview of images?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "e2fd35a2-190a-5d03-8956-91faa514385a"
+      ]
+    },
+    {
+      "id": "corpus-ingress-and-load-balancing-4",
+      "question": "How does OpenShift Container Platform document 1.1.1.Creating an HTTP-based route?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "b074fe5e-bace-5d0f-a5ad-e118ce361ea6"
+      ]
+    },
+    {
+      "id": "corpus-installation-configuration-3",
+      "question": "How does OpenShift Container Platform document Chapter1.Customizing nodes?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "694fea6c-6083-5316-af7e-9a63a535ad3b"
+      ]
+    },
+    {
+      "id": "corpus-installation-overview-3",
+      "question": "How does OpenShift Container Platform document Chapter1.OpenShift Container Platform installation overview?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "f25095ff-907e-572c-81b5-94d064e72277"
+      ]
+    },
+    {
+      "id": "corpus-installing-a-two-node-openshift-cluster-3",
+      "question": "How does OpenShift Container Platform document Chapter1.Two-Node with Arbiter?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "2c740ac8-9970-57a5-8ab7-124daa7a6ec3"
+      ]
+    },
+    {
+      "id": "corpus-installing-an-on-premise-cluster-with-the-agent-based-installer-3",
+      "question": "How does OpenShift Container Platform document Chapter1.Preparing to install with the Agent-based Installer?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "0da30e4c-ed47-5d04-8887-79303f4e629e"
+      ]
+    },
+    {
+      "id": "corpus-installing-ibm-cloud-bare-metal-classic-3",
+      "question": "How does OpenShift Container Platform document Chapter1.Prerequisites for installing a cluster on {ibm-cloud-bm}?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "68ed5fdb-625e-5cd7-bb68-feb8bfc6177a"
+      ]
+    },
+    {
+      "id": "corpus-installing-on-premise-with-assisted-installer-3",
+      "question": "How does OpenShift Container Platform document Chapter1.Installing an on-premise cluster using the Assisted Installer?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "47f3c4a4-4ea8-50de-b15f-14ed9fc0bb72"
+      ]
+    },
+    {
+      "id": "corpus-installing-on-a-single-node-3",
+      "question": "How does OpenShift Container Platform document Chapter1.Preparing to install on a single node?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "d697f502-f12d-5b17-8a1e-9c2b9666366d"
+      ]
+    },
+    {
+      "id": "corpus-installing-on-alibaba-cloud-3",
+      "question": "How does OpenShift Container Platform document Chapter1.Installing a cluster on Alibaba Cloud by using the Assisted Installer?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "ef050325-ff43-581b-9a9f-29a1fa167bf3"
+      ]
+    },
+    {
+      "id": "corpus-installing-on-any-platform-3",
+      "question": "How does OpenShift Container Platform document Chapter1.Installing a cluster on any platform?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "3b9f8aab-e120-5039-8ea5-06c2b5ab7eec"
+      ]
+    },
+    {
+      "id": "corpus-installing-on-aws-3",
+      "question": "How does OpenShift Container Platform document Chapter1.Installation methods?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "cdd06c15-2087-5bf1-a723-bbafba10b2f8"
+      ]
+    },
+    {
+      "id": "corpus-installing-on-azure-3",
+      "question": "How does OpenShift Container Platform document Chapter1.Installation methods?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "5a476753-384f-577f-98c3-89f8bfe1d006"
+      ]
+    },
+    {
+      "id": "corpus-installing-on-azure-stack-hub-3",
+      "question": "How does OpenShift Container Platform document Chapter1.Installation methods?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "44d40f32-aa8e-5999-b5a6-8995b9f8415f"
+      ]
+    },
+    {
+      "id": "corpus-installing-on-bare-metal-3",
+      "question": "How does OpenShift Container Platform document Chapter1.Preparing for bare-metal cluster installation?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "2e809890-9346-5378-8a47-d5f9d85bb1dd"
+      ]
+    },
+    {
+      "id": "corpus-installing-on-google-cloud-3",
+      "question": "How does OpenShift Container Platform document 1.1.Prerequisites?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "221be235-a22a-579d-b8e2-5140ceafc228"
+      ]
+    },
+    {
+      "id": "corpus-installing-on-ibm-cloud-3",
+      "question": "How does OpenShift Container Platform document Chapter1.Installation methods?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "93d21363-b5e1-5b4a-8283-1b069bd0608a"
+      ]
+    },
+    {
+      "id": "corpus-installing-on-ibm-power-3",
+      "question": "How does OpenShift Container Platform document Chapter1.Installation methods?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "855a9eb7-d25c-5335-9fab-bda066a607d6"
+      ]
+    },
+    {
+      "id": "corpus-installing-on-ibm-power-virtual-server-3",
+      "question": "How does OpenShift Container Platform document Chapter1.Installation methods?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "318433bf-ebf4-5d86-8751-0bbcd63045b5"
+      ]
+    },
+    {
+      "id": "corpus-installing-on-ibm-powervc-3",
+      "question": "How does OpenShift Container Platform document Chapter1.Installation methods?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "5767b9cc-2db5-5b3a-b0c3-85513b5e22bc"
+      ]
+    },
+    {
+      "id": "corpus-installing-on-ibm-z-and-ibm-linuxone-3",
+      "question": "How does OpenShift Container Platform document Chapter1.Installation methods?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "6272dd32-74a9-5c18-9e3f-3003bbfe8daa"
+      ]
+    },
+    {
+      "id": "corpus-installing-on-nutanix-3",
+      "question": "How does OpenShift Container Platform document Chapter1.Installation methods?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "5020cbc5-a226-53ff-8b09-d8a11cd599b1"
+      ]
+    },
+    {
+      "id": "corpus-installing-on-openstack-3",
+      "question": "How does OpenShift Container Platform document Chapter1.Preparing to install on OpenStack?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "ee550e8d-5fe2-50a6-bfa1-f50619443688"
+      ]
+    },
+    {
+      "id": "corpus-installing-on-oracle-database-appliance-3",
+      "question": "How does OpenShift Container Platform document Chapter1.Installing a cluster on Oracle Database Appliance by using the Assisted Installer?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "63cd6e35-62b0-5fe1-b47e-e58063ea799a"
+      ]
+    },
+    {
+      "id": "corpus-installing-on-oracle-distributed-cloud-3",
+      "question": "How does OpenShift Container Platform document Chapter1.Installing a cluster on Oracle Distributed Cloud by using the Assisted Installer?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "dd93afd8-d8fb-5286-af72-7041a9f7857f"
+      ]
+    },
+    {
+      "id": "corpus-installing-on-oracle-edge-cloud-3",
+      "question": "How does OpenShift Container Platform document Chapter1.Installing a cluster on Oracle Edge Cloud by using the Assisted Installer?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "dd42bc83-bc17-5a12-acfc-16792b39fbcc"
+      ]
+    },
+    {
+      "id": "corpus-installing-on-vmware-vsphere-3",
+      "question": "How does OpenShift Container Platform document Chapter1.Installation methods?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "2f6bf463-910c-536e-91b1-5621eeddf784"
+      ]
+    },
+    {
+      "id": "corpus-jenkins-5",
+      "question": "How does OpenShift Container Platform document 1.1.Configuration and customization?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "fe77d5c3-56c5-58ea-88d8-167700a7c141"
+      ]
+    },
+    {
+      "id": "corpus-kubernetes-nmstate-3",
+      "question": "How does OpenShift Container Platform document Chapter1.Observing and updating the node network state and configuration?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "f16dd82a-b19f-5758-86a3-91e469d47cdb"
+      ]
+    },
+    {
+      "id": "corpus-machine-apis-3",
+      "question": "How does OpenShift Container Platform document [1.1.ContainerRuntimeConfig [machineconfiguration.openshift.io/v1]](#containerruntimeconfig-machineconfiguration-openshift-iov1)?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "c3eb6302-eeb1-57bb-b5b7-dc3161066592"
+      ]
+    },
+    {
+      "id": "corpus-machine-configuration-3",
+      "question": "How does OpenShift Container Platform document Chapter1.Machine configuration overview?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "d0866a16-62e9-59d5-b1fb-0cd89da842fd"
+      ]
+    },
+    {
+      "id": "corpus-machine-management-3",
+      "question": "How does OpenShift Container Platform document Chapter1.Overview of machine management?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "21a45103-4e63-51ed-b725-04a975efd8ad"
+      ]
+    },
+    {
+      "id": "corpus-metadata-apis-3",
+      "question": "How does OpenShift Container Platform document [1.1.APIRequestCount [apiserver.openshift.io/v1]](#apirequestcount-apiserver-openshift-iov1)?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "b57bbb64-583c-523f-98c8-d52c147046c2"
+      ]
+    },
+    {
+      "id": "corpus-migrating-from-version-3-to-4-3",
+      "question": "How does OpenShift Container Platform document Chapter1.Migration from OpenShift Container Platform 3 to 4 overview?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "12b75083-e43b-55ca-84cf-1fa6ecddeeed"
+      ]
+    },
+    {
+      "id": "corpus-monitoring-apis-3",
+      "question": "How does OpenShift Container Platform document [1.1.Alertmanager [monitoring.coreos.com/v1]](#alertmanager-monitoring-coreos-comv1)?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "ae4dba2d-fe47-57aa-8c1e-011fa09e4269"
+      ]
+    },
+    {
+      "id": "corpus-multiple-networks-3",
+      "question": "How does OpenShift Container Platform document Chapter1.Understanding multiple networks?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "ef7b37e1-fea4-5d93-83ba-bdcebb5f48c3"
+      ]
+    },
+    {
+      "id": "corpus-network-apis-3",
+      "question": "How does OpenShift Container Platform document [1.1.ClusterUserDefinedNetwork [k8s.ovn.org/v1]](#clusteruserdefinednetwork-k8s-ovn-orgv1)?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "f5488bd0-fba5-53ce-ad21-2f4d7ab29440"
+      ]
+    },
+    {
+      "id": "corpus-network-observability-3",
+      "question": "How does OpenShift Container Platform document Chapter1.Network Observability Operator release notes?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "ba916851-7def-53bc-bfc1-d9318d308c1c"
+      ]
+    },
+    {
+      "id": "corpus-network-observability-operator-3",
+      "question": "How does OpenShift Container Platform document Chapter1.Network Observability Operator?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "b44c6b07-f819-5b89-a065-0cb5e3bbf4bc"
+      ]
+    },
+    {
+      "id": "corpus-network-security-3",
+      "question": "How does OpenShift Container Platform document Chapter1.Understanding network policy APIs?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "c6859b69-7e60-5eb6-9add-d514eb66b5dd"
+      ]
+    },
+    {
+      "id": "corpus-networking-operators-3",
+      "question": "How does OpenShift Container Platform document Chapter1.Kubernetes NMState Operator?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "0cf7881a-1e32-54fe-a90b-7b0d04b6932f"
+      ]
+    },
+    {
+      "id": "corpus-networking-overview-3",
+      "question": "How does OpenShift Container Platform document Chapter1.Understanding networking?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "8136b814-2c0c-513f-a582-42551de5bed5"
+      ]
+    },
+    {
+      "id": "corpus-node-apis-3",
+      "question": "How does OpenShift Container Platform document [1.1.Node [v1]](#node-v1-1)?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "264b374e-491d-50e1-af1c-0d651499c752"
+      ]
+    },
+    {
+      "id": "corpus-nodes-3",
+      "question": "How does OpenShift Container Platform document Chapter1.Overview of nodes?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "e0b648b2-d5ac-505d-afda-96811d7b0926"
+      ]
+    },
+    {
+      "id": "corpus-oauth-apis-3",
+      "question": "How does OpenShift Container Platform document [1.1.OAuthAccessToken [oauth.openshift.io/v1]](#oauthaccesstoken-oauth-openshift-iov1)?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "b073171f-31ca-55cd-ae6e-f26e97ec6bd1"
+      ]
+    },
+    {
+      "id": "corpus-observability-overview-3",
+      "question": "How does OpenShift Container Platform document Chapter1.About Observability?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "13c74613-fe59-5a3c-9556-2cd617e013c6"
+      ]
+    },
+    {
+      "id": "corpus-openshift-lightspeed-3",
+      "question": "How does OpenShift Container Platform document 1.1.OpenShift Lightspeed overview?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "3fb1e8c7-2e5c-5909-a41b-9d823469b231"
+      ]
+    },
+    {
+      "id": "corpus-openshift-sandboxed-containers-3",
+      "question": "How does OpenShift Container Platform document Chapter1.About OpenShift sandboxed containers?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "857b4fd4-6b84-504e-b8ec-f2b569435c9e"
+      ]
+    },
+    {
+      "id": "corpus-operator-apis-3",
+      "question": "How does OpenShift Container Platform document [1.1.Authentication [operator.openshift.io/v1]](#authentication-operator-openshift-iov1)?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "c43d7ed0-4449-5cc3-be7f-51d912ed93ce"
+      ]
+    },
+    {
+      "id": "corpus-operatorhub-apis-3",
+      "question": "How does OpenShift Container Platform document [1.1.CatalogSource [operators.coreos.com/v1alpha1]](#catalogsource-operators-coreos-comv1alpha1)?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "d418ddd9-5b85-54e8-8cff-19aa944395b5"
+      ]
+    },
+    {
+      "id": "corpus-operators-3",
+      "question": "How does OpenShift Container Platform document Chapter1.Operators overview?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "753694b1-e529-5cac-8bf1-deb8de32cceb"
+      ]
+    },
+    {
+      "id": "corpus-overview-3",
+      "question": "How does OpenShift Container Platform document Chapter1.OpenShift Container Platform 4.22 Documentation?",
+      "document_version": "4.22",
+      "expected_chunk_ids": [
+        "9c0176e0-ef5d-595f-ad1c-ce9852dbee2d"
+      ]
+    }
+  ]
+}
