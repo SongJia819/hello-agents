@@ -19,8 +19,9 @@ CAPABILITIES = {
     },
 
     AgentType.PLAN: {
-        # "create_cluster": "create_cluster_plan",
-        # "delete_node": "delete_node_plan",
+        "add": {
+            "node": "node-add",
+        },
     },
 
     AgentType.EXECUTION: {

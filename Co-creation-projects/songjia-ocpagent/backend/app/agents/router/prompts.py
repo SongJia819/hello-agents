@@ -12,7 +12,7 @@ Return ONLY valid JSON.
 Schema:
 
 {
-    "agent": "<query|planner|execution>",
+    "agent": "<query|plan|execution>",
     "action": "<list|create|delete|add|drain|upgrade|unknown>",
     "resource": "<primary cluster|node|pod|namespace|deployment|service|secret|unknown resource>",
     "resources": ["<all requested resources, or a single resource>"]
@@ -54,7 +54,7 @@ User:
 delete worker01
 
 {
-    "agent":"planner",
+    "agent":"plan",
     "action":"delete",
     "resource":"node"
 }
@@ -63,7 +63,7 @@ User:
 create cluster
 
 {
-    "agent":"planner",
+    "agent":"plan",
     "action":"create",
     "resource":"cluster"
 }

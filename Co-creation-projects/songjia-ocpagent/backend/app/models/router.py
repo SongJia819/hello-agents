@@ -3,7 +3,7 @@ from pydantic import BaseModel, Field
 
 class RouterResult(BaseModel):
     agent: str = Field(
-        description="Target agent. One of: query, planner, execution"
+        description="Target agent. One of: query, plan, execution"
     )
 
     action: str = Field(

@@ -1,5 +1,6 @@
-from typing import TypedDict, List, Annotated, Any
+from typing import TypedDict, List, Annotated, Any, NotRequired
 from app.models.cluster import Cluster
+from app.models.plan import Plan
 from langgraph.graph.message import add_messages
 
 
@@ -18,5 +19,6 @@ class AgentState(TypedDict):
     tool_result: Any
     answer: str
     action: str
+    plan: NotRequired[Plan | None]
 
 

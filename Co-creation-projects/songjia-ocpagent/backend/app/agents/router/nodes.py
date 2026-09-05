@@ -60,10 +60,10 @@ class RouterNodes:
             else:
                 message = f"当前版本暂不支持 '{', '.join(unsupported_resources)}' 功能。"
 
-        return {
-            "supported": supported,
-            "messages": "" if supported else message,
-        }
+        result = {"supported": supported}
+        if not supported:
+            result["messages"] = message
+        return result
 
     def unsupported(slef, state):
         return {
