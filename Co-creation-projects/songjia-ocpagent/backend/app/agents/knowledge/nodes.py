@@ -6,5 +6,5 @@ class KnowledgeNodes:
         self.service = service
 
     async def answer(self, state):
-        result = await self.service.answer(KnowledgeRequest(question=state["user_query"]))
+        result = await self.service.answer(KnowledgeRequest(question=state["user_query"]), state=state)
         return {"answer": result.answer, "knowledge_result": result}

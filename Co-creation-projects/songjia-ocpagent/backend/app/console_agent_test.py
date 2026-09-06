@@ -182,14 +182,23 @@ async def console_loop(router_agent: Any, *, input_fn: Callable[[str], Any] = in
             continue
         try:
             final_state = None
+            streamed_parts: list[str] = []
             async for event in router_agent.stream({"user_query": request}):
                 if event.get("event") == "final_result":
                     final_state = event.get("payload", {})
+                elif event.get("event") == "progress":
+                    output(str(event.get("message", "")))
+                elif event.get("event") == "answer_chunk":
+                    text = str(event.get("text", ""))
+                    streamed_parts.append(text)
+                    output(text)
         except Exception as error:
             output(f"Request failed: {error}")
             continue
         if final_state is not None:
-            output(str(final_state.get("answer", "")))
+            answer = str(final_state.get("answer", ""))
+            if answer and "".join(streamed_parts) != answer:
+                output(answer)
 
 
 async def run_console(

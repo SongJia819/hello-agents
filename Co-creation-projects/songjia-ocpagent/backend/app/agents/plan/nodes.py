@@ -2,6 +2,7 @@ from langchain_core.messages import HumanMessage, SystemMessage
 
 from app.config.llm import llm
 from app.models.plan import Plan
+from app.observability import emit_progress
 
 from .prompts import PLAN_PROMPT
 from .skills import SkillDefinition, SkillRegistry, SkillResolutionError
@@ -17,6 +18,7 @@ class PlanNodes:
         self.skill_registry = skill_registry or SkillRegistry()
 
     async def create_plan(self, state):
+        emit_progress("plan", "create_plan", "plan_generation", "started", "正在生成计划。", state=state)
         resources = state.get("resources") or ([state["resource"]] if state.get("resource") else [])
         try:
             definition, skill_contract = self.skill_registry.resolve(
@@ -33,14 +35,17 @@ class PlanNodes:
             plan = result if isinstance(result, Plan) else Plan.model_validate(result)
             self._validate(plan, definition, resources, state.get("action", ""))
         except (SkillResolutionError, InvalidPlanError, ValueError) as error:
+            emit_progress("plan", "create_plan", "plan_generation", "failed", "计划生成失败。", state=state)
             return {"supported": False, "plan": None, "answer": str(error)}
         except Exception:
+            emit_progress("plan", "create_plan", "plan_generation", "failed", "计划生成失败。", state=state)
             return {
                 "supported": False,
                 "plan": None,
                 "answer": "Unable to generate a valid plan for this request.",
             }
 
+        emit_progress("plan", "create_plan", "plan_generation", "completed", "计划生成完成。", state=state)
         return {"plan": plan}
 
     @staticmethod

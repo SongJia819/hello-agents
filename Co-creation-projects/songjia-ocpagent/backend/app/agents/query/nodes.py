@@ -5,71 +5,46 @@ from typing import Any
 from langchain_core.messages import HumanMessage, SystemMessage
 
 from app.agents.query.prompts import QUERY_ANSWER_PROMPT
-from app.config.llm import llm
-from app.services.cluster_service import ClusterService
+from app.config.llm import llm, llm_settings
 from app.models.cluster import ClusterSummary
-from app.observability import node_log, redact
+from app.observability import emit_progress, redact
+from app.services.cluster_service import ClusterService
+from app.services.llm_streaming import collect_streamed_answer
 
 
 class QueryNodes:
-
     def __init__(self, cluster_service: ClusterService, answer_llm: Any = llm):
         self.cluster_service = cluster_service
         self.answer_llm = answer_llm
 
     async def resolve_cluster(self, state):
-
-        query = state["user_query"]
-
+        emit_progress("query", "resolve_cluster", "cluster_resolution", "started", "正在确定集群。", state=state)
         clusters = await self.cluster_service.list_clusters()
         cluster: ClusterSummary = clusters[0]
-
-
-        return {
-            "current_cluster": cluster
-        }
+        emit_progress("query", "resolve_cluster", "cluster_resolution", "completed", "集群已确定。", state=state)
+        return {"current_cluster": cluster}
 
     async def list(self, state):
+        emit_progress("query", "list", "resource_listing", "started", "正在查询资源。", state=state)
         cluster_id = state["current_cluster"].cluster_id
         resources = state["resources"]
-        operations = {
-            "node": self.cluster_service.list_nodes,
-            "pod": self.cluster_service.list_pods,
-        }
-
-        results = await asyncio.gather(
-            *(operations[resource](cluster_id) for resource in resources)
-        )
-
-        return {
-            "tool_result": dict(zip(resources, results, strict=True))
-        }
+        operations = {"node": self.cluster_service.list_nodes, "pod": self.cluster_service.list_pods}
+        results = await asyncio.gather(*(operations[resource](cluster_id) for resource in resources))
+        emit_progress("query", "list", "resource_listing", "completed", "资源查询完成。", state=state)
+        return {"tool_result": dict(zip(resources, results, strict=True))}
 
     async def summarize_answer(self, state):
-        """Generate a user-facing answer without changing the MCP result."""
-
-        try:
-            result_json = json.dumps(
-                redact(state["tool_result"]), ensure_ascii=False, default=self._json_default
-            )
-            response = await self.answer_llm.ainvoke(
-                [
-                    SystemMessage(content=QUERY_ANSWER_PROMPT),
-                    HumanMessage(
-                        content=(
-                            f"Question:\n{state['user_query']}\n\n"
-                            f"Mock MCP query result (JSON):\n{result_json}"
-                        )
-                    ),
-                ]
-            )
-            return {"answer": str(response.content)}
-        except Exception as error:
-            node_log("query", "summarize_answer", "node_failed", state=state, error=error)
-            return {"answer": "无法根据当前查询结果生成回答，请稍后重试。"}
+        result_json = json.dumps(redact(state["tool_result"]), ensure_ascii=False, default=self._json_default)
+        answer = await collect_streamed_answer(
+            self.answer_llm,
+            [SystemMessage(content=QUERY_ANSWER_PROMPT), HumanMessage(content=(
+                f"Question:\n{state['user_query']}\n\nMock MCP query result (JSON):\n{result_json}"))],
+            agent="query", node="summarize_answer", state=state,
+            attempts=llm_settings.empty_response_retry_limit,
+            fallback="无法根据当前查询结果生成回答，请稍后重试。",
+        )
+        return {"answer": answer}
 
     @staticmethod
     def _json_default(value: Any) -> Any:
-        if hasattr(value, "model_dump"):
-            return value.model_dump()
-        return str(value)
+        return value.model_dump() if hasattr(value, "model_dump") else str(value)

@@ -11,6 +11,9 @@ from qdrant_client import QdrantClient, models
 
 from app.config.knowledge import KnowledgeSettings, knowledge_settings
 from app.models.knowledge import KnowledgeChunk, KnowledgeRequest, KnowledgeResult, RetrievalDiagnostics
+from app.config.llm import llm_settings
+from app.observability import emit_progress
+from app.services.llm_streaming import collect_streamed_answer
 
 DENSE_VECTOR_NAME = "dense"
 SPARSE_VECTOR_NAME = "sparse"
@@ -125,23 +128,34 @@ class KnowledgeAnswerService:
             self.chat_model = ChatOpenAI(model=self.settings.llm_model, base_url=self.settings.llm_base_url,
                                          api_key="ollama", temperature=0)
 
-    async def answer(self, request: KnowledgeRequest) -> KnowledgeResult:
+    async def answer(self, request: KnowledgeRequest, state: dict[str, Any] | None = None) -> KnowledgeResult:
         diagnostics = RetrievalDiagnostics()
+        state = state or {"user_query": request.question}
         try:
             self._recall_dependencies()
+            emit_progress("knowledge", "answer", "recall", "started", "正在召回文档。", state=state)
             diagnostics.dense, diagnostics.sparse = self.recall_service.recall(request)
+            emit_progress("knowledge", "answer", "recall", "completed", "文档召回完成。", state=state)
+            emit_progress("knowledge", "answer", "rrf", "started", "正在进行 RRF 融合。", state=state)
             diagnostics.fused = self.fusion_service.fuse(diagnostics.dense, diagnostics.sparse)
+            emit_progress("knowledge", "answer", "rrf", "completed", "RRF 融合完成。", state=state)
             if not diagnostics.fused:
                 return KnowledgeResult(answer="No supporting OCP documentation was found for this question.", diagnostics=diagnostics,
                                        failure_reason="no_supporting_documentation")
             self._rerank_dependencies()
+            emit_progress("knowledge", "answer", "rerank", "started", "正在重排序文档。", state=state)
             diagnostics.reranked = self.rerank_service.rerank(request.question, diagnostics.fused)
+            emit_progress("knowledge", "answer", "rerank", "completed", "文档重排序完成。", state=state)
             if not diagnostics.reranked:
                 return KnowledgeResult(answer="No supporting OCP documentation was found for this question.", diagnostics=diagnostics,
                                        failure_reason="no_reranked_documentation")
             self._chat_dependencies()
-            response = await self.chat_model.ainvoke(self._messages(request.question, diagnostics.reranked))
-            answer = str(response.content)
+            answer = await collect_streamed_answer(
+                self.chat_model, self._messages(request.question, diagnostics.reranked),
+                agent="knowledge", node="answer", state=state,
+                attempts=llm_settings.empty_response_retry_limit,
+                fallback="I cannot generate a supporting OCP documentation answer right now.",
+            )
             return KnowledgeResult(answer=answer, citations=_CITATION.findall(answer), diagnostics=diagnostics)
         except Exception as error:
             return KnowledgeResult(answer="I cannot retrieve supporting OCP documentation right now.", diagnostics=diagnostics,

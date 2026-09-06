@@ -26,10 +26,18 @@ class FakeLLM:
         self.messages = messages
         return SimpleNamespace(content=self.answer)
 
+    async def astream(self, messages):
+        self.messages = messages
+        yield SimpleNamespace(content=self.answer)
+
 
 class FailingLLM:
     async def ainvoke(self, _messages):
         raise RuntimeError("LLM unavailable")
+
+    async def astream(self, _messages):
+        raise RuntimeError("LLM unavailable")
+        yield
 
 
 class QueryLLMAnswerTests(unittest.IsolatedAsyncioTestCase):

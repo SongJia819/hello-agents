@@ -4,6 +4,7 @@ from types import SimpleNamespace
 from unittest.mock import patch
 
 from app.agents.knowledge.nodes import KnowledgeNodes
+from app.agents.knowledge.graph import KnowledgeGraph
 from app.agents.router.graph import RouterGraph
 from app.agents.router.nodes import RouterNodes
 from app.config.knowledge import KnowledgeSettings
@@ -15,6 +16,7 @@ from app.services.knowledge_service import (
     RRFFusionService,
     RerankService,
 )
+from app.observability import stream_graph
 
 
 def chunk(point_id, content="content", **extra):
@@ -53,6 +55,10 @@ class FakeChatModel:
     async def ainvoke(self, messages):
         self.messages = messages
         return SimpleNamespace(content=self.answer)
+
+    async def astream(self, messages):
+        self.messages = messages
+        yield SimpleNamespace(content=self.answer)
 
 
 class FakeRouteLLM:
@@ -140,6 +146,14 @@ class KnowledgeAnswerTests(unittest.IsolatedAsyncioTestCase):
         result = await KnowledgeNodes(self._service([chunk("p")], [], [chunk("p")])).answer({"user_query": "help"})
         self.assertEqual(result["answer"], "Use OADP [chunk:point-1]")
         self.assertIsNotNone(result["knowledge_result"])
+
+    async def test_knowledge_stream_emits_retrieval_phase_progress(self):
+        graph = KnowledgeGraph(KnowledgeNodes(self._service([chunk("p")], [], [chunk("p")]))).graph
+        events = [event async for event in stream_graph(graph, "knowledge", {"user_query": "help"})]
+        phases = [event.get("phase") for event in events if event["event"] == "progress"]
+        self.assertEqual([phase for phase in ("recall", "rrf", "rerank", "llm_generation") if phase in phases],
+                         ["recall", "rrf", "rerank", "llm_generation"])
+        self.assertEqual(events[-1]["event"], "final_result")
 
 
 class KnowledgeRoutingTests(unittest.IsolatedAsyncioTestCase):
