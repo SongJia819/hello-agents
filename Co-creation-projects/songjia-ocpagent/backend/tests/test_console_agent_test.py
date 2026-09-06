@@ -31,7 +31,7 @@ class FakeRouter:
         if state["user_query"] == "broken":
             raise RuntimeError("router unavailable")
         yield {"event": "node_completed", "agent": "router", "node": "route", "payload": {"password": "hidden"}}
-        yield {"event": "final_result", "agent": "router", "payload": {"answer": "ok", "password": "hidden", "supported": True}}
+        yield {"event": "final_result", "agent": "router", "payload": {"answer": "first line\n\nsecond line", "password": "hidden", "supported": True}}
 
 
 class ConsoleAgentTests(unittest.IsolatedAsyncioTestCase):
@@ -74,7 +74,8 @@ class ConsoleAgentTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(router.calls, [{"user_query": "list node"}, {"user_query": "broken"}])
         self.assertIn("router unavailable", output[-1])
         self.assertNotIn("hidden", "\n".join(output))
-        self.assertIn('"answer": "ok"', output[1])
+        self.assertEqual(output[0], "first line\n\nsecond line")
+        self.assertEqual(len(output), 2)
 
     async def test_run_console_stops_only_fresh_managed_process(self):
         events, process = [], FakeProcess()

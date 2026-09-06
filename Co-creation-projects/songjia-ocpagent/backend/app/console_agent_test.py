@@ -93,7 +93,13 @@ async def wait_for_mcp_ready(*, timeout: float = STARTUP_TIMEOUT_SECONDS) -> Non
 
 
 async def spawn_mcp_server() -> asyncio.subprocess.Process:
-    return await asyncio.create_subprocess_exec(sys.executable, "-m", MCP_MODULE)
+    return await asyncio.create_subprocess_exec(
+        sys.executable,
+        "-m",
+        MCP_MODULE,
+        stdout=asyncio.subprocess.DEVNULL,
+        stderr=asyncio.subprocess.DEVNULL,
+    )
 
 
 async def stop_managed_process(process: Any, *, timeout: float = SHUTDOWN_TIMEOUT_SECONDS) -> None:
@@ -179,13 +185,11 @@ async def console_loop(router_agent: Any, *, input_fn: Callable[[str], Any] = in
             async for event in router_agent.stream({"user_query": request}):
                 if event.get("event") == "final_result":
                     final_state = event.get("payload", {})
-                else:
-                    output(format_state(event))
         except Exception as error:
             output(f"Request failed: {error}")
             continue
         if final_state is not None:
-            output(format_state(frontend_result(final_state)))
+            output(str(final_state.get("answer", "")))
 
 
 async def run_console(
