@@ -1,4 +1,5 @@
 from collections.abc import AsyncGenerator
+from app.observability import stream_graph
 
 
 class PlanAgent:
@@ -11,5 +12,6 @@ class PlanAgent:
     async def stream(
         self, state: dict, stream_mode: str = "updates"
     ) -> AsyncGenerator[dict, None]:
-        async for event in self.graph.astream(state, stream_mode=stream_mode):
+        del stream_mode
+        async for event in stream_graph(self.graph, "plan", state):
             yield event

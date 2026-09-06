@@ -1,5 +1,3 @@
-import json
-
 from langchain_core.messages import HumanMessage, SystemMessage, AIMessage
 
 from app.config.llm import llm
@@ -20,9 +18,6 @@ class RouterNodes:
                 HumanMessage(content=state["user_query"]),
             ]
         )
-
-        print("======= Router Result =======")
-        print(result)
 
         route = result.model_dump()
         route["resource"] = route["resources"][0]

@@ -146,6 +146,16 @@ def format_state(state: Any) -> str:
     return json.dumps(_sanitize(state), ensure_ascii=False, indent=2, default=str)
 
 
+def frontend_result(state: dict[str, Any]) -> dict[str, Any]:
+    route_keys = ("agent", "action", "resource", "resource_name", "cluster_name")
+    return _sanitize({
+        "route": {key: state[key] for key in route_keys if key in state},
+        "supported": state.get("supported"),
+        "answer": state.get("answer"),
+        "result": state.get("tool_result"),
+    })
+
+
 async def _read_line(input_fn: Callable[[str], Any], prompt: str) -> str:
     value = input_fn(prompt)
     if inspect.isawaitable(value):
@@ -165,11 +175,17 @@ async def console_loop(router_agent: Any, *, input_fn: Callable[[str], Any] = in
         if not request:
             continue
         try:
-            state = await router_agent.invoke({"user_query": request})
+            final_state = None
+            async for event in router_agent.stream({"user_query": request}):
+                if event.get("event") == "final_result":
+                    final_state = event.get("payload", {})
+                else:
+                    output(format_state(event))
         except Exception as error:
             output(f"Request failed: {error}")
             continue
-        output(format_state(state))
+        if final_state is not None:
+            output(format_state(frontend_result(final_state)))
 
 
 async def run_console(

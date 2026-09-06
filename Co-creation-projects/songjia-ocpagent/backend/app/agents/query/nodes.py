@@ -14,8 +14,6 @@ class QueryNodes:
         query = state["user_query"]
 
         clusters = await self.cluster_service.list_clusters()
-        print(f"=======clusters: {clusters}")
-
         cluster: ClusterSummary = clusters[0]
 
 

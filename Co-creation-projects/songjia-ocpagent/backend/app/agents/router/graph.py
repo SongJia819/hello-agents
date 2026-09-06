@@ -3,6 +3,7 @@ from langgraph.graph import START
 from langgraph.graph import END
 
 from app.models.agent_state import AgentState
+from app.observability import observed
 
 
 class RouterGraph:
@@ -11,12 +12,12 @@ class RouterGraph:
 
         builder = StateGraph(AgentState)
 
-        builder.add_node("route", router_nodes.route)
-        builder.add_node("query", query_agent.invoke)
-        builder.add_node("plan_agent", plan_agent.invoke)
-        builder.add_node("knowledge", knowledge_agent.invoke)
-        builder.add_node("capability_check", router_nodes.capability_check)
-        builder.add_node("unsupported", router_nodes.unsupported)
+        builder.add_node("route", observed("router", "route", router_nodes.route))
+        builder.add_node("query", observed("router", "query", query_agent.invoke))
+        builder.add_node("plan_agent", observed("router", "plan_agent", plan_agent.invoke))
+        builder.add_node("knowledge", observed("router", "knowledge", knowledge_agent.invoke))
+        builder.add_node("capability_check", observed("router", "capability_check", router_nodes.capability_check))
+        builder.add_node("unsupported", observed("router", "unsupported", router_nodes.unsupported))
 
         builder.add_edge(START,"route")
         builder.add_edge("route", "capability_check")

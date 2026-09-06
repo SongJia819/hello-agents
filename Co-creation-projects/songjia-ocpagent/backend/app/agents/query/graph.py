@@ -3,6 +3,7 @@ from langgraph.graph import END
 from langgraph.graph import StateGraph
 
 from app.models.agent_state import AgentState
+from app.observability import observed
 
 
 class QueryGraph:
@@ -13,10 +14,10 @@ class QueryGraph:
 
         builder.add_node(
             "resolve_cluster",
-            query_nodes.resolve_cluster
+            observed("query", "resolve_cluster", query_nodes.resolve_cluster)
         )
 
-        builder.add_node("list", query_nodes.list)
+        builder.add_node("list", observed("query", "list", query_nodes.list))
 
         builder.add_edge(START, "resolve_cluster")
 
