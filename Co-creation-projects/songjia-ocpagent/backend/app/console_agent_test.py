@@ -169,8 +169,19 @@ async def _read_line(input_fn: Callable[[str], Any], prompt: str) -> str:
     return str(value)
 
 
+def _write_answer_fragment(text: str) -> None:
+    """Render a model fragment without changing its whitespace or line breaks."""
+    print(text, end="", flush=True)
+
+
+def _finish_streamed_answer() -> None:
+    print(flush=True)
+
+
 async def console_loop(router_agent: Any, *, input_fn: Callable[[str], Any] = input,
-                       output: Callable[[str], None] = print) -> None:
+                       output: Callable[[str], None] = print,
+                       answer_output: Callable[[str], None] = _write_answer_fragment,
+                       answer_end: Callable[[], None] = _finish_streamed_answer) -> None:
     while True:
         try:
             request = (await _read_line(input_fn, "ocp> ")).strip()
@@ -191,7 +202,7 @@ async def console_loop(router_agent: Any, *, input_fn: Callable[[str], Any] = in
                 elif event.get("event") == "answer_chunk":
                     text = str(event.get("text", ""))
                     streamed_parts.append(text)
-                    output(text)
+                    answer_output(text)
         except Exception as error:
             output(f"Request failed: {error}")
             continue
@@ -199,6 +210,8 @@ async def console_loop(router_agent: Any, *, input_fn: Callable[[str], Any] = in
             answer = str(final_state.get("answer", ""))
             if answer and "".join(streamed_parts) != answer:
                 output(answer)
+            elif streamed_parts:
+                answer_end()
 
 
 async def run_console(

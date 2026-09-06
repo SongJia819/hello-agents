@@ -36,6 +36,14 @@ class FakeRouter:
         yield {"event": "final_result", "agent": "router", "payload": {"answer": "first line\n\nsecond line", "password": "hidden", "supported": True}}
 
 
+class FragmentedAnswerRouter:
+    async def stream(self, _state):
+        yield {"event": "answer_chunk", "text": "Answer"}
+        yield {"event": "answer_chunk", "text": " with"}
+        yield {"event": "answer_chunk", "text": " spacing"}
+        yield {"event": "final_result", "payload": {"answer": "Answer with spacing"}}
+
+
 class ConsoleAgentTests(unittest.IsolatedAsyncioTestCase):
     async def test_prior_project_server_is_stopped_before_fresh_server_starts(self):
         order = []
@@ -72,13 +80,25 @@ class ConsoleAgentTests(unittest.IsolatedAsyncioTestCase):
     async def test_console_forwards_only_nonblank_nonexit_requests(self):
         router, output = FakeRouter(), []
         lines = iter(["  ", "list node", "broken", "quit"])
-        await console_loop(router, input_fn=lambda _prompt: next(lines), output=output.append)
+        await console_loop(
+            router, input_fn=lambda _prompt: next(lines), output=output.append,
+            answer_output=output.append, answer_end=lambda: None,
+        )
         self.assertEqual(router.calls, [{"user_query": "list node"}, {"user_query": "broken"}])
         self.assertIn("router unavailable", output[-1])
         self.assertNotIn("hidden", "\n".join(output))
         self.assertEqual(output[0], "正在召回文档。")
         self.assertEqual(output[1], "first line\n\nsecond line")
         self.assertEqual(len(output), 3)
+
+    async def test_console_renders_fragmented_answer_continuously(self):
+        rendered = []
+        lines = iter(["question", "quit"])
+        await console_loop(
+            FragmentedAnswerRouter(), input_fn=lambda _prompt: next(lines), output=lambda _text: None,
+            answer_output=rendered.append, answer_end=lambda: rendered.append("\n"),
+        )
+        self.assertEqual("".join(rendered), "Answer with spacing\n")
 
     async def test_run_console_stops_only_fresh_managed_process(self):
         events, process = [], FakeProcess()
