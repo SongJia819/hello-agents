@@ -96,6 +96,12 @@ class RouterPlanDispatchTests(unittest.TestCase):
             graph.route_next({"supported": True, "agent": "plan"}), "plan"
         )
 
+    def test_supported_knowledge_route_selects_knowledge_node(self):
+        graph = RouterGraph.__new__(RouterGraph)
+        self.assertEqual(
+            graph.route_next({"supported": True, "agent": "knowledge"}), "knowledge"
+        )
+
 
 class PlanCapabilityTests(unittest.TestCase):
     def test_registered_plan_capability_is_supported(self):
@@ -107,5 +113,19 @@ class PlanCapabilityTests(unittest.TestCase):
     def test_plan_capability_without_skill_is_rejected(self):
         result = RouterNodes.capability_check(
             None, {"agent": "plan", "action": "delete", "resources": ["node"]}
+        )
+        self.assertFalse(result["supported"])
+
+
+class KnowledgeCapabilityTests(unittest.TestCase):
+    def test_registered_knowledge_capability_is_supported(self):
+        result = RouterNodes.capability_check(
+            None, {"agent": "knowledge", "action": "answer", "resources": ["documentation"]}
+        )
+        self.assertTrue(result["supported"])
+
+    def test_unknown_knowledge_action_is_rejected(self):
+        result = RouterNodes.capability_check(
+            None, {"agent": "knowledge", "action": "list", "resources": ["documentation"]}
         )
         self.assertFalse(result["supported"])

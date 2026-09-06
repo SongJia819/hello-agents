@@ -27,5 +27,10 @@ CAPABILITIES = {
     AgentType.EXECUTION: {
         # "drain_node": "drain_node",
         # "delete_node": "delete_node",
-    }
+    },
+    AgentType.KNOWLEDGE: {
+        "answer": {
+            "documentation": "knowledge_answer",
+        },
+    },
 }

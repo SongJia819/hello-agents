@@ -12,9 +12,9 @@ Return ONLY valid JSON.
 Schema:
 
 {
-    "agent": "<query|plan|execution>",
-    "action": "<list|create|delete|add|drain|upgrade|unknown>",
-    "resource": "<primary cluster|node|pod|namespace|deployment|service|secret|unknown resource>",
+    "agent": "<query|plan|execution|knowledge>",
+    "action": "<list|create|delete|add|answer|drain|upgrade|unknown>",
+    "resource": "<primary cluster|node|pod|documentation|unknown resource>",
     "resources": ["<all requested resources, or a single resource>"]
 }
 
@@ -66,5 +66,15 @@ create cluster
     "agent":"plan",
     "action":"create",
     "resource":"cluster"
+}
+
+User:
+How do I back up an OpenShift application with OADP?
+
+{
+    "agent":"knowledge",
+    "action":"answer",
+    "resource":"documentation",
+    "resources":["documentation"]
 }
 """

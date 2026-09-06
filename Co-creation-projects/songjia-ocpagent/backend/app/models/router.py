@@ -3,11 +3,11 @@ from pydantic import BaseModel, Field
 
 class RouterResult(BaseModel):
     agent: str = Field(
-        description="Target agent. One of: query, plan, execution"
+        description="Target agent. One of: query, plan, execution, knowledge"
     )
 
     action: str = Field(
-        description="Operation such as list, create, delete, add"
+        description="Operation such as list, create, delete, add, answer"
     )
 
     resources: list[str] = Field(

@@ -10,8 +10,8 @@ from .prompts import ROUTER_PROMPT
 
 
 class RouterNodes:
-    def __init__(self):
-        self.router_llm = llm.with_structured_output(RouterResult)
+    def __init__(self, router_llm=None):
+        self.router_llm = router_llm or llm.with_structured_output(RouterResult)
 
     async def route(self, state):
         result: RouterResult = await self.router_llm.ainvoke(

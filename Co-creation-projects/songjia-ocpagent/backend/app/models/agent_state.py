@@ -1,6 +1,7 @@
 from typing import TypedDict, List, Annotated, Any, NotRequired
 from app.models.cluster import Cluster
 from app.models.plan import Plan
+from app.models.knowledge import KnowledgeResult
 from langgraph.graph.message import add_messages
 
 
@@ -20,5 +21,6 @@ class AgentState(TypedDict):
     answer: str
     action: str
     plan: NotRequired[Plan | None]
+    knowledge_result: NotRequired[KnowledgeResult | None]
 
 
