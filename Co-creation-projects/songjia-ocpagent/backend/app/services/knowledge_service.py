@@ -125,8 +125,14 @@ class KnowledgeAnswerService:
     def _chat_dependencies(self) -> None:
         if self.chat_model is None:
             from langchain_openai import ChatOpenAI
-            self.chat_model = ChatOpenAI(model=self.settings.llm_model, base_url=self.settings.llm_base_url,
-                                         api_key="ollama", temperature=0, **client_options())
+            self.chat_model = ChatOpenAI(
+                model=self.settings.llm_model,
+                base_url=self.settings.llm_base_url,
+                api_key="ollama",
+                temperature=0,
+                max_tokens=llm_settings.knowledge_rag_max_tokens,
+                **client_options(),
+            )
 
     async def answer(self, request: KnowledgeRequest, state: dict[str, Any] | None = None) -> KnowledgeResult:
         diagnostics = RetrievalDiagnostics()

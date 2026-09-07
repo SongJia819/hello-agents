@@ -1,6 +1,6 @@
 from langchain_core.messages import HumanMessage, SystemMessage
 
-from app.config.llm import llm
+from app.config.llm import plan_llm
 from app.models.plan import Plan
 from app.observability import emit_progress
 
@@ -14,7 +14,7 @@ class InvalidPlanError(ValueError):
 
 class PlanNodes:
     def __init__(self, planner_llm=None, skill_registry: SkillRegistry | None = None):
-        self.planner_llm = planner_llm or llm.with_structured_output(Plan)
+        self.planner_llm = planner_llm or plan_llm.with_structured_output(Plan)
         self.skill_registry = skill_registry or SkillRegistry()
 
     async def create_plan(self, state):

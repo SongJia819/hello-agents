@@ -14,6 +14,7 @@ class AgentState(TypedDict):
     current_cluster: Cluster
     agent: str
     user_query: str
+    user_message: NotRequired[str]
     resource: str
     resources: List[str]
     idrac_selectors: NotRequired[List[str]]

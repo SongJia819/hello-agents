@@ -9,6 +9,7 @@ from app.agents.router.graph import RouterGraph
 from app.agents.router.nodes import RouterNodes
 from app.agents.router.prompts import ROUTER_PROMPT
 from app.config.knowledge import KnowledgeSettings
+from app.config.llm import llm_settings
 from app.models.knowledge import KnowledgeChunk, KnowledgeRequest
 from app.models.router import RouterResult
 from app.services.knowledge_service import (
@@ -155,6 +156,13 @@ class KnowledgeAnswerTests(unittest.IsolatedAsyncioTestCase):
         self.assertIn("cannot retrieve", result.answer)
         self.assertIn("Qdrant down", result.failure_reason)
 
+    def test_rag_client_uses_configured_rag_budget(self):
+        with patch("langchain_openai.ChatOpenAI") as chat_openai:
+            service = KnowledgeAnswerService()
+            service._chat_dependencies()
+
+        self.assertEqual(chat_openai.call_args.kwargs["max_tokens"], llm_settings.knowledge_rag_max_tokens)
+
     async def test_knowledge_node_maps_result_to_state(self):
         result = await KnowledgeNodes(self._service([chunk("p")], [], [chunk("p")])).answer({"user_query": "help"})
         self.assertEqual(result["answer"], "Use OADP [chunk:point-1]")
@@ -170,6 +178,13 @@ class KnowledgeAnswerTests(unittest.IsolatedAsyncioTestCase):
 
 
 class KnowledgeChatTests(unittest.IsolatedAsyncioTestCase):
+    def test_chat_client_uses_configured_chat_budget(self):
+        with patch("langchain_openai.ChatOpenAI") as chat_openai:
+            service = KnowledgeChatService()
+            service._chat_dependencies()
+
+        self.assertEqual(chat_openai.call_args.kwargs["max_tokens"], llm_settings.knowledge_chat_max_tokens)
+
     async def test_direct_chat_uses_only_current_user_message(self):
         chat_model = FakeChatModel(answer="Hello!")
         service = KnowledgeChatService(chat_model=chat_model)

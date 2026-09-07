@@ -81,7 +81,7 @@ def create_app(container_factory: Callable[[], Any] | None = None) -> FastAPI:
     @app.post("/v1/chat", response_model=ChatResponse)
     async def chat(payload: ChatRequest, request: Request) -> ChatResponse:
         state = await request.app.state.container.router_agent.invoke(
-            {"user_query": payload.message}
+            {"user_query": payload.message, "user_message": payload.message}
         )
         return _chat_response(payload.message, state)
 

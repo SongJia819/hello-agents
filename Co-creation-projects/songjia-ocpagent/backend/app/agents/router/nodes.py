@@ -1,6 +1,6 @@
 from langchain_core.messages import HumanMessage, SystemMessage, AIMessage
 
-from app.config.llm import llm
+from app.config.llm import routing_llm
 from app.config.capabilities import CAPABILITIES, AgentType
 from app.models.router import RouterResult
 
@@ -9,7 +9,7 @@ from .prompts import ROUTER_PROMPT
 
 class RouterNodes:
     def __init__(self, router_llm=None):
-        self.router_llm = router_llm or llm.with_structured_output(RouterResult)
+        self.router_llm = router_llm or routing_llm.with_structured_output(RouterResult)
 
     async def route(self, state):
         result: RouterResult = await self.router_llm.ainvoke(

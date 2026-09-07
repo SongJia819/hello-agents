@@ -5,7 +5,7 @@ from typing import Any
 from langchain_core.messages import HumanMessage, SystemMessage
 
 from app.agents.query.prompts import QUERY_ANSWER_PROMPT
-from app.config.llm import llm, llm_settings
+from app.config.llm import llm_settings, query_llm
 from app.models.cluster import ClusterSummary
 from app.observability import emit_progress, redact
 from app.services.cluster_service import ClusterService
@@ -13,7 +13,7 @@ from app.services.llm_streaming import collect_streamed_answer
 
 
 class QueryNodes:
-    def __init__(self, cluster_service: ClusterService, answer_llm: Any = llm):
+    def __init__(self, cluster_service: ClusterService, answer_llm: Any = query_llm):
         self.cluster_service = cluster_service
         self.answer_llm = answer_llm
 

@@ -36,6 +36,16 @@ def request_id(state: dict[str, Any] | None = None) -> str:
     return value
 
 
+def normalize_request_state(state: dict[str, Any]) -> dict[str, Any]:
+    """Preserve the original request text under both supported state keys."""
+    normalized = dict(state)
+    message = normalized.get("user_message", normalized.get("user_query"))
+    if isinstance(message, str):
+        normalized["user_message"] = message
+        normalized.setdefault("user_query", message)
+    return normalized
+
+
 def log_path() -> Path:
     return Path(os.getenv("OCP_AGENT_LOG_FILE", str(_DEFAULT_LOG)))
 
@@ -47,6 +57,9 @@ def node_log(agent: str, node: str, event: str, *, state: dict[str, Any] | None 
     record: dict[str, Any] = {
         "request_id": request_id(state), "agent": agent, "node": node, "event": event,
     }
+    message = (state or {}).get("user_message", (state or {}).get("user_query"))
+    if message is not None:
+        record["user_message"] = redact(message)
     if payload is not None:
         record["payload"] = redact(payload)
     if error is not None:
@@ -120,7 +133,7 @@ def observed(agent: str, node: str, function: Callable[..., Any]) -> Callable[..
 
 
 async def stream_graph(graph: Any, agent: str, state: dict[str, Any]) -> AsyncGenerator[dict[str, Any], None]:
-    initial = dict(state)
+    initial = normalize_request_state(state)
     rid = request_id(initial)
     accumulated = dict(initial)
     sink: asyncio.Queue[Any] = asyncio.Queue()

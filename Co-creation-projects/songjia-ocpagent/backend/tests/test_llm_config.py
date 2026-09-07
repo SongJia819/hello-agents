@@ -2,7 +2,14 @@ import os
 import unittest
 from unittest.mock import patch
 
-from app.config.llm import LLMSettings, client_options
+from app.config.llm import (
+    LLMSettings,
+    client_options,
+    create_llm,
+    plan_llm,
+    query_llm,
+    routing_llm,
+)
 
 
 class LLMThinkConfigurationTests(unittest.TestCase):
@@ -22,3 +29,31 @@ class LLMThinkConfigurationTests(unittest.TestCase):
         with patch.dict(os.environ, {"OCP_AGENT_LLM_THINK": "sometimes"}, clear=True):
             with self.assertRaisesRegex(ValueError, "must be true or false"):
                 LLMSettings.from_env()
+
+    def test_token_budget_defaults_are_per_runtime_purpose(self):
+        settings = LLMSettings()
+
+        self.assertEqual(settings.router_max_tokens, 1024)
+        self.assertEqual(settings.query_max_tokens, 2048)
+        self.assertEqual(settings.plan_max_tokens, 2048)
+        self.assertEqual(settings.knowledge_chat_max_tokens, 2048)
+        self.assertEqual(settings.knowledge_rag_max_tokens, 4096)
+        self.assertGreater(settings.knowledge_rag_max_tokens, settings.knowledge_chat_max_tokens)
+
+    def test_token_budget_environment_override_is_independent(self):
+        with patch.dict(os.environ, {"OCP_AGENT_LLM_ROUTER_MAX_TOKENS": "777"}, clear=True):
+            settings = LLMSettings.from_env()
+
+        self.assertEqual(settings.router_max_tokens, 777)
+        self.assertEqual(settings.query_max_tokens, 2048)
+
+    def test_invalid_token_budget_is_rejected(self):
+        with patch.dict(os.environ, {"OCP_AGENT_LLM_PLAN_MAX_TOKENS": "0"}, clear=True):
+            with self.assertRaisesRegex(ValueError, "greater than 0"):
+                LLMSettings.from_env()
+
+    def test_runtime_clients_use_purpose_specific_budgets(self):
+        self.assertEqual(routing_llm.max_tokens, LLMSettings().router_max_tokens)
+        self.assertEqual(query_llm.max_tokens, LLMSettings().query_max_tokens)
+        self.assertEqual(plan_llm.max_tokens, LLMSettings().plan_max_tokens)
+        self.assertEqual(create_llm(321, LLMSettings(think=False)).max_tokens, 321)
