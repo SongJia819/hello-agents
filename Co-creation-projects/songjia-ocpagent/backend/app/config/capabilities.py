@@ -33,5 +33,8 @@ CAPABILITIES = {
         "answer": {
             "documentation": "knowledge_answer",
         },
+        "chat": {
+            "conversation": "knowledge_chat",
+        },
     },
 }

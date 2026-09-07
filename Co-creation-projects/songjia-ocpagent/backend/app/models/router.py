@@ -7,12 +7,12 @@ class RouterResult(BaseModel):
     )
 
     action: str = Field(
-        description="Operation such as list, create, delete, add, answer"
+        description="Operation such as list, create, delete, add, answer, chat"
     )
 
     resources: list[str] = Field(
         min_length=1,
-        description="Ordered target resources, such as node, pod, or idrac",
+        description="Ordered target resources, such as node, pod, idrac, documentation, or conversation",
     )
 
     idrac_selectors: list[str] = Field(

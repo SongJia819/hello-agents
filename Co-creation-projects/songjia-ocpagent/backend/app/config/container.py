@@ -13,6 +13,7 @@ from app.agents.knowledge.nodes import KnowledgeNodes
 from app.agents.knowledge.graph import KnowledgeGraph
 from app.agents.knowledge.agent import KnowledgeAgent
 from app.services.knowledge_service import KnowledgeAnswerService
+from app.services.knowledge_chat_service import KnowledgeChatService
 from app.agents.router.graph import RouterGraph
 from app.agents.router.nodes import RouterNodes
 from app.agents.router.agent import RouterAgent
@@ -41,7 +42,8 @@ class Container:
 
         # Knowledge Agent (local Qdrant/Ollama documentation answering)
         self.knowledge_service = KnowledgeAnswerService()
-        self.knowledge_nodes = KnowledgeNodes(self.knowledge_service)
+        self.knowledge_chat_service = KnowledgeChatService()
+        self.knowledge_nodes = KnowledgeNodes(self.knowledge_service, self.knowledge_chat_service)
         self.knowledge_graph = KnowledgeGraph(self.knowledge_nodes)
         self.knowledge_agent = KnowledgeAgent(self.knowledge_graph.graph)
 

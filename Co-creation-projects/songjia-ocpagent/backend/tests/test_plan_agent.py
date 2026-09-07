@@ -129,3 +129,15 @@ class KnowledgeCapabilityTests(unittest.TestCase):
             None, {"agent": "knowledge", "action": "list", "resources": ["documentation"]}
         )
         self.assertFalse(result["supported"])
+
+    def test_registered_direct_chat_capability_is_supported(self):
+        result = RouterNodes.capability_check(
+            None, {"agent": "knowledge", "action": "chat", "resources": ["conversation"]}
+        )
+        self.assertTrue(result["supported"])
+
+    def test_unsupported_direct_chat_resource_is_rejected(self):
+        result = RouterNodes.capability_check(
+            None, {"agent": "knowledge", "action": "chat", "resources": ["node"]}
+        )
+        self.assertFalse(result["supported"])

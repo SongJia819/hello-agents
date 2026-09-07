@@ -13,8 +13,8 @@ Schema:
 
 {
     "agent": "<query|plan|execution|knowledge>",
-    "action": "<list|create|delete|add|answer|drain|upgrade|unknown>",
-    "resource": "<primary cluster|node|pod|idrac|documentation|unknown resource>",
+    "action": "<list|create|delete|add|answer|chat|drain|upgrade|unknown>",
+    "resource": "<primary cluster|node|pod|idrac|documentation|conversation|unknown resource>",
     "resources": ["<all requested resources, or a single resource>"],
     "idrac_selectors": ["<iDRAC SN or IP selectors; only for idrac>"]
 }
@@ -100,4 +100,18 @@ How do I back up an OpenShift application with OADP?
     "resource":"documentation",
     "resources":["documentation"]
 }
+
+User:
+Hello, what can you help with?
+
+{
+    "agent":"knowledge",
+    "action":"chat",
+    "resource":"conversation",
+    "resources":["conversation"]
+}
+
+Classify OCP documentation how-to, architecture, troubleshooting, and explanatory questions as
+`knowledge` / `answer` / `documentation`. Classify ordinary conversation as
+`knowledge` / `chat` / `conversation` only when it does not belong to another supported Agent capability.
 """

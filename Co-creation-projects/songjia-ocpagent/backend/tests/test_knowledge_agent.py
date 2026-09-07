@@ -7,6 +7,7 @@ from app.agents.knowledge.nodes import KnowledgeNodes
 from app.agents.knowledge.graph import KnowledgeGraph
 from app.agents.router.graph import RouterGraph
 from app.agents.router.nodes import RouterNodes
+from app.agents.router.prompts import ROUTER_PROMPT
 from app.config.knowledge import KnowledgeSettings
 from app.models.knowledge import KnowledgeChunk, KnowledgeRequest
 from app.models.router import RouterResult
@@ -16,6 +17,7 @@ from app.services.knowledge_service import (
     RRFFusionService,
     RerankService,
 )
+from app.services.knowledge_chat_service import KnowledgeChatService
 from app.observability import stream_graph
 
 
@@ -64,6 +66,17 @@ class FakeChatModel:
 class FakeRouteLLM:
     async def ainvoke(self, _messages):
         return RouterResult(agent="knowledge", action="answer", resources=["documentation"])
+
+
+class FakeChatRouteLLM:
+    async def ainvoke(self, _messages):
+        return RouterResult(agent="knowledge", action="chat", resources=["conversation"])
+
+
+class BrokenChatModel:
+    async def astream(self, _messages):
+        raise RuntimeError("LLM unavailable")
+        yield  # pragma: no cover
 
 
 class KnowledgeContractTests(unittest.TestCase):
@@ -156,12 +169,64 @@ class KnowledgeAnswerTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(events[-1]["event"], "final_result")
 
 
+class KnowledgeChatTests(unittest.IsolatedAsyncioTestCase):
+    async def test_direct_chat_uses_only_current_user_message(self):
+        chat_model = FakeChatModel(answer="Hello!")
+        service = KnowledgeChatService(chat_model=chat_model)
+
+        result = await service.chat("Hi there")
+
+        self.assertEqual(result, "Hello!")
+        self.assertEqual(chat_model.messages[1].content, "Hi there")
+        self.assertNotIn("chunk:", "\n".join(message.content for message in chat_model.messages))
+
+    async def test_direct_chat_failure_returns_transparent_fallback(self):
+        result = await KnowledgeChatService(chat_model=BrokenChatModel()).chat("Hi there")
+
+        self.assertEqual(result, "I cannot provide a general chat response right now.")
+
+    async def test_chat_node_returns_answer_without_knowledge_result(self):
+        nodes = KnowledgeNodes(self._unused_knowledge_service(), KnowledgeChatService(chat_model=FakeChatModel("Hello!")))
+
+        result = await nodes.chat({"user_query": "Hi there"})
+
+        self.assertEqual(result, {"answer": "Hello!"})
+
+    async def test_graph_selects_chat_branch(self):
+        graph = KnowledgeGraph(
+            KnowledgeNodes(self._unused_knowledge_service(), KnowledgeChatService(chat_model=FakeChatModel("Hello!")))
+        )
+
+        self.assertEqual(graph.entry_node({"action": "chat"}), "chat")
+        self.assertEqual(graph.entry_node({}), "answer")
+        self.assertIn("chat", graph.graph.get_graph().nodes)
+
+    @staticmethod
+    def _unused_knowledge_service():
+        class UnusedKnowledgeService:
+            async def answer(self, *_args, **_kwargs):
+                raise AssertionError("documentation retrieval must not run for direct chat")
+
+        return UnusedKnowledgeService()
+
+
 class KnowledgeRoutingTests(unittest.IsolatedAsyncioTestCase):
     async def test_structured_knowledge_intent_is_normalized_for_dispatch(self):
         result = await RouterNodes(router_llm=FakeRouteLLM()).route({"user_query": "How does OADP work?"})
         self.assertEqual(result["agent"], "knowledge")
         self.assertEqual(result["action"], "answer")
         self.assertEqual(result["resources"], ["documentation"])
+
+    async def test_structured_chat_intent_is_normalized_for_dispatch(self):
+        result = await RouterNodes(router_llm=FakeChatRouteLLM()).route({"user_query": "Hello"})
+        self.assertEqual(result["agent"], "knowledge")
+        self.assertEqual(result["action"], "chat")
+        self.assertEqual(result["resources"], ["conversation"])
+
+    def test_router_prompt_preserves_documentation_and_chat_routing_policy(self):
+        self.assertIn('"action":"answer"', ROUTER_PROMPT)
+        self.assertIn('"action":"chat"', ROUTER_PROMPT)
+        self.assertIn("only when it does not belong to another supported Agent capability", ROUTER_PROMPT)
 
     async def test_router_graph_registers_knowledge_terminal_node(self):
         class Agent:
