@@ -7,6 +7,7 @@ from pathlib import Path
 
 from app.config.mcp import mock_cluster_database_path
 from app.models.cluster import ClusterSummary, Pod
+from app.models.idrac import IdracNode
 from app.models.node import Node, NodeStatus
 
 
@@ -73,6 +74,32 @@ class MockClusterStore:
                     storage_type TEXT NOT NULL,
                     serial_number TEXT NOT NULL
                 );
+                CREATE TABLE IF NOT EXISTS idrac_nodes (
+                    idrac_node_id TEXT PRIMARY KEY,
+                    sn TEXT NOT NULL UNIQUE,
+                    idrac_ip TEXT NOT NULL UNIQUE,
+                    manufacturer TEXT NOT NULL,
+                    model TEXT NOT NULL,
+                    operating_system TEXT NOT NULL
+                );
+                CREATE TABLE IF NOT EXISTS idrac_network_interfaces (
+                    interface_id INTEGER PRIMARY KEY,
+                    idrac_node_id TEXT NOT NULL REFERENCES idrac_nodes(idrac_node_id)
+                        ON DELETE CASCADE,
+                    name TEXT NOT NULL,
+                    mac_address TEXT NOT NULL,
+                    speed_mbps INTEGER NOT NULL
+                );
+                CREATE TABLE IF NOT EXISTS idrac_storage_devices (
+                    storage_id INTEGER PRIMARY KEY,
+                    idrac_node_id TEXT NOT NULL REFERENCES idrac_nodes(idrac_node_id)
+                        ON DELETE CASCADE,
+                    device_name TEXT NOT NULL,
+                    model TEXT NOT NULL,
+                    capacity_gib INTEGER NOT NULL,
+                    storage_type TEXT NOT NULL,
+                    serial_number TEXT NOT NULL UNIQUE
+                );
                 CREATE TABLE IF NOT EXISTS namespaces (
                     namespace_id TEXT NOT NULL,
                     cluster_id TEXT NOT NULL REFERENCES clusters(cluster_id),
@@ -93,6 +120,8 @@ class MockClusterStore:
             )
             if connection.execute("SELECT 1 FROM clusters LIMIT 1").fetchone() is None:
                 self._seed(connection)
+            if connection.execute("SELECT 1 FROM idrac_nodes LIMIT 1").fetchone() is None:
+                self._seed_idrac_inventory(connection)
 
     @staticmethod
     def _seed(connection: sqlite3.Connection) -> None:
@@ -138,6 +167,33 @@ class MockClusterStore:
              ("cluster-002-worker-6b7c8d9e4f-pq3rs", "cluster-002", "ns-ocp-002", "10.129.0.22")],
         )
 
+    @staticmethod
+    def _seed_idrac_inventory(connection: sqlite3.Connection) -> None:
+        nodes = [
+            (f"idrac-{index:02d}", f"DELLSN{index:02d}", f"168.0.0.{index}", "Dell", "PowerEdge R750", "Red Hat Enterprise Linux 8.0")
+            for index in range(1, 11)
+        ]
+        connection.executemany(
+            "INSERT INTO idrac_nodes VALUES (?, ?, ?, ?, ?, ?)", nodes
+        )
+        interfaces = [
+            (node_id, "NIC.Embedded.1-1", f"00:25:90:10:00:{index:02x}", 20_000)
+            for index, (node_id, *_) in enumerate(nodes, 1)
+        ]
+        connection.executemany(
+            "INSERT INTO idrac_network_interfaces (idrac_node_id, name, mac_address, speed_mbps) VALUES (?, ?, ?, ?)",
+            interfaces,
+        )
+        storage = [
+            (node_id, f"Disk.Bay.{disk}", "Mock SAS SSD", 960, "ssd", f"{sn}storage{disk:02d}")
+            for node_id, sn, *_ in nodes
+            for disk in range(1, 11)
+        ]
+        connection.executemany(
+            "INSERT INTO idrac_storage_devices (idrac_node_id, device_name, model, capacity_gib, storage_type, serial_number) VALUES (?, ?, ?, ?, ?, ?)",
+            storage,
+        )
+
     def list_clusters(self) -> list[ClusterSummary]:
         self.initialize()
         with self._connect() as connection:
@@ -167,6 +223,45 @@ class MockClusterStore:
             "firmware": {"firmware_name": row["firmware_name"], "firmware_path": row["firmware_path"]},
             "certificate": {"certificate_file_name": row["certificate_file_name"], "certificate_file_path": row["certificate_file_path"]},
             "network_interfaces": interfaces, "storage_devices": storage,
+        })
+
+    def list_idrac_nodes(self) -> list[IdracNode]:
+        self.initialize()
+        with self._connect() as connection:
+            rows = connection.execute("SELECT * FROM idrac_nodes ORDER BY sn").fetchall()
+            return [self._idrac_node_from_row(connection, row) for row in rows]
+
+    def get_idrac_node(self, *, sn: str | None = None, idrac_ip: str | None = None) -> IdracNode | None:
+        if (sn is None) == (idrac_ip is None):
+            raise ValueError("Provide exactly one of sn or idrac_ip.")
+        self.initialize()
+        column, value = ("sn", sn) if sn is not None else ("idrac_ip", idrac_ip)
+        with self._connect() as connection:
+            row = connection.execute(
+                f"SELECT * FROM idrac_nodes WHERE {column} = ?", (value,)
+            ).fetchone()
+            return self._idrac_node_from_row(connection, row) if row is not None else None
+
+    @staticmethod
+    def _idrac_node_from_row(connection: sqlite3.Connection, row: sqlite3.Row) -> IdracNode:
+        interfaces = [dict(item) for item in connection.execute(
+            "SELECT name, mac_address, speed_mbps FROM idrac_network_interfaces WHERE idrac_node_id = ? ORDER BY interface_id",
+            (row["idrac_node_id"],),
+        )]
+        storage = [dict(item) for item in connection.execute(
+            "SELECT device_name, model, capacity_gib, storage_type, serial_number FROM idrac_storage_devices WHERE idrac_node_id = ? ORDER BY storage_id",
+            (row["idrac_node_id"],),
+        )]
+        return IdracNode.model_validate({
+            "sn": row["sn"],
+            "idrac_ip": row["idrac_ip"],
+            "system_information": {
+                "manufacturer": row["manufacturer"],
+                "model": row["model"],
+                "operating_system": row["operating_system"],
+            },
+            "network_interfaces": interfaces,
+            "storage_devices": storage,
         })
 
     def list_pods(self, cluster_id: str) -> list[Pod]:

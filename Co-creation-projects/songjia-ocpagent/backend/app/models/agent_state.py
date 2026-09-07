@@ -16,6 +16,7 @@ class AgentState(TypedDict):
     user_query: str
     resource: str
     resources: List[str]
+    idrac_selectors: NotRequired[List[str]]
     supported: bool
     tool_result: Any
     answer: str

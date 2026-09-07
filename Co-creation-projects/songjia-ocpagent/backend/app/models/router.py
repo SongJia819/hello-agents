@@ -12,7 +12,12 @@ class RouterResult(BaseModel):
 
     resources: list[str] = Field(
         min_length=1,
-        description="Ordered target resources, such as node or node and pod",
+        description="Ordered target resources, such as node, pod, or idrac",
+    )
+
+    idrac_selectors: list[str] = Field(
+        default_factory=list,
+        description="Ordered iDRAC serial-number or IP selectors; only used when resources includes idrac",
     )
 
     resource: str = Field(

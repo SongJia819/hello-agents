@@ -30,3 +30,9 @@ class MCPClient:
             return [model.model_validate(x) for x in data]
 
         return model.model_validate(data)
+
+    async def call_optional(self, tool_name: str, model: Type[T], **kwargs) -> T | None:
+        tool = self.tools[tool_name]
+        result = await tool.ainvoke(kwargs)
+        data = json.loads(result[0]["text"])
+        return model.model_validate(data) if data is not None else None

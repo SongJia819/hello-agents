@@ -24,6 +24,35 @@ class SQLiteMockClusterStoreTests(unittest.TestCase):
         with self.store._connect() as connection:
             self.assertEqual(connection.execute("SELECT COUNT(*) FROM clusters").fetchone()[0], 2)
             self.assertEqual(connection.execute("SELECT COUNT(*) FROM nodes").fetchone()[0], 5)
+            self.assertEqual(connection.execute("SELECT COUNT(*) FROM idrac_nodes").fetchone()[0], 10)
+            self.assertEqual(connection.execute("SELECT COUNT(*) FROM idrac_network_interfaces").fetchone()[0], 10)
+            self.assertEqual(connection.execute("SELECT COUNT(*) FROM idrac_storage_devices").fetchone()[0], 100)
+
+    def test_idrac_inventory_has_prescribed_complete_mock_data(self):
+        inventory = self.store.list_idrac_nodes()
+
+        self.assertEqual([node.sn for node in inventory], [f"DELLSN{index:02d}" for index in range(1, 11)])
+        self.assertEqual([node.idrac_ip for node in inventory], [f"168.0.0.{index}" for index in range(1, 11)])
+        first = inventory[0]
+        self.assertEqual(first.system_information.operating_system, "Red Hat Enterprise Linux 8.0")
+        self.assertEqual(first.network_interfaces[0].speed_mbps, 20_000)
+        self.assertEqual(len(first.storage_devices), 10)
+        self.assertEqual(
+            [device.serial_number for device in first.storage_devices],
+            [f"DELLSN01storage{index:02d}" for index in range(1, 11)],
+        )
+
+    def test_get_idrac_node_uses_either_supported_selector(self):
+        by_sn = self.store.get_idrac_node(sn="DELLSN01")
+        by_ip = self.store.get_idrac_node(idrac_ip="168.0.0.10")
+
+        self.assertEqual(by_sn.idrac_ip, "168.0.0.1")
+        self.assertEqual(by_ip.sn, "DELLSN10")
+        self.assertIsNone(self.store.get_idrac_node(sn="UNKNOWN"))
+        with self.assertRaisesRegex(ValueError, "exactly one"):
+            self.store.get_idrac_node()
+        with self.assertRaisesRegex(ValueError, "exactly one"):
+            self.store.get_idrac_node(sn="DELLSN01", idrac_ip="168.0.0.1")
 
     def test_cluster_nodes_include_typed_hardware_inventory(self):
         node = self.store.list_nodes("cluster-001")[0]
@@ -61,4 +90,12 @@ class SQLiteBackedMCPToolTests(unittest.TestCase):
                 self.assertEqual(len(cluster_tools.list_clusters()), 2)
                 self.assertEqual(cluster_tools.list_nodes("cluster-002")[0].cluster_id, "cluster-002")
                 self.assertEqual(len(cluster_tools.list_pods("cluster-002")), 2)
+                self.assertEqual(len(cluster_tools.list_idrac_nodes()), 10)
+                self.assertEqual(cluster_tools.get_idrac_node(sn="DELLSN01").idrac_ip, "168.0.0.1")
+                self.assertEqual(cluster_tools.get_idrac_node(idrac_ip="168.0.0.10").sn, "DELLSN10")
+                self.assertIsNone(cluster_tools.get_idrac_node(sn="UNKNOWN"))
+                with self.assertRaisesRegex(ValueError, "exactly one"):
+                    cluster_tools.get_idrac_node()
+                with self.assertRaisesRegex(ValueError, "exactly one"):
+                    cluster_tools.get_idrac_node(sn="DELLSN01", idrac_ip="168.0.0.1")
                 self.assertEqual(cluster_tools.health(), "OK")
