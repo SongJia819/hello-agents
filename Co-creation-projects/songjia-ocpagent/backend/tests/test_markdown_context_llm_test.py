@@ -11,19 +11,27 @@ from app.knowledge.markdown_context_llm_test import (
     answer_markdown,
     build_messages,
     create_chat_model,
+    extract_token_usage,
+    format_token_usage,
     read_markdown,
     run,
 )
 
 
 class FakeChatModel:
-    def __init__(self, answer="## Answer\n\n- formatted"):
+    def __init__(self, answer="## Answer\n\n- formatted", *, usage_metadata=None, response_metadata=None):
         self.answer = answer
+        self.usage_metadata = usage_metadata
+        self.response_metadata = response_metadata
         self.messages = []
 
     def invoke(self, messages):
         self.messages = messages
-        return SimpleNamespace(content=self.answer)
+        return SimpleNamespace(
+            content=self.answer,
+            usage_metadata=self.usage_metadata,
+            response_metadata=self.response_metadata,
+        )
 
 
 class MarkdownContextLLMTestTests(unittest.TestCase):
@@ -69,11 +77,32 @@ class MarkdownContextLLMTestTests(unittest.TestCase):
             path = Path(directory) / "document.md"
             path.write_text("source", encoding="utf-8")
             result = run([str(path), "question"], stdout=stdout, stderr=stderr,
-                         chat_model=FakeChatModel("# Heading\n\ntext\n"))
+                         chat_model=FakeChatModel(
+                             "# Heading\n\ntext\n",
+                             usage_metadata={"input_tokens": 12, "output_tokens": 5, "total_tokens": 17},
+                         ))
 
         self.assertEqual(result, 0)
         self.assertEqual(stdout.getvalue(), "# Heading\n\ntext\n")
-        self.assertEqual(stderr.getvalue(), "")
+        self.assertEqual(stderr.getvalue(), "Token usage: input_tokens=12 output_tokens=5 total_tokens=17\n")
+
+    def test_extracts_openai_compatible_usage_metadata(self):
+        response = SimpleNamespace(
+            usage_metadata=None,
+            response_metadata={"token_usage": {"prompt_tokens": 10, "completion_tokens": 4, "total_tokens": 14}},
+        )
+
+        self.assertEqual(extract_token_usage(response), (10, 4, 14))
+        self.assertEqual(format_token_usage(response), "Token usage: input_tokens=10 output_tokens=4 total_tokens=14")
+
+    def test_missing_usage_is_rendered_as_unavailable_without_estimation(self):
+        response = SimpleNamespace(usage_metadata=None, response_metadata={})
+
+        self.assertEqual(extract_token_usage(response), (None, None, None))
+        self.assertEqual(
+            format_token_usage(response),
+            "Token usage: input_tokens=unavailable output_tokens=unavailable total_tokens=unavailable",
+        )
 
     def test_run_reports_input_error_on_stderr_without_invoking_model(self):
         stdout, stderr = io.StringIO(), io.StringIO()

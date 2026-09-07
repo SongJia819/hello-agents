@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import sys
+from collections.abc import Mapping
 from pathlib import Path
 from typing import Any, Sequence, TextIO
 
@@ -56,7 +57,24 @@ def create_chat_model() -> Any:
     return create_llm(MAX_TOKENS, LLMSettings(think=False))
 
 
-def answer_markdown(markdown_path: str | Path, question: str, *, chat_model: Any | None = None) -> str:
+def extract_token_usage(response: Any) -> tuple[int | None, int | None, int | None]:
+    """Return provider-reported input, output, and total usage without estimating."""
+    usage = getattr(response, "usage_metadata", None)
+    if isinstance(usage, Mapping) and {"input_tokens", "output_tokens", "total_tokens"} <= usage.keys():
+        return usage["input_tokens"], usage["output_tokens"], usage["total_tokens"]
+
+    metadata = getattr(response, "response_metadata", None)
+    provider_usage = metadata.get("token_usage") if isinstance(metadata, Mapping) else None
+    if isinstance(provider_usage, Mapping):
+        return (
+            provider_usage.get("prompt_tokens"),
+            provider_usage.get("completion_tokens"),
+            provider_usage.get("total_tokens"),
+        )
+    return None, None, None
+
+
+def _invoke_markdown(markdown_path: str | Path, question: str, *, chat_model: Any | None = None) -> tuple[str, Any]:
     document = read_markdown(markdown_path)
     try:
         response = (chat_model or create_chat_model()).invoke(build_messages(question, document))
@@ -65,7 +83,21 @@ def answer_markdown(markdown_path: str | Path, question: str, *, chat_model: Any
     content = getattr(response, "content", response)
     if not isinstance(content, str):
         raise MarkdownContextTestError("Local LLM returned non-text answer content")
-    return content
+    return content, response
+
+
+def answer_markdown(markdown_path: str | Path, question: str, *, chat_model: Any | None = None) -> str:
+    return _invoke_markdown(markdown_path, question, chat_model=chat_model)[0]
+
+
+def format_token_usage(response: Any) -> str:
+    input_tokens, output_tokens, total_tokens = extract_token_usage(response)
+    values = (input_tokens, output_tokens, total_tokens)
+    rendered = [str(value) if isinstance(value, int) else "unavailable" for value in values]
+    return (
+        f"Token usage: input_tokens={rendered[0]} "
+        f"output_tokens={rendered[1]} total_tokens={rendered[2]}"
+    )
 
 
 def run(
@@ -77,11 +109,12 @@ def run(
 ) -> int:
     try:
         args = parse_args(argv)
-        answer = answer_markdown(args.markdown_path, args.question, chat_model=chat_model)
+        answer, response = _invoke_markdown(args.markdown_path, args.question, chat_model=chat_model)
     except MarkdownContextTestError as error:
         print(f"markdown-context-llm-test: {error}", file=stderr)
         return 1
     stdout.write(answer)
+    print(format_token_usage(response), file=stderr)
     return 0
 
 
