@@ -42,6 +42,13 @@ class SQLiteMockClusterStoreTests(unittest.TestCase):
             [f"DELLSN01storage{index:02d}" for index in range(1, 11)],
         )
 
+    def test_idrac_inventory_can_be_selected_by_ordered_serial_number_array(self):
+        self.assertEqual(len(self.store.list_idrac_nodes()), 10)
+        self.assertEqual(len(self.store.list_idrac_nodes([])), 10)
+        selected = self.store.list_idrac_nodes(["DELLSN02", "DELLSN01", "DELLSN02", "UNKNOWN"])
+
+        self.assertEqual([node.sn for node in selected], ["DELLSN02", "DELLSN01"])
+
     def test_get_idrac_node_uses_either_supported_selector(self):
         by_sn = self.store.get_idrac_node(sn="DELLSN01")
         by_ip = self.store.get_idrac_node(idrac_ip="168.0.0.10")
@@ -91,6 +98,11 @@ class SQLiteBackedMCPToolTests(unittest.TestCase):
                 self.assertEqual(cluster_tools.list_nodes("cluster-002")[0].cluster_id, "cluster-002")
                 self.assertEqual(len(cluster_tools.list_pods("cluster-002")), 2)
                 self.assertEqual(len(cluster_tools.list_idrac_nodes()), 10)
+                self.assertEqual(len(cluster_tools.list_idrac_nodes([])), 10)
+                self.assertEqual(
+                    [node.sn for node in cluster_tools.list_idrac_nodes(["DELLSN02", "DELLSN01", "DELLSN02", "UNKNOWN"])],
+                    ["DELLSN02", "DELLSN01"],
+                )
                 self.assertEqual(cluster_tools.get_idrac_node(sn="DELLSN01").idrac_ip, "168.0.0.1")
                 self.assertEqual(cluster_tools.get_idrac_node(idrac_ip="168.0.0.10").sn, "DELLSN10")
                 self.assertIsNone(cluster_tools.get_idrac_node(sn="UNKNOWN"))

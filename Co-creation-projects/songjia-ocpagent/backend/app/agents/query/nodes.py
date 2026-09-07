@@ -28,28 +28,12 @@ class QueryNodes:
         emit_progress("query", "list", "resource_listing", "started", "正在查询资源。", state=state)
         cluster_id = state["current_cluster"].cluster_id
         resources = state["resources"]
-        operations = {"node": self.cluster_service.list_nodes, "pod": self.cluster_service.list_pods}
-        idrac_selectors = state.get("idrac_selectors", [])
-
-        async def list_idrac_nodes():
-            if not idrac_selectors:
-                return await self.cluster_service.list_idrac_nodes()
-            selected = await asyncio.gather(
-                *(self.cluster_service.get_idrac_node(selector) for selector in idrac_selectors)
-            )
-            seen: set[str] = set()
-            result = []
-            for node in selected:
-                if node is None or node.sn in seen:
-                    continue
-                seen.add(node.sn)
-                result.append(node)
-            return result
-
-        requests = [
-            list_idrac_nodes() if resource == "idrac" else operations[resource](cluster_id)
-            for resource in resources
-        ]
+        operations = {
+            "node": lambda: self.cluster_service.list_nodes(cluster_id),
+            "pod": lambda: self.cluster_service.list_pods(cluster_id),
+            "idrac": lambda: self.cluster_service.list_idrac_nodes(state.get("idrac_selectors", [])),
+        }
+        requests = [operations[resource]() for resource in resources]
         results = await asyncio.gather(*requests)
         emit_progress("query", "list", "resource_listing", "completed", "资源查询完成。", state=state)
         return {"tool_result": dict(zip(resources, results, strict=True))}

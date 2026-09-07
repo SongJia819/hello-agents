@@ -225,11 +225,24 @@ class MockClusterStore:
             "network_interfaces": interfaces, "storage_devices": storage,
         })
 
-    def list_idrac_nodes(self) -> list[IdracNode]:
+    def list_idrac_nodes(self, sn: list[str] | None = None) -> list[IdracNode]:
         self.initialize()
         with self._connect() as connection:
-            rows = connection.execute("SELECT * FROM idrac_nodes ORDER BY sn").fetchall()
-            return [self._idrac_node_from_row(connection, row) for row in rows]
+            if not sn:
+                rows = connection.execute("SELECT * FROM idrac_nodes ORDER BY sn").fetchall()
+                return [self._idrac_node_from_row(connection, row) for row in rows]
+
+            requested_sns = list(dict.fromkeys(sn))
+            placeholders = ", ".join("?" for _ in requested_sns)
+            rows = connection.execute(
+                f"SELECT * FROM idrac_nodes WHERE sn IN ({placeholders})", requested_sns
+            ).fetchall()
+            rows_by_sn = {row["sn"]: row for row in rows}
+            return [
+                self._idrac_node_from_row(connection, rows_by_sn[serial_number])
+                for serial_number in requested_sns
+                if serial_number in rows_by_sn
+            ]
 
     def get_idrac_node(self, *, sn: str | None = None, idrac_ip: str | None = None) -> IdracNode | None:
         if (sn is None) == (idrac_ip is None):

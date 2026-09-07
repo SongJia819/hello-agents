@@ -14,8 +14,8 @@ def list_nodes(cluster_id: str) -> list[Node]:
 
 
 @mcp.tool
-def list_idrac_nodes() -> list[IdracNode]:
-    return store.list_idrac_nodes()
+def list_idrac_nodes(sn: list[str] | None = None) -> list[IdracNode]:
+    return store.list_idrac_nodes(sn=sn)
 
 
 @mcp.tool

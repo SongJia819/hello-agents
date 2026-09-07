@@ -17,6 +17,7 @@ class FakeClusterService:
     def __init__(self):
         self.active_calls = 0
         self.max_active_calls = 0
+        self.idrac_list_calls = []
 
     async def _result(self, resource):
         self.active_calls += 1
@@ -31,10 +32,10 @@ class FakeClusterService:
     async def list_pods(self, cluster_id):
         return await self._result("pod")
 
-    async def list_idrac_nodes(self):
-        return await self._result("idrac")
-
-    async def get_idrac_node(self, selector):
+    async def list_idrac_nodes(self, selectors=None):
+        self.idrac_list_calls.append(selectors)
+        if not selectors:
+            return await self._result("idrac")
         await self._result("idrac")
         records = {
             "DELLSN01": IdracNode.model_validate({
@@ -42,13 +43,23 @@ class FakeClusterService:
                     "manufacturer": "Dell", "model": "PowerEdge R750", "operating_system": "Red Hat Enterprise Linux 8.0",
                 },
             }),
-            "168.0.0.2": IdracNode.model_validate({
+            "DELLSN02": IdracNode.model_validate({
                 "sn": "DELLSN02", "idrac_ip": "168.0.0.2", "system_information": {
                     "manufacturer": "Dell", "model": "PowerEdge R750", "operating_system": "Red Hat Enterprise Linux 8.0",
                 },
             }),
         }
-        return records.get(selector)
+        by_selector = {
+            "DELLSN01": records["DELLSN01"],
+            "DELLSN02": records["DELLSN02"],
+            "168.0.0.1": records["DELLSN01"],
+            "168.0.0.2": records["DELLSN02"],
+        }
+        seen = set()
+        return [
+            node for selector in selectors if (node := by_selector.get(selector)) is not None
+            and not (node.sn in seen or seen.add(node.sn))
+        ]
 
     async def list_clusters(self):
         return [ClusterSummary(cluster_id="cluster-001", cluster_name="Cluster 1")]
@@ -70,14 +81,34 @@ class FakeRouterLLM:
 class FakeMCPClient:
     def __init__(self):
         self.calls = []
+        self.records = {
+            "DELLSN01": IdracNode.model_validate({
+                "sn": "DELLSN01", "idrac_ip": "168.0.0.1", "system_information": {
+                    "manufacturer": "Dell", "model": "PowerEdge R750", "operating_system": "Red Hat Enterprise Linux 8.0",
+                },
+            }),
+            "DELLSN02": IdracNode.model_validate({
+                "sn": "DELLSN02", "idrac_ip": "168.0.0.2", "system_information": {
+                    "manufacturer": "Dell", "model": "PowerEdge R750", "operating_system": "Red Hat Enterprise Linux 8.0",
+                },
+            }),
+        }
 
     async def call(self, tool_name, model, **kwargs):
         self.calls.append(("call", tool_name, model, kwargs))
+        if tool_name == "list_idrac_nodes":
+            return list(self.records.values())
         return []
 
     async def call_optional(self, tool_name, model, **kwargs):
         self.calls.append(("call_optional", tool_name, model, kwargs))
-        return None
+        selector = kwargs.get("sn") or kwargs.get("idrac_ip")
+        return {
+            "DELLSN01": self.records["DELLSN01"],
+            "168.0.0.1": self.records["DELLSN01"],
+            "DELLSN02": self.records["DELLSN02"],
+            "168.0.0.2": self.records["DELLSN02"],
+        }.get(selector)
 
 
 class GeneralListTests(unittest.IsolatedAsyncioTestCase):
@@ -135,6 +166,23 @@ class GeneralListTests(unittest.IsolatedAsyncioTestCase):
                 },
             ],
         )
+        self.assertEqual(
+            service.idrac_list_calls,
+            [["168.0.0.2", "DELLSN01", "168.0.0.2", "UNKNOWN"]],
+        )
+
+    async def test_serial_only_idrac_nodes_use_one_batch_request(self):
+        service = FakeClusterService()
+        result = await QueryNodes(service).list(
+            {
+                "current_cluster": ClusterSummary(cluster_id="cluster-001", cluster_name="Cluster 1"),
+                "resources": ["idrac"],
+                "idrac_selectors": ["DELLSN02", "DELLSN01", "DELLSN02", "UNKNOWN"],
+            }
+        )
+
+        self.assertEqual([node.sn for node in result["tool_result"]["idrac"]], ["DELLSN02", "DELLSN01"])
+        self.assertEqual(service.idrac_list_calls, [["DELLSN02", "DELLSN01", "DELLSN02", "UNKNOWN"]])
 
     async def test_idrac_can_be_listed_with_cluster_resources(self):
         service = FakeClusterService()
@@ -180,17 +228,45 @@ class RouterCapabilityTests(unittest.TestCase):
 
 
 class ClusterServiceIdracTests(unittest.IsolatedAsyncioTestCase):
-    async def test_idrac_adapters_use_list_and_correct_selector_parameter(self):
+    async def test_idrac_list_uses_full_inventory_when_selectors_are_missing_or_empty(self):
         client = FakeMCPClient()
         service = ClusterService(client)
 
         await service.list_idrac_nodes()
-        await service.get_idrac_node("DELLSN01")
-        await service.get_idrac_node("168.0.0.2")
+        await service.list_idrac_nodes([])
 
         self.assertEqual(client.calls[0][1], "list_idrac_nodes")
-        self.assertEqual(client.calls[1][1:], ("get_idrac_node", IdracNode, {"sn": "DELLSN01"}))
-        self.assertEqual(client.calls[2][1:], ("get_idrac_node", IdracNode, {"idrac_ip": "168.0.0.2"}))
+        self.assertEqual(client.calls[0][3], {})
+        self.assertEqual(client.calls[1][1:], ("list_idrac_nodes", IdracNode, {}))
+
+    async def test_idrac_list_uses_one_batch_request_for_serial_selectors(self):
+        client = FakeMCPClient()
+        service = ClusterService(client)
+
+        result = await service.list_idrac_nodes(["DELLSN01", "DELLSN02"])
+
+        self.assertEqual([node.sn for node in result], ["DELLSN01", "DELLSN02"])
+        self.assertEqual(
+            client.calls,
+            [("call", "list_idrac_nodes", IdracNode, {"sn": ["DELLSN01", "DELLSN02"]})],
+        )
+
+    async def test_idrac_list_uses_single_lookup_for_ip_or_mixed_selectors(self):
+        client = FakeMCPClient()
+        service = ClusterService(client)
+
+        result = await service.list_idrac_nodes(["168.0.0.2", "DELLSN01", "168.0.0.2", "UNKNOWN"])
+
+        self.assertEqual([node.sn for node in result], ["DELLSN02", "DELLSN01"])
+        self.assertEqual(
+            client.calls,
+            [
+                ("call_optional", "get_idrac_node", IdracNode, {"idrac_ip": "168.0.0.2"}),
+                ("call_optional", "get_idrac_node", IdracNode, {"sn": "DELLSN01"}),
+                ("call_optional", "get_idrac_node", IdracNode, {"idrac_ip": "168.0.0.2"}),
+                ("call_optional", "get_idrac_node", IdracNode, {"sn": "UNKNOWN"}),
+            ],
+        )
 
 
 async def main():
