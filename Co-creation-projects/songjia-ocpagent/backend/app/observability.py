@@ -14,6 +14,7 @@ _starts = contextvars.ContextVar("agent_step_starts", default={})
 _SENSITIVE = {"username", "password", "token", "api_key", "apikey", "secret"}
 _DEFAULT_LOG = Path(__file__).resolve().parents[1] / "logs" / "agent-runtime.log"
 LLM_TIMEOUT_SECONDS, LLM_HEARTBEAT_SECONDS = 300, 60
+_LIFECYCLE_EVENTS = {"node_started", "node_completed", "node_failed"}
 
 def redact(value: Any) -> Any:
     if hasattr(value, "model_dump"): value = value.model_dump()
@@ -36,6 +37,41 @@ def _write(path: Path, record: dict[str, Any]) -> None:
     if not logger.handlers:
         logger.setLevel(logging.INFO); handler = logging.FileHandler(path, encoding="utf-8"); handler.setFormatter(logging.Formatter("%(message)s")); logger.addHandler(handler); logger.propagate = False
     logger.info(json.dumps(record, ensure_ascii=False, default=str))
+
+
+def _aggregate_payload(event: str, payload: Any) -> Any:
+    """Keep aggregate lifecycle records useful without copying Agent diagnostics."""
+    if event not in _LIFECYCLE_EVENTS or not isinstance(payload, dict):
+        return payload
+
+    summary: dict[str, Any] = {
+        "result_type": "object",
+        "result_keys": sorted(str(key) for key in payload),
+    }
+    answer = payload.get("answer")
+    if isinstance(answer, str):
+        summary["answer_length"] = len(answer)
+
+    knowledge_result = payload.get("knowledge_result")
+    if isinstance(knowledge_result, dict):
+        knowledge_summary: dict[str, Any] = {}
+        citations = knowledge_result.get("citations")
+        if isinstance(citations, list):
+            knowledge_summary["citation_count"] = len(citations)
+        diagnostics = knowledge_result.get("diagnostics")
+        if isinstance(diagnostics, dict):
+            counts = {
+                stage: len(chunks)
+                for stage, chunks in diagnostics.items()
+                if isinstance(chunks, list)
+            }
+            if counts:
+                knowledge_summary["diagnostic_counts"] = counts
+        if knowledge_summary:
+            summary["knowledge_result"] = knowledge_summary
+    return summary
+
+
 def node_log(agent, node, event, *, state=None, payload=None, error=None, step=None, duration_ms=None) -> None:
     record = {"timestamp": _time(), "request_id": request_id(state), "trace_id": trace_id(state), "agent": agent, "node": node, "step": step or node, "event": event}
     message = (state or {}).get("user_message", (state or {}).get("user_query"))
@@ -44,7 +80,11 @@ def node_log(agent, node, event, *, state=None, payload=None, error=None, step=N
     if error is not None: record.update(error_type=type(error).__name__, error=str(error))
     if duration_ms is not None: record["duration_ms"] = max(0.0, round(duration_ms, 3))
     aggregate = log_path(); agent_path = aggregate.parent / f"{agent}.log"
-    if event not in {"retrieval_chunks", "llm_output"}: _write(aggregate, record)
+    if event not in {"retrieval_chunks", "llm_output"}:
+        aggregate_record = dict(record)
+        if payload is not None:
+            aggregate_record["payload"] = _aggregate_payload(event, record["payload"])
+        _write(aggregate, aggregate_record)
     if agent_path != aggregate: _write(agent_path, record)
 def _event(agent, node, event, state, payload=None, error=None, **extra) -> None:
     sink = _event_sink.get()

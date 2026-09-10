@@ -36,10 +36,13 @@ class ObservabilityTests(unittest.IsolatedAsyncioTestCase):
                 {"request_id": "request-1", "user_query": "list nodes"}
             )
             records = [json.loads(line) for line in (Path(directory) / "agent.log").read_text().splitlines()]
+            agent_records = [json.loads(line) for line in (Path(directory) / "query.log").read_text().splitlines()]
         self.assertEqual(result["answer"], "ok")
         self.assertEqual([record["event"] for record in records], ["node_started", "step_started", "node_completed", "step_completed"])
         completed = records[-2]
-        self.assertEqual(completed["payload"]["password"], "***")
+        self.assertEqual(completed["payload"]["answer_length"], 2)
+        self.assertNotIn("password", completed["payload"])
+        self.assertEqual(agent_records[-2]["payload"]["password"], "***")
         self.assertEqual(completed["request_id"], "request-1")
         self.assertEqual(completed["user_message"], "list nodes")
         self.assertIn("trace_id", completed)
@@ -87,3 +90,31 @@ class ObservabilityTests(unittest.IsolatedAsyncioTestCase):
             node_log("knowledge", "answer", "retrieval_chunks", payload={"content": "detail"})
             self.assertFalse((Path(directory) / "agent-runtime.log").exists())
             self.assertIn("detail", (Path(directory) / "knowledge.log").read_text())
+
+    def test_lifecycle_payload_is_compact_only_in_aggregate_log(self):
+        marker = "retrieval-chunk-content-must-not-reach-runtime"
+        payload = {
+            "answer": "provider answer text must not reach runtime",
+            "knowledge_result": {
+                "citations": ["chunk-1"],
+                "diagnostics": {
+                    "dense": [{"content": marker}],
+                    "sparse": [{"content": marker}],
+                    "fused": [],
+                    "reranked": [{"content": marker}],
+                },
+                "provider_metadata": {"reasoning": marker},
+            },
+        }
+        with tempfile.TemporaryDirectory() as directory, patch.dict("os.environ", {"OCP_AGENT_LOG_FILE": str(Path(directory) / "agent-runtime.log")}, clear=False):
+            node_log("knowledge", "answer", "node_completed", payload=payload)
+            runtime = (Path(directory) / "agent-runtime.log").read_text()
+            knowledge = (Path(directory) / "knowledge.log").read_text()
+
+        runtime_record = json.loads(runtime)
+        self.assertNotIn(marker, runtime)
+        self.assertNotIn("provider answer text", runtime)
+        self.assertEqual(runtime_record["payload"]["answer_length"], len(payload["answer"]))
+        self.assertEqual(runtime_record["payload"]["knowledge_result"]["citation_count"], 1)
+        self.assertEqual(runtime_record["payload"]["knowledge_result"]["diagnostic_counts"], {"dense": 1, "sparse": 1, "fused": 0, "reranked": 1})
+        self.assertIn(marker, knowledge)
