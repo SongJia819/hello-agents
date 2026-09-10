@@ -124,6 +124,26 @@ class MockClusterStore:
             if connection.execute("SELECT 1 FROM idrac_nodes LIMIT 1").fetchone() is None:
                 self._seed_idrac_inventory(connection)
 
+    def reset(self) -> None:
+        """Restore the complete deterministic fixture for a console session."""
+        self.initialize()
+        with self._connect() as connection:
+            connection.executescript(
+                """
+                DELETE FROM pods;
+                DELETE FROM namespaces;
+                DELETE FROM node_network_interfaces;
+                DELETE FROM node_storage_devices;
+                DELETE FROM nodes;
+                DELETE FROM clusters;
+                DELETE FROM idrac_network_interfaces;
+                DELETE FROM idrac_storage_devices;
+                DELETE FROM idrac_nodes;
+                """
+            )
+            self._seed(connection)
+            self._seed_idrac_inventory(connection)
+
     @staticmethod
     def _migrate_legacy_nodes(connection: sqlite3.Connection) -> None:
         schema = connection.execute(
@@ -165,12 +185,25 @@ class MockClusterStore:
             ("cluster-002", "Cluster 2", "192.168.2.10", 6443),
         ]
         connection.executemany("INSERT INTO clusters VALUES (?, ?, ?, ?)", clusters)
+        def node_record(node_id: str, cluster_id: str | None, name: str, status: str, ip: str) -> tuple:
+            network = ip.rsplit(".", 1)[0]
+            return (
+                node_id, cluster_id, name, status, ip, "admin", "Admin@123456", "agent.local", 8080,
+                ip, "255.255.255.0", f"{network}.1", "ollama-qwen3-4b", "/opt/docker/images/qwen3-4b.tar",
+                "device-fw-v2.3.1", "/data/firmware/v2.3.1.bin", "agent-cert.pem", "/etc/ssl/certs/agent-cert.pem",
+            )
+
         nodes = [
-            ("node-001", "cluster-001", "cluster-001-worker-001", "added", "192.168.1.101", "admin", "Admin@123456", "agent.local", 8080, "192.168.1.100", "255.255.255.0", "192.168.1.1", "ollama-qwen3-4b", "/opt/docker/images/qwen3-4b.tar", "device-fw-v2.3.1", "/data/firmware/v2.3.1.bin", "agent-cert.pem", "/etc/ssl/certs/agent-cert.pem"),
-            ("node-002", "cluster-002", "cluster-002-worker-001", "added", "192.168.2.101", "admin", "Admin@123456", "agent.local", 8080, "192.168.2.100", "255.255.255.0", "192.168.2.1", "ollama-qwen3-4b", "/opt/docker/images/qwen3-4b.tar", "device-fw-v2.3.1", "/data/firmware/v2.3.1.bin", "agent-cert.pem", "/etc/ssl/certs/agent-cert.pem"),
-            ("node-new-001", None, "new-worker-001", "new", "192.168.10.101", "admin", "Admin@123456", "agent.local", 8080, "192.168.10.100", "255.255.255.0", "192.168.10.1", "pending-image", "/opt/docker/images/pending.tar", "device-fw-v2.3.1", "/data/firmware/v2.3.1.bin", "agent-cert.pem", "/etc/ssl/certs/agent-cert.pem"),
-            ("node-reimage-001", None, "reimage-worker-001", "reimage", "192.168.11.101", "admin", "Admin@123456", "agent.local", 8080, "192.168.11.100", "255.255.255.0", "192.168.11.1", "reimage-pending", "/opt/docker/images/reimage.tar", "device-fw-v2.3.1", "/data/firmware/v2.3.1.bin", "agent-cert.pem", "/etc/ssl/certs/agent-cert.pem"),
-            ("node-removed-001", None, "removed-worker-001", "removed", "192.168.12.101", "admin", "Admin@123456", "agent.local", 8080, "192.168.12.100", "255.255.255.0", "192.168.12.1", "retired-image", "/opt/docker/images/retired.tar", "device-fw-v2.3.1", "/data/firmware/v2.3.1.bin", "agent-cert.pem", "/etc/ssl/certs/agent-cert.pem"),
+            node_record(
+                f"node-{cluster_index}-{node_index:03d}", f"cluster-{cluster_index:03d}",
+                f"cluster-{cluster_index:03d}-worker-{node_index:03d}", "added",
+                f"192.168.{cluster_index}.{100 + node_index}",
+            )
+            for cluster_index in (1, 2)
+            for node_index in range(1, 5)
+        ] + [
+            node_record(f"node-new-{node_index:03d}", None, f"new-worker-{node_index:03d}", "new", f"192.168.10.{100 + node_index}")
+            for node_index in range(1, 4)
         ]
         connection.executemany("INSERT INTO nodes VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", nodes)
         interfaces = [

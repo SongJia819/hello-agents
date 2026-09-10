@@ -63,19 +63,45 @@ class ConsoleAgentTests(unittest.IsolatedAsyncioTestCase):
         async def ready():
             order.append(("ready", None))
 
+        def reset():
+            order.append(("reset", None))
+
         result = await start_fresh_mcp_server(
             find_pids=lambda: [101, 102], stop_pid=stop, is_port_open=closed_port,
-            spawn=spawn, wait_ready=ready,
+            spawn=spawn, wait_ready=ready, reset_data=reset,
         )
         self.assertIs(result, process)
-        self.assertEqual(order, [("stop", 101), ("stop", 102), ("port", None), ("spawn", None), ("ready", None)])
+        self.assertEqual(order, [("stop", 101), ("stop", 102), ("port", None), ("reset", None), ("spawn", None), ("ready", None)])
 
     async def test_unknown_port_owner_is_not_replaced(self):
+        reset_calls = []
+
         async def occupied():
             return True
 
         with self.assertRaises(MCPStartupError):
-            await start_fresh_mcp_server(find_pids=lambda: [], is_port_open=occupied)
+            await start_fresh_mcp_server(
+                find_pids=lambda: [], is_port_open=occupied,
+                reset_data=lambda: reset_calls.append(True),
+            )
+        self.assertEqual(reset_calls, [])
+
+    async def test_reset_failure_prevents_mcp_spawn(self):
+        spawned = []
+
+        async def closed_port():
+            return False
+
+        async def spawn():
+            spawned.append(True)
+            return FakeProcess()
+
+        with self.assertRaisesRegex(MCPStartupError, "Mock data reset failed"):
+            await start_fresh_mcp_server(
+                find_pids=lambda: [], is_port_open=closed_port, spawn=spawn,
+                reset_data=lambda: (_ for _ in ()).throw(RuntimeError("database unavailable")),
+            )
+        self.assertEqual(spawned, [])
 
     async def test_console_forwards_only_nonblank_nonexit_requests(self):
         router, output = FakeRouter(), []
@@ -103,9 +129,13 @@ class ConsoleAgentTests(unittest.IsolatedAsyncioTestCase):
     async def test_run_console_stops_only_fresh_managed_process(self):
         events, process = [], FakeProcess()
 
-        async def start():
+        async def start(*, reset_data):
             events.append("start")
+            reset_data()
             return process
+
+        def reset():
+            events.append("reset")
 
         async def stop(value):
             events.append(("stop", value))
@@ -117,10 +147,10 @@ class ConsoleAgentTests(unittest.IsolatedAsyncioTestCase):
                 events.append("initialize")
 
         await run_console(
-            container_factory=Container, start_server=start, stop_server=stop,
+            container_factory=Container, start_server=start, stop_server=stop, reset_data=reset,
             input_fn=lambda _prompt: "exit", output=lambda _line: None,
         )
-        self.assertEqual(events, ["start", "initialize", ("stop", process)])
+        self.assertEqual(events, ["start", "reset", "initialize", ("stop", process)])
 
     def test_format_state_is_json_safe_and_redacts_credentials(self):
         rendered = format_state({"answer": "ok", "password": "secret"})

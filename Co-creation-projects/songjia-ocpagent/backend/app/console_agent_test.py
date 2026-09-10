@@ -28,6 +28,13 @@ class MCPStartupError(RuntimeError):
     """The local mock MCP service could not be made ready."""
 
 
+def reset_mock_data() -> None:
+    """Reset the configured local fixture before starting a console MCP child."""
+    from app.mcp.cluster_store import MockClusterStore
+
+    MockClusterStore().reset()
+
+
 def find_existing_mcp_pids(proc_root: Path = Path("/proc")) -> list[int]:
     """Return only processes explicitly launched with ``app.mcp.server``."""
 
@@ -121,6 +128,7 @@ async def start_fresh_mcp_server(
     is_port_open: Callable[[], Awaitable[bool]] = port_is_open,
     spawn: Callable[[], Awaitable[Any]] = spawn_mcp_server,
     wait_ready: Callable[[], Awaitable[None]] = wait_for_mcp_ready,
+    reset_data: Callable[[], None] = reset_mock_data,
 ) -> Any:
     """Replace a prior project MCP process, then start and verify a fresh one."""
 
@@ -130,6 +138,10 @@ async def start_fresh_mcp_server(
         raise MCPStartupError(
             f"Port {MCP_PORT} is occupied by a process other than {MCP_MODULE}; refusing to stop it."
         )
+    try:
+        reset_data()
+    except Exception as error:
+        raise MCPStartupError(f"Mock data reset failed: {error}") from error
     process = await spawn()
     try:
         await wait_ready()
@@ -238,8 +250,9 @@ async def console_loop(router_agent: Any, *, input_fn: Callable[[str], Any] = in
 async def run_console(
     *,
     container_factory: Callable[[], Any] | None = None,
-    start_server: Callable[[], Awaitable[Any]] = start_fresh_mcp_server,
+    start_server: Callable[..., Awaitable[Any]] = start_fresh_mcp_server,
     stop_server: Callable[[Any], Awaitable[None]] = stop_managed_process,
+    reset_data: Callable[[], None] = reset_mock_data,
     input_fn: Callable[[str], Any] = input,
     output: Callable[[str], None] = print,
 ) -> None:
@@ -248,7 +261,7 @@ async def run_console(
         container_factory = Container
     process = None
     try:
-        process = await start_server()
+        process = await start_server(reset_data=reset_data)
         container = container_factory()
         await container.initialize()
         output("MCP server and Router Agent are ready. Type 'exit' to quit.")

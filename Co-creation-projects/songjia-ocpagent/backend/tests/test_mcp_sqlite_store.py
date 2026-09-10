@@ -23,7 +23,7 @@ class SQLiteMockClusterStoreTests(unittest.TestCase):
         self.assertEqual([cluster.cluster_id for cluster in self.store.list_clusters()], ["cluster-001", "cluster-002"])
         with self.store._connect() as connection:
             self.assertEqual(connection.execute("SELECT COUNT(*) FROM clusters").fetchone()[0], 2)
-            self.assertEqual(connection.execute("SELECT COUNT(*) FROM nodes").fetchone()[0], 5)
+            self.assertEqual(connection.execute("SELECT COUNT(*) FROM nodes").fetchone()[0], 11)
             self.assertEqual(connection.execute("SELECT COUNT(*) FROM idrac_nodes").fetchone()[0], 10)
             self.assertEqual(connection.execute("SELECT COUNT(*) FROM idrac_network_interfaces").fetchone()[0], 10)
             self.assertEqual(connection.execute("SELECT COUNT(*) FROM idrac_storage_devices").fetchone()[0], 100)
@@ -75,10 +75,30 @@ class SQLiteMockClusterStoreTests(unittest.TestCase):
             statuses = dict(connection.execute(
                 "SELECT status, COUNT(*) FROM nodes WHERE cluster_id IS NULL GROUP BY status"
             ).fetchall())
-            self.assertEqual(statuses, {"new": 1, "reimage": 1, "removed": 1})
+            self.assertEqual(statuses, {"new": 3})
+            cluster_counts = dict(connection.execute(
+                "SELECT cluster_id, COUNT(*) FROM nodes WHERE status = 'added' GROUP BY cluster_id"
+            ).fetchall())
+            self.assertEqual(cluster_counts, {"cluster-001": 4, "cluster-002": 4})
             with self.assertRaises(sqlite3.IntegrityError):
-                connection.execute("UPDATE nodes SET cluster_id = NULL WHERE node_id = 'node-001'")
-        self.assertEqual(self.store.list_nodes("unknown-cluster"), [])
+                connection.execute("UPDATE nodes SET cluster_id = NULL WHERE name = 'cluster-001-worker-001'")
+            self.assertEqual(self.store.list_nodes("unknown-cluster"), [])
+
+    def test_reset_restores_all_fixture_rows_after_node_mutation(self):
+        self.store.initialize()
+        self.assertTrue(self.store.cordon_node("cluster-001", "cluster-001-worker-001").success)
+        self.assertTrue(self.store.drain_node("cluster-001", "cluster-001-worker-001").success)
+        self.assertTrue(self.store.delete_node("cluster-001", "cluster-001-worker-001").success)
+
+        self.store.reset()
+
+        with self.store._connect() as connection:
+            self.assertEqual(connection.execute("SELECT COUNT(*) FROM clusters").fetchone()[0], 2)
+            self.assertEqual(connection.execute("SELECT COUNT(*) FROM nodes").fetchone()[0], 11)
+            self.assertEqual(connection.execute("SELECT COUNT(*) FROM nodes WHERE status = 'added'").fetchone()[0], 8)
+            self.assertEqual(connection.execute("SELECT COUNT(*) FROM nodes WHERE status = 'new' AND cluster_id IS NULL").fetchone()[0], 3)
+            self.assertEqual(connection.execute("SELECT COUNT(*) FROM idrac_nodes").fetchone()[0], 10)
+        self.assertEqual(self.store.list_nodes("cluster-001")[0].status, NodeStatus.ADDED)
 
     def test_cluster_relationships_keep_pods_isolated(self):
         cluster_one_pods = self.store.list_pods("cluster-001")
