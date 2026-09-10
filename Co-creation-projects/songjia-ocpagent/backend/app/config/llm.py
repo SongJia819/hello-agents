@@ -12,6 +12,11 @@ class LLMSettings(BaseModel):
     plan_max_tokens: int = Field(default=2048, gt=0)
     knowledge_chat_max_tokens: int = Field(default=2048, gt=0)
     knowledge_rag_max_tokens: int = Field(default=4096, gt=0)
+    router_temperature: float = Field(default=0.0, ge=0.0, le=1.0)
+    query_temperature: float = Field(default=0.2, ge=0.0, le=1.0)
+    plan_temperature: float = Field(default=0.0, ge=0.0, le=1.0)
+    knowledge_chat_temperature: float = Field(default=0.3, ge=0.0, le=1.0)
+    knowledge_rag_temperature: float = Field(default=0.1, ge=0.0, le=1.0)
 
     @classmethod
     def from_env(cls) -> "LLMSettings":
@@ -32,6 +37,15 @@ class LLMSettings(BaseModel):
         ):
             if value := os.getenv(f"OCP_AGENT_LLM_{field.upper()}"):
                 values[field] = int(value)
+        for field in (
+            "router_temperature",
+            "query_temperature",
+            "plan_temperature",
+            "knowledge_chat_temperature",
+            "knowledge_rag_temperature",
+        ):
+            if value := os.getenv(f"OCP_AGENT_LLM_{field.upper()}"):
+                values[field] = float(value)
         return cls.model_validate(values)
 
 
@@ -42,20 +56,22 @@ def client_options(settings: LLMSettings | None = None) -> dict[str, object]:
 
 llm_settings = LLMSettings.from_env()
 
-def create_llm(max_tokens: int, settings: LLMSettings | None = None) -> ChatOpenAI:
-    """Create a local runtime LLM client with one purpose-specific output budget."""
+def create_llm(
+    max_tokens: int, settings: LLMSettings | None = None, *, temperature: float = 0.0
+) -> ChatOpenAI:
+    """Create a local runtime LLM client with purpose-specific output and sampling settings."""
     return ChatOpenAI(
         model="qwen3.5:4b",
         base_url="http://localhost:11434/v1",
         api_key="ollama",
-        temperature=0,
+        temperature=temperature,
         max_tokens=max_tokens,
         **client_options(settings),
     )
 
-query_llm = create_llm(llm_settings.query_max_tokens)
-plan_llm = create_llm(llm_settings.plan_max_tokens)
-routing_llm = create_llm(llm_settings.router_max_tokens)
+query_llm = create_llm(llm_settings.query_max_tokens, temperature=llm_settings.query_temperature)
+plan_llm = create_llm(llm_settings.plan_max_tokens, temperature=llm_settings.plan_temperature)
+routing_llm = create_llm(llm_settings.router_max_tokens, temperature=llm_settings.router_temperature)
 
 # Compatibility alias for callers that have not yet selected a dedicated client.
 llm = query_llm

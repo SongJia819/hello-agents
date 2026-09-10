@@ -162,6 +162,7 @@ class KnowledgeAnswerTests(unittest.IsolatedAsyncioTestCase):
             service._chat_dependencies()
 
         self.assertEqual(chat_openai.call_args.kwargs["max_tokens"], llm_settings.knowledge_rag_max_tokens)
+        self.assertEqual(chat_openai.call_args.kwargs["temperature"], llm_settings.knowledge_rag_temperature)
 
     async def test_knowledge_node_maps_result_to_state(self):
         result = await KnowledgeNodes(self._service([chunk("p")], [], [chunk("p")])).answer({"user_query": "help"})
@@ -184,6 +185,7 @@ class KnowledgeChatTests(unittest.IsolatedAsyncioTestCase):
             service._chat_dependencies()
 
         self.assertEqual(chat_openai.call_args.kwargs["max_tokens"], llm_settings.knowledge_chat_max_tokens)
+        self.assertEqual(chat_openai.call_args.kwargs["temperature"], llm_settings.knowledge_chat_temperature)
 
     async def test_direct_chat_uses_only_current_user_message(self):
         chat_model = FakeChatModel(answer="Hello!")

@@ -24,7 +24,7 @@ class KnowledgeChatService:
                 model=self.settings.llm_model,
                 base_url=self.settings.llm_base_url,
                 api_key="ollama",
-                temperature=0,
+                temperature=llm_settings.knowledge_chat_temperature,
                 max_tokens=llm_settings.knowledge_chat_max_tokens,
                 **client_options(),
             )
