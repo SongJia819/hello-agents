@@ -64,20 +64,28 @@ def emit_answer_chunk(agent, node, text, *, state=None, attempt=1, metadata=None
     if text:
         node_log(agent, node, "llm_output", state=state, step="llm_generation", payload={"attempt": attempt, "text": text, "metadata": metadata})
         _event(agent, node, "answer_chunk", state or {}, attempt=attempt, text=text)
-async def await_llm(call: Awaitable[Any], *, agent: str, node: str, state: dict[str, Any]) -> Any:
-    task, started = asyncio.create_task(call), time.perf_counter()
-    try:
-        while True:
-            remaining = LLM_TIMEOUT_SECONDS - (time.perf_counter() - started)
-            if remaining <= 0: raise TimeoutError("LLM call exceeded 300 seconds")
-            done, _ = await asyncio.wait({task}, timeout=min(LLM_HEARTBEAT_SECONDS, remaining))
-            if done: return task.result()
-            emit_progress(agent, node, "llm_thinking", "active", "LLM 正在思考。", state=state)
-    except TimeoutError as error:
-        task.cancel()
-        try: await task
-        except asyncio.CancelledError: pass
-        duration = (time.perf_counter() - started) * 1000; node_log(agent, node, "llm_timeout", state=state, error=error, step="llm_generation", duration_ms=duration); _event(agent, node, "llm_timeout", state, error=error, duration_ms=duration); raise
+async def await_llm(call: Callable[[], Awaitable[Any]], *, agent: str, node: str, state: dict[str, Any]) -> Any:
+    for attempt in range(1, 4):
+        task, started = asyncio.create_task(call()), time.perf_counter()
+        try:
+            node_log(agent, node, "llm_attempt_started", state=state, step="llm_generation", payload={"attempt": attempt})
+            while True:
+                remaining = LLM_TIMEOUT_SECONDS - (time.perf_counter() - started)
+                if remaining <= 0: raise TimeoutError("LLM call exceeded 300 seconds")
+                done, _ = await asyncio.wait({task}, timeout=min(LLM_HEARTBEAT_SECONDS, remaining))
+                if done: return task.result()
+                emit_progress(agent, node, "llm_thinking", "active", "LLM 正在思考。", state=state)
+        except TimeoutError as error:
+            task.cancel()
+            try: await task
+            except asyncio.CancelledError: pass
+            duration = (time.perf_counter() - started) * 1000; node_log(agent, node, "llm_timeout", state=state, error=error, step="llm_generation", duration_ms=duration, payload={"attempt": attempt}); _event(agent, node, "llm_timeout", state, error=error, duration_ms=duration, attempt=attempt)
+            if attempt < 3:
+                node_log(agent, node, "llm_retry_started", state=state, step="llm_generation", payload={"attempt": attempt + 1})
+                continue
+            node_log(agent, node, "llm_retry_exhausted", state=state, step="llm_generation", payload={"attempt": attempt})
+            raise
+    raise RuntimeError("unreachable")
 def observed(agent, node, function):
     async def wrapper(state):
         state = normalize_request_state(state); started = time.perf_counter(); node_log(agent, node, "node_started", state=state); _event(agent, node, "node_started", state); emit_progress(agent, node, node, "started", f"正在执行 {node}。", state=state)

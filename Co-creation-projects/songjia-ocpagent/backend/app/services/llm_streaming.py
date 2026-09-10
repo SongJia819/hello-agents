@@ -45,6 +45,10 @@ async def collect_streamed_answer(model: Any, messages: list[Any], *, agent: str
         except TimeoutError as error:
             node_log(agent, node, "llm_timeout", state=state, error=error, step="llm_generation")
             emit_progress(agent, node, "llm_generation", "failed", "LLM 调用超时。", state=state)
+            if attempt < attempts:
+                node_log(agent, node, "llm_retry_started", state=state, step="llm_generation", payload={"attempt": attempt + 1})
+                continue
+            node_log(agent, node, "llm_retry_exhausted", state=state, step="llm_generation", payload={"attempt": attempt})
             return fallback
         except Exception as error:
             node_log(agent, node, "llm_stream_failed", state=state, error=error)

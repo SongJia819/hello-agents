@@ -80,7 +80,7 @@ class ObservabilityTests(unittest.IsolatedAsyncioTestCase):
 
         with tempfile.TemporaryDirectory() as directory, patch.dict("os.environ", {"OCP_AGENT_LOG_FILE": str(Path(directory) / "agent.log")}, clear=False), patch("app.observability.LLM_TIMEOUT_SECONDS", 0.001), patch("app.observability.LLM_HEARTBEAT_SECONDS", 0.001):
             with self.assertRaises(TimeoutError):
-                await await_llm(never_finishes(), agent="router", node="route", state={"trace_id": "trace-timeout"})
+                await await_llm(never_finishes, agent="router", node="route", state={"trace_id": "trace-timeout"})
 
     def test_detailed_payloads_skip_aggregate_log(self):
         with tempfile.TemporaryDirectory() as directory, patch.dict("os.environ", {"OCP_AGENT_LOG_FILE": str(Path(directory) / "agent-runtime.log")}, clear=False):

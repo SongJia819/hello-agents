@@ -14,7 +14,7 @@ class RouterNodes:
 
     async def route(self, state):
         emit_progress("router", "route", "route_classification", "started", "正在识别请求。", state=state)
-        result: RouterResult = await await_llm(self.router_llm.ainvoke(
+        result: RouterResult = await await_llm(lambda: self.router_llm.ainvoke(
             [
                 SystemMessage(content=ROUTER_PROMPT),
                 HumanMessage(content=state["user_query"]),

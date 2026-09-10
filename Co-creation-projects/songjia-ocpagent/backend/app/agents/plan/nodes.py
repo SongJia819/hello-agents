@@ -24,7 +24,7 @@ class PlanNodes:
             definition, skill_contract = self.skill_registry.resolve(
                 state.get("action", ""), resources
             )
-            result = await await_llm(self.planner_llm.ainvoke(
+            result = await await_llm(lambda: self.planner_llm.ainvoke(
                 [
                     SystemMessage(content=PLAN_PROMPT),
                     HumanMessage(
