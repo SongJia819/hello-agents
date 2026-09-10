@@ -2,7 +2,7 @@ from app.mcp.cluster_store import MockClusterStore
 from app.mcp.server_app import mcp
 from app.models.cluster import ClusterSummary, Pod
 from app.models.idrac import IdracNode
-from app.models.node import Node
+from app.models.node import Node, NodeOperationResult
 
 
 store = MockClusterStore()
@@ -11,6 +11,21 @@ store = MockClusterStore()
 @mcp.tool
 def list_nodes(cluster_id: str) -> list[Node]:
     return store.list_nodes(cluster_id)
+
+
+@mcp.tool
+def cordon_node(cluster_id: str, node_name: str) -> NodeOperationResult:
+    return store.cordon_node(cluster_id, node_name)
+
+
+@mcp.tool
+def drain_node(cluster_id: str, node_name: str) -> NodeOperationResult:
+    return store.drain_node(cluster_id, node_name)
+
+
+@mcp.tool
+def delete_node(cluster_id: str, node_name: str) -> NodeOperationResult:
+    return store.delete_node(cluster_id, node_name)
 
 
 @mcp.tool

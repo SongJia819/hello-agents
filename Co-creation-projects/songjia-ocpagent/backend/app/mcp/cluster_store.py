@@ -8,7 +8,7 @@ from pathlib import Path
 from app.config.mcp import mock_cluster_database_path
 from app.models.cluster import ClusterSummary, Pod
 from app.models.idrac import IdracNode
-from app.models.node import Node, NodeStatus
+from app.models.node import Node, NodeOperationResult, NodeStatus
 
 
 class MockClusterStore:
@@ -36,7 +36,7 @@ class MockClusterStore:
                     node_id TEXT PRIMARY KEY,
                     cluster_id TEXT REFERENCES clusters(cluster_id),
                     name TEXT NOT NULL UNIQUE,
-                    status TEXT NOT NULL CHECK (status IN ('new', 'added', 'reimage', 'removed')),
+                    status TEXT NOT NULL CHECK (status IN ('new', 'added', 'cordoned', 'drained', 'reimage', 'removed')),
                     idrac_ip TEXT NOT NULL,
                     username TEXT NOT NULL,
                     password TEXT NOT NULL,
@@ -51,8 +51,8 @@ class MockClusterStore:
                     firmware_path TEXT NOT NULL,
                     certificate_file_name TEXT NOT NULL,
                     certificate_file_path TEXT NOT NULL,
-                    CHECK ((status = 'added' AND cluster_id IS NOT NULL) OR
-                           (status != 'added' AND cluster_id IS NULL))
+                    CHECK ((status IN ('added', 'cordoned', 'drained') AND cluster_id IS NOT NULL) OR
+                           (status NOT IN ('added', 'cordoned', 'drained') AND cluster_id IS NULL))
                 );
                 CREATE TABLE IF NOT EXISTS node_network_interfaces (
                     interface_id INTEGER PRIMARY KEY,
@@ -118,10 +118,45 @@ class MockClusterStore:
                 );
                 """
             )
+            self._migrate_legacy_nodes(connection)
             if connection.execute("SELECT 1 FROM clusters LIMIT 1").fetchone() is None:
                 self._seed(connection)
             if connection.execute("SELECT 1 FROM idrac_nodes LIMIT 1").fetchone() is None:
                 self._seed_idrac_inventory(connection)
+
+    @staticmethod
+    def _migrate_legacy_nodes(connection: sqlite3.Connection) -> None:
+        schema = connection.execute(
+            "SELECT sql FROM sqlite_master WHERE type = 'table' AND name = 'nodes'"
+        ).fetchone()
+        if schema is None or "'cordoned'" in schema["sql"]:
+            return
+        connection.commit()
+        connection.execute("PRAGMA foreign_keys = OFF")
+        try:
+            connection.executescript(
+                """
+                BEGIN;
+                CREATE TABLE nodes_replacement (
+                    node_id TEXT PRIMARY KEY,
+                    cluster_id TEXT REFERENCES clusters(cluster_id),
+                    name TEXT NOT NULL UNIQUE,
+                    status TEXT NOT NULL CHECK (status IN ('new', 'added', 'cordoned', 'drained', 'reimage', 'removed')),
+                    idrac_ip TEXT NOT NULL, username TEXT NOT NULL, password TEXT NOT NULL, domain TEXT NOT NULL,
+                    network_port INTEGER NOT NULL, network_ip TEXT NOT NULL, network_netmask TEXT NOT NULL, network_gateway TEXT NOT NULL,
+                    image_name TEXT NOT NULL, image_path TEXT NOT NULL, firmware_name TEXT NOT NULL, firmware_path TEXT NOT NULL,
+                    certificate_file_name TEXT NOT NULL, certificate_file_path TEXT NOT NULL,
+                    CHECK ((status IN ('added', 'cordoned', 'drained') AND cluster_id IS NOT NULL) OR
+                           (status NOT IN ('added', 'cordoned', 'drained') AND cluster_id IS NULL))
+                );
+                INSERT INTO nodes_replacement SELECT * FROM nodes;
+                DROP TABLE nodes;
+                ALTER TABLE nodes_replacement RENAME TO nodes;
+                COMMIT;
+                """
+            )
+        finally:
+            connection.execute("PRAGMA foreign_keys = ON")
 
     @staticmethod
     def _seed(connection: sqlite3.Connection) -> None:
@@ -206,7 +241,39 @@ class MockClusterStore:
             rows = connection.execute(
                 "SELECT * FROM nodes WHERE cluster_id = ? AND status = 'added' ORDER BY name", (cluster_id,)
             ).fetchall()
-            return [self._node_from_row(connection, row) for row in rows]
+        return [self._node_from_row(connection, row) for row in rows]
+
+    @staticmethod
+    def _failure(operation: str, cluster_id: str, node_name: str, error_code: str, message: str) -> NodeOperationResult:
+        return NodeOperationResult(success=False, operation=operation, cluster_id=cluster_id, node_name=node_name, error_code=error_code, message=message)
+
+    def _transition_node(self, operation: str, cluster_id: str, node_name: str, expected: NodeStatus, target: NodeStatus) -> NodeOperationResult:
+        self.initialize()
+        with self._connect() as connection:
+            row = connection.execute("SELECT status FROM nodes WHERE cluster_id = ? AND name = ?", (cluster_id, node_name)).fetchone()
+            if row is None:
+                return self._failure(operation, cluster_id, node_name, "NODE_NOT_FOUND", "No matching mock node exists.")
+            if row["status"] != expected.value:
+                return self._failure(operation, cluster_id, node_name, "INVALID_STATE", f"Node must be {expected.value} before {operation}.")
+            connection.execute("UPDATE nodes SET status = ? WHERE cluster_id = ? AND name = ?", (target.value, cluster_id, node_name))
+        return NodeOperationResult(success=True, operation=operation, cluster_id=cluster_id, node_name=node_name, status=target, message=f"Node {node_name} is {target.value}.")
+
+    def cordon_node(self, cluster_id: str, node_name: str) -> NodeOperationResult:
+        return self._transition_node("node.cordon", cluster_id, node_name, NodeStatus.ADDED, NodeStatus.CORDONED)
+
+    def drain_node(self, cluster_id: str, node_name: str) -> NodeOperationResult:
+        return self._transition_node("node.drain", cluster_id, node_name, NodeStatus.CORDONED, NodeStatus.DRAINED)
+
+    def delete_node(self, cluster_id: str, node_name: str) -> NodeOperationResult:
+        self.initialize()
+        with self._connect() as connection:
+            row = connection.execute("SELECT node_id, status FROM nodes WHERE cluster_id = ? AND name = ?", (cluster_id, node_name)).fetchone()
+            if row is None:
+                return self._failure("node.delete", cluster_id, node_name, "NODE_NOT_FOUND", "No matching mock node exists.")
+            if row["status"] != NodeStatus.DRAINED.value:
+                return self._failure("node.delete", cluster_id, node_name, "INVALID_STATE", "Node must be drained before node.delete.")
+            connection.execute("DELETE FROM nodes WHERE node_id = ?", (row["node_id"],))
+        return NodeOperationResult(success=True, operation="node.delete", cluster_id=cluster_id, node_name=node_name, message=f"Node {node_name} was deleted.")
 
     def _node_from_row(self, connection: sqlite3.Connection, row: sqlite3.Row) -> Node:
         interfaces = [dict(item) for item in connection.execute(

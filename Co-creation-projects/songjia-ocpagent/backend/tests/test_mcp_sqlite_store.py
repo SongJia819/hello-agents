@@ -88,6 +88,43 @@ class SQLiteMockClusterStoreTests(unittest.TestCase):
         self.assertTrue(all(pod.pod_name.startswith("cluster-001") for pod in cluster_one_pods))
         self.assertTrue(all(pod.pod_name.startswith("cluster-002") for pod in cluster_two_pods))
 
+    def test_node_delete_lifecycle_requires_cordon_then_drain_then_delete(self):
+        cluster_id, node_name = "cluster-001", "cluster-001-worker-001"
+        self.assertEqual(self.store.drain_node(cluster_id, node_name).error_code, "INVALID_STATE")
+        self.assertEqual(self.store.cordon_node(cluster_id, node_name).status, NodeStatus.CORDONED)
+        self.assertEqual(self.store.drain_node(cluster_id, node_name).status, NodeStatus.DRAINED)
+        with self.store._connect() as connection:
+            node_id = connection.execute("SELECT node_id FROM nodes WHERE name = ?", (node_name,)).fetchone()[0]
+            self.assertEqual(connection.execute("SELECT COUNT(*) FROM node_network_interfaces WHERE node_id = ?", (node_id,)).fetchone()[0], 1)
+        self.assertTrue(self.store.delete_node(cluster_id, node_name).success)
+        with self.store._connect() as connection:
+            self.assertEqual(connection.execute("SELECT COUNT(*) FROM nodes WHERE name = ?", (node_name,)).fetchone()[0], 0)
+            self.assertEqual(connection.execute("SELECT COUNT(*) FROM node_network_interfaces WHERE node_id = ?", (node_id,)).fetchone()[0], 0)
+            self.assertEqual(connection.execute("SELECT COUNT(*) FROM node_storage_devices WHERE node_id = ?", (node_id,)).fetchone()[0], 0)
+
+    def test_node_delete_operations_reject_unknown_or_mismatched_node(self):
+        self.assertEqual(self.store.cordon_node("cluster-002", "cluster-001-worker-001").error_code, "NODE_NOT_FOUND")
+        self.assertEqual(self.store.delete_node("cluster-001", "unknown").error_code, "NODE_NOT_FOUND")
+
+    def test_legacy_nodes_status_constraint_is_migrated_without_losing_node(self):
+        with self.store._connect() as connection:
+            connection.executescript("""
+                CREATE TABLE clusters (cluster_id TEXT PRIMARY KEY, cluster_name TEXT NOT NULL, cluster_ip TEXT NOT NULL, cluster_port INTEGER NOT NULL);
+                INSERT INTO clusters VALUES ('legacy-cluster', 'Legacy', '127.0.0.1', 6443);
+                CREATE TABLE nodes (
+                    node_id TEXT PRIMARY KEY, cluster_id TEXT REFERENCES clusters(cluster_id), name TEXT NOT NULL UNIQUE,
+                    status TEXT NOT NULL CHECK (status IN ('new', 'added', 'reimage', 'removed')),
+                    idrac_ip TEXT NOT NULL, username TEXT NOT NULL, password TEXT NOT NULL, domain TEXT NOT NULL,
+                    network_port INTEGER NOT NULL, network_ip TEXT NOT NULL, network_netmask TEXT NOT NULL, network_gateway TEXT NOT NULL,
+                    image_name TEXT NOT NULL, image_path TEXT NOT NULL, firmware_name TEXT NOT NULL, firmware_path TEXT NOT NULL,
+                    certificate_file_name TEXT NOT NULL, certificate_file_path TEXT NOT NULL,
+                    CHECK ((status = 'added' AND cluster_id IS NOT NULL) OR (status != 'added' AND cluster_id IS NULL))
+                );
+                INSERT INTO nodes VALUES ('legacy-node', 'legacy-cluster', 'legacy-worker', 'added', '127.0.0.2', 'admin', 'secret', 'local', 1, '127.0.0.2', '255.255.255.0', '127.0.0.1', 'image', 'path', 'firmware', 'path', 'cert', 'path');
+            """)
+        self.store.initialize()
+        self.assertEqual(self.store.cordon_node("legacy-cluster", "legacy-worker").status, NodeStatus.CORDONED)
+
 
 class SQLiteBackedMCPToolTests(unittest.TestCase):
     def test_tools_use_sqlite_store(self):
@@ -111,3 +148,11 @@ class SQLiteBackedMCPToolTests(unittest.TestCase):
                 with self.assertRaisesRegex(ValueError, "exactly one"):
                     cluster_tools.get_idrac_node(sn="DELLSN01", idrac_ip="168.0.0.1")
                 self.assertEqual(cluster_tools.health(), "OK")
+
+    def test_node_delete_tools_delegate_to_sqlite_store(self):
+        with tempfile.TemporaryDirectory() as directory:
+            store = MockClusterStore(Path(directory) / "ocp_mock.sqlite3")
+            with patch.object(cluster_tools, "store", store):
+                self.assertEqual(cluster_tools.cordon_node("cluster-001", "cluster-001-worker-001").status, NodeStatus.CORDONED)
+                self.assertEqual(cluster_tools.drain_node("cluster-001", "cluster-001-worker-001").status, NodeStatus.DRAINED)
+                self.assertTrue(cluster_tools.delete_node("cluster-001", "cluster-001-worker-001").success)

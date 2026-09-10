@@ -6,6 +6,8 @@ from pydantic import BaseModel, Field
 class NodeStatus(str, Enum):
     NEW = "new"
     ADDED = "added"
+    CORDONED = "cordoned"
+    DRAINED = "drained"
     REIMAGE = "reimage"
     REMOVED = "removed"
 
@@ -61,3 +63,13 @@ class Node(BaseModel):
     idrac_ip: str | None = None
     network_interfaces: list[NetworkInterface] = Field(default_factory=list)
     storage_devices: list[StorageDevice] = Field(default_factory=list)
+
+
+class NodeOperationResult(BaseModel):
+    success: bool
+    operation: str
+    cluster_id: str
+    node_name: str
+    status: NodeStatus | None = None
+    error_code: str | None = None
+    message: str
