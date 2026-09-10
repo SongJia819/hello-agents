@@ -4,7 +4,7 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-from app.observability import observed, redact, stream_graph
+from app.observability import await_llm, node_log, observed, redact, stream_graph
 from app.agents.knowledge.agent import KnowledgeAgent
 from app.agents.plan.agent import PlanAgent
 from app.agents.query.agent import QueryAgent
@@ -35,12 +35,16 @@ class ObservabilityTests(unittest.IsolatedAsyncioTestCase):
             result = await observed("query", "list", node)(
                 {"request_id": "request-1", "user_query": "list nodes"}
             )
-            records = [json.loads(line.split(" ", 2)[2]) for line in (Path(directory) / "agent.log").read_text().splitlines()]
+            records = [json.loads(line) for line in (Path(directory) / "agent.log").read_text().splitlines()]
         self.assertEqual(result["answer"], "ok")
-        self.assertEqual([record["event"] for record in records], ["node_started", "node_completed"])
-        self.assertEqual(records[-1]["payload"]["password"], "***")
-        self.assertEqual(records[-1]["request_id"], "request-1")
-        self.assertEqual(records[-1]["user_message"], "list nodes")
+        self.assertEqual([record["event"] for record in records], ["node_started", "step_started", "node_completed", "step_completed"])
+        completed = records[-2]
+        self.assertEqual(completed["payload"]["password"], "***")
+        self.assertEqual(completed["request_id"], "request-1")
+        self.assertEqual(completed["user_message"], "list nodes")
+        self.assertIn("trace_id", completed)
+        self.assertIn("timestamp", completed)
+        self.assertGreaterEqual(completed["duration_ms"], 0)
 
     async def test_observed_logs_failure_and_reraises(self):
         async def node(_state):
@@ -51,9 +55,9 @@ class ObservabilityTests(unittest.IsolatedAsyncioTestCase):
                 await observed("plan", "create_plan", node)(
                     {"request_id": "request-2", "user_query": "add node"}
                 )
-            records = [json.loads(line.split(" ", 2)[2]) for line in (Path(directory) / "agent.log").read_text().splitlines()]
-        self.assertEqual(records[-1]["event"], "node_failed")
-        self.assertEqual(records[-1]["error_type"], "ValueError")
+            records = [json.loads(line) for line in (Path(directory) / "agent.log").read_text().splitlines()]
+        self.assertEqual(records[-2]["event"], "node_failed")
+        self.assertEqual(records[-2]["error_type"], "ValueError")
         self.assertEqual(records[-1]["user_message"], "add node")
 
     async def test_redact_recurses_models_and_lists(self):
@@ -69,3 +73,17 @@ class ObservabilityTests(unittest.IsolatedAsyncioTestCase):
                 state = await agent_type(CapturingGraph()).invoke({"user_query": "original request"})
                 self.assertEqual(state["user_query"], "original request")
                 self.assertEqual(state["user_message"], "original request")
+
+    async def test_llm_timeout_emits_safe_timeout_event(self):
+        async def never_finishes():
+            await __import__("asyncio").sleep(1)
+
+        with tempfile.TemporaryDirectory() as directory, patch.dict("os.environ", {"OCP_AGENT_LOG_FILE": str(Path(directory) / "agent.log")}, clear=False), patch("app.observability.LLM_TIMEOUT_SECONDS", 0.001), patch("app.observability.LLM_HEARTBEAT_SECONDS", 0.001):
+            with self.assertRaises(TimeoutError):
+                await await_llm(never_finishes(), agent="router", node="route", state={"trace_id": "trace-timeout"})
+
+    def test_detailed_payloads_skip_aggregate_log(self):
+        with tempfile.TemporaryDirectory() as directory, patch.dict("os.environ", {"OCP_AGENT_LOG_FILE": str(Path(directory) / "agent-runtime.log")}, clear=False):
+            node_log("knowledge", "answer", "retrieval_chunks", payload={"content": "detail"})
+            self.assertFalse((Path(directory) / "agent-runtime.log").exists())
+            self.assertIn("detail", (Path(directory) / "knowledge.log").read_text())

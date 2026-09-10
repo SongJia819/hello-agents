@@ -3,6 +3,7 @@ from langchain_core.messages import HumanMessage, SystemMessage, AIMessage
 from app.config.llm import routing_llm
 from app.config.capabilities import CAPABILITIES, AgentType
 from app.models.router import RouterResult
+from app.observability import await_llm, emit_progress
 
 from .prompts import ROUTER_PROMPT
 
@@ -12,12 +13,14 @@ class RouterNodes:
         self.router_llm = router_llm or routing_llm.with_structured_output(RouterResult)
 
     async def route(self, state):
-        result: RouterResult = await self.router_llm.ainvoke(
+        emit_progress("router", "route", "route_classification", "started", "正在识别请求。", state=state)
+        result: RouterResult = await await_llm(self.router_llm.ainvoke(
             [
                 SystemMessage(content=ROUTER_PROMPT),
                 HumanMessage(content=state["user_query"]),
             ]
-        )
+        ), agent="router", node="route", state=state)
+        emit_progress("router", "route", "route_classification", "completed", "请求已识别。", state=state)
 
         route = result.model_dump()
         route["resource"] = route["resources"][0]

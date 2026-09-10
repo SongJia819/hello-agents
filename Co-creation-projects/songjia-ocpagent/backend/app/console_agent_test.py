@@ -11,6 +11,7 @@ import json
 import os
 import signal
 import sys
+from datetime import datetime
 from collections.abc import Awaitable, Callable
 from pathlib import Path
 from typing import Any
@@ -178,6 +179,25 @@ def _finish_streamed_answer() -> None:
     print(flush=True)
 
 
+_CONSOLE_PHASES = {"route_classification", "cluster_resolution", "resource_listing", "plan_generation", "recall", "rrf", "rerank", "llm_generation", "llm_thinking"}
+
+
+def format_progress(event: dict[str, Any]) -> str | None:
+    """Return a concise frontend-facing milestone, excluding diagnostic-only events."""
+    if event.get("event") == "llm_timeout":
+        message = "LLM 调用超时，已中断。"
+    elif event.get("event") == "progress" and event.get("phase") in _CONSOLE_PHASES:
+        message = str(event.get("message", ""))
+    else:
+        return None
+    timestamp = str(event.get("timestamp", ""))
+    try:
+        timestamp = datetime.fromisoformat(timestamp.replace("Z", "+00:00")).astimezone().strftime("%H:%M:%S")
+    except ValueError:
+        timestamp = datetime.now().strftime("%H:%M:%S")
+    return f"[{timestamp}] {message}"
+
+
 async def console_loop(router_agent: Any, *, input_fn: Callable[[str], Any] = input,
                        output: Callable[[str], None] = print,
                        answer_output: Callable[[str], None] = _write_answer_fragment,
@@ -197,8 +217,9 @@ async def console_loop(router_agent: Any, *, input_fn: Callable[[str], Any] = in
             async for event in router_agent.stream({"user_query": request}):
                 if event.get("event") == "final_result":
                     final_state = event.get("payload", {})
-                elif event.get("event") == "progress":
-                    output(str(event.get("message", "")))
+                elif event.get("event") in {"progress", "llm_timeout"}:
+                    if rendered := format_progress(event):
+                        output(rendered)
                 elif event.get("event") == "answer_chunk":
                     text = str(event.get("text", ""))
                     streamed_parts.append(text)

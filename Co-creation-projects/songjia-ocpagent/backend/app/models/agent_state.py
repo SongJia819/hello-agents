@@ -15,6 +15,7 @@ class AgentState(TypedDict):
     agent: str
     user_query: str
     user_message: NotRequired[str]
+    trace_id: NotRequired[str]
     resource: str
     resources: List[str]
     idrac_selectors: NotRequired[List[str]]

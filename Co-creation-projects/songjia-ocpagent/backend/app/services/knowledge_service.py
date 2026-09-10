@@ -12,7 +12,7 @@ from qdrant_client import QdrantClient, models
 from app.config.knowledge import KnowledgeSettings, knowledge_settings
 from app.models.knowledge import KnowledgeChunk, KnowledgeRequest, KnowledgeResult, RetrievalDiagnostics
 from app.config.llm import client_options, llm_settings
-from app.observability import emit_progress
+from app.observability import emit_progress, node_log
 from app.services.llm_streaming import collect_streamed_answer
 
 DENSE_VECTOR_NAME = "dense"
@@ -141,9 +141,11 @@ class KnowledgeAnswerService:
             self._recall_dependencies()
             emit_progress("knowledge", "answer", "recall", "started", "正在召回文档。", state=state)
             diagnostics.dense, diagnostics.sparse = self.recall_service.recall(request)
+            node_log("knowledge", "answer", "retrieval_chunks", state=state, step="recall", payload={"dense": diagnostics.dense, "sparse": diagnostics.sparse})
             emit_progress("knowledge", "answer", "recall", "completed", "文档召回完成。", state=state)
             emit_progress("knowledge", "answer", "rrf", "started", "正在进行 RRF 融合。", state=state)
             diagnostics.fused = self.fusion_service.fuse(diagnostics.dense, diagnostics.sparse)
+            node_log("knowledge", "answer", "retrieval_chunks", state=state, step="rrf", payload={"fused": diagnostics.fused})
             emit_progress("knowledge", "answer", "rrf", "completed", "RRF 融合完成。", state=state)
             if not diagnostics.fused:
                 return KnowledgeResult(answer="No supporting OCP documentation was found for this question.", diagnostics=diagnostics,
@@ -151,6 +153,7 @@ class KnowledgeAnswerService:
             self._rerank_dependencies()
             emit_progress("knowledge", "answer", "rerank", "started", "正在重排序文档。", state=state)
             diagnostics.reranked = self.rerank_service.rerank(request.question, diagnostics.fused)
+            node_log("knowledge", "answer", "retrieval_chunks", state=state, step="rerank", payload={"reranked": diagnostics.reranked})
             emit_progress("knowledge", "answer", "rerank", "completed", "文档重排序完成。", state=state)
             if not diagnostics.reranked:
                 return KnowledgeResult(answer="No supporting OCP documentation was found for this question.", diagnostics=diagnostics,

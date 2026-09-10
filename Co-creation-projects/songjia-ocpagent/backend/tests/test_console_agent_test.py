@@ -31,7 +31,7 @@ class FakeRouter:
         if state["user_query"] == "broken":
             raise RuntimeError("router unavailable")
         yield {"event": "node_completed", "agent": "router", "node": "route", "payload": {"password": "hidden"}}
-        yield {"event": "progress", "agent": "knowledge", "node": "answer", "message": "正在召回文档。"}
+        yield {"event": "progress", "timestamp": "2026-09-10T12:00:00+00:00", "agent": "knowledge", "node": "answer", "phase": "recall", "message": "正在召回文档。"}
         yield {"event": "answer_chunk", "agent": "knowledge", "node": "answer", "text": "first line\n\nsecond line"}
         yield {"event": "final_result", "agent": "router", "payload": {"answer": "first line\n\nsecond line", "password": "hidden", "supported": True}}
 
@@ -87,7 +87,7 @@ class ConsoleAgentTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(router.calls, [{"user_query": "list node"}, {"user_query": "broken"}])
         self.assertIn("router unavailable", output[-1])
         self.assertNotIn("hidden", "\n".join(output))
-        self.assertEqual(output[0], "正在召回文档。")
+        self.assertRegex(output[0], r"^\[.*\] 正在召回文档。$")
         self.assertEqual(output[1], "first line\n\nsecond line")
         self.assertEqual(len(output), 3)
 

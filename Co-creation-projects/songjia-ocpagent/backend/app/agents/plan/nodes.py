@@ -2,7 +2,7 @@ from langchain_core.messages import HumanMessage, SystemMessage
 
 from app.config.llm import plan_llm
 from app.models.plan import Plan
-from app.observability import emit_progress
+from app.observability import await_llm, emit_progress
 
 from .prompts import PLAN_PROMPT
 from .skills import SkillDefinition, SkillRegistry, SkillResolutionError
@@ -24,14 +24,14 @@ class PlanNodes:
             definition, skill_contract = self.skill_registry.resolve(
                 state.get("action", ""), resources
             )
-            result = await self.planner_llm.ainvoke(
+            result = await await_llm(self.planner_llm.ainvoke(
                 [
                     SystemMessage(content=PLAN_PROMPT),
                     HumanMessage(
                         content=self._planning_request(state, definition, skill_contract)
                     ),
                 ]
-            )
+            ), agent="plan", node="create_plan", state=state)
             plan = result if isinstance(result, Plan) else Plan.model_validate(result)
             self._validate(plan, definition, resources, state.get("action", ""))
         except (SkillResolutionError, InvalidPlanError, ValueError) as error:

@@ -5,7 +5,7 @@ Provide grounded, version-scoped OpenShift documentation answers through the Kno
 ## Requirements
 
 ### Requirement: Provide a typed, configurable knowledge-answering contract
-The system SHALL define typed models for a knowledge question, retrieved document chunk, retrieval-stage diagnostics, and knowledge answer result under `backend/app/models/`. It SHALL define vector-store and pipeline settings under `backend/app/config/`, including Qdrant endpoint, collection, document version, embedding model, reranker model, generation model/endpoint, and stage limits. The configuration SHALL default to the existing local OCP 4.22 corpus settings and support deployment-time overrides without code changes.
+The system SHALL define typed models for a knowledge question, retrieved document chunk, retrieval-stage diagnostics, and knowledge answer result under `backend/app/models/`. It SHALL define vector-store and pipeline settings under `backend/app/config/`, including Qdrant endpoint, collection, document version, embedding model, reranker model, generation model/endpoint, LLM think mode, and stage limits. The configuration SHALL default to the existing local OCP 4.22 corpus settings and support deployment-time overrides without code changes.
 
 #### Scenario: Default knowledge request uses the managed corpus
 - **WHEN** the Knowledge Agent receives a question with no configuration override
@@ -49,7 +49,7 @@ The system SHALL implement reranking in `backend/app/services/`. It SHALL send n
 - **THEN** the result retains the configured top context chunks in descending rerank order
 
 ### Requirement: Generate a grounded knowledge answer
-The Knowledge Agent SHALL invoke recall, RRF, reranking, and LLM generation in that order. It SHALL send the original user question and only retained reranked chunks to the LLM, label every context chunk with its stable point ID, and instruct the LLM to ground factual claims in that context. It SHALL write the answer and typed knowledge result into agent state.
+The Knowledge Agent SHALL invoke recall, RRF, reranking, and LLM generation in that order for requests routed as `knowledge`, action `answer`, and resource `documentation`. It SHALL send the original user question and only retained reranked chunks to the LLM, label every context chunk with its stable point ID, and instruct the LLM to ground factual claims in that context. It SHALL write the answer and typed knowledge result into agent state. It SHALL NOT substitute direct chat when supporting OCP documentation is absent or a knowledge dependency fails.
 
 #### Scenario: Documentation evidence supports a question
 - **WHEN** recall and reranking retain one or more chunks and the configured LLM succeeds
