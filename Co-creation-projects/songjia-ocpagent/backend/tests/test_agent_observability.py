@@ -85,6 +85,24 @@ class ObservabilityTests(unittest.IsolatedAsyncioTestCase):
             with self.assertRaises(TimeoutError):
                 await await_llm(never_finishes, agent="router", node="route", state={"trace_id": "trace-timeout"})
 
+    async def test_llm_attempt_logs_invocation_metadata(self):
+        async def returns_prompt():
+            return "ok"
+
+        with tempfile.TemporaryDirectory() as directory, patch.dict("os.environ", {"OCP_AGENT_LOG_FILE": str(Path(directory) / "agent.log")}, clear=False):
+            result = await await_llm(
+                returns_prompt,
+                agent="plan",
+                node="create_plan",
+                state={"trace_id": "trace-metadata"},
+                invocation_metadata={"request_format": "plain_json", "prompt_sha256": "abc"},
+            )
+            records = [json.loads(line) for line in (Path(directory) / "plan.log").read_text().splitlines()]
+
+        self.assertEqual(result, "ok")
+        self.assertEqual(records[0]["event"], "llm_attempt_started")
+        self.assertEqual(records[0]["payload"], {"attempt": 1, "request_format": "plain_json", "prompt_sha256": "abc"})
+
     def test_detailed_payloads_skip_aggregate_log(self):
         with tempfile.TemporaryDirectory() as directory, patch.dict("os.environ", {"OCP_AGENT_LOG_FILE": str(Path(directory) / "agent-runtime.log")}, clear=False):
             node_log("knowledge", "answer", "retrieval_chunks", payload={"content": "detail"})

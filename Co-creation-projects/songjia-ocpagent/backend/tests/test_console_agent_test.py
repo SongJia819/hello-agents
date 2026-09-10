@@ -2,6 +2,7 @@ import asyncio
 import unittest
 
 from app.console_agent_test import MCPStartupError, console_loop, format_state, run_console, start_fresh_mcp_server
+from app.models.plan import Plan, PlanStep
 
 
 class FakeProcess:
@@ -42,6 +43,22 @@ class FragmentedAnswerRouter:
         yield {"event": "answer_chunk", "text": " with"}
         yield {"event": "answer_chunk", "text": " spacing"}
         yield {"event": "final_result", "payload": {"answer": "Answer with spacing"}}
+
+
+class PlanRouter:
+    async def stream(self, _state):
+        yield {
+            "event": "final_result",
+            "payload": {
+                "plan": Plan(
+                    skill="ocp-node-delete", action="delete", resources=["node"],
+                    target={"cluster_id": "cluster-1", "node_name": "node-1"},
+                    parameters={"drain": {"force": True}},
+                    required_inputs=["cluster_id", "node_name"], final_outputs=["node_deleted"],
+                    steps=[PlanStep(id="cordon_node", skill="ocp-node-delete", description="Plan only")],
+                ),
+            },
+        }
 
 
 class ConsoleAgentTests(unittest.IsolatedAsyncioTestCase):
@@ -125,6 +142,16 @@ class ConsoleAgentTests(unittest.IsolatedAsyncioTestCase):
             answer_output=rendered.append, answer_end=lambda: rendered.append("\n"),
         )
         self.assertEqual("".join(rendered), "Answer with spacing\n")
+
+    async def test_console_renders_plan_json_without_execution_output(self):
+        output = []
+        lines = iter(["delete node-1 in cluster-1", "quit"])
+        await console_loop(PlanRouter(), input_fn=lambda _prompt: next(lines), output=output.append)
+
+        self.assertEqual(output[0], "Plan (planning only):")
+        self.assertIn('"skill": "ocp-node-delete"', output[1])
+        self.assertIn('"cluster_id": "cluster-1"', output[1])
+        self.assertNotIn("executed", output[1].lower())
 
     async def test_run_console_stops_only_fresh_managed_process(self):
         events, process = [], FakeProcess()

@@ -27,6 +27,7 @@ class AgentState(TypedDict):
     answer: str
     action: str
     plan: NotRequired[Plan | None]
+    plan_input_values: NotRequired[dict[str, str]]
     knowledge_result: NotRequired[KnowledgeResult | None]
 
 

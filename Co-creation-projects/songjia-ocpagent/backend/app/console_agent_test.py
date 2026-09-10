@@ -240,6 +240,10 @@ async def console_loop(router_agent: Any, *, input_fn: Callable[[str], Any] = in
             output(f"Request failed: {error}")
             continue
         if final_state is not None:
+            if plan := final_state.get("plan"):
+                output("Plan (planning only):")
+                output(json.dumps(_sanitize(plan), ensure_ascii=False, indent=2, default=str))
+                continue
             answer = str(final_state.get("answer", ""))
             if answer and "".join(streamed_parts) != answer:
                 output(answer)

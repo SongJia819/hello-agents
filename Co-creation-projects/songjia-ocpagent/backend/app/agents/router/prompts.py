@@ -109,6 +109,11 @@ create cluster
 }
 
 User:
+delete node-1 in cluster-1
+
+{"agent":"plan","action":"delete","resource":"node","resources":["node"],"current_work_cluster":"cluster-1","current_work_node":"node-1"}
+
+User:
 How do I back up an OpenShift application with OADP?
 
 {

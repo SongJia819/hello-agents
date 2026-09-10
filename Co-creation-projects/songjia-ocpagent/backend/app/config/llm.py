@@ -70,7 +70,13 @@ def create_llm(
     )
 
 query_llm = create_llm(llm_settings.query_max_tokens, temperature=llm_settings.query_temperature)
-plan_llm = create_llm(llm_settings.plan_max_tokens, temperature=llm_settings.plan_temperature)
+# Planning needs concise JSON, not a long reasoning trace. Keep this scoped to
+# Plan so Router, Query, and Knowledge retain their independently configured mode.
+plan_llm = create_llm(
+    llm_settings.plan_max_tokens,
+    llm_settings.model_copy(update={"think": False}),
+    temperature=llm_settings.plan_temperature,
+)
 routing_llm = create_llm(llm_settings.router_max_tokens, temperature=llm_settings.router_temperature)
 
 # Compatibility alias for callers that have not yet selected a dedicated client.

@@ -82,6 +82,9 @@ class LLMThinkConfigurationTests(unittest.TestCase):
         self.assertEqual(plan_llm.max_tokens, LLMSettings().plan_max_tokens)
         self.assertEqual(create_llm(321, LLMSettings(think=False)).max_tokens, 321)
 
+    def test_plan_client_disables_think_mode(self):
+        self.assertEqual(plan_llm.extra_body, {"think": False})
+
     def test_runtime_clients_use_purpose_specific_temperatures(self):
         self.assertEqual(routing_llm.temperature, LLMSettings().router_temperature)
         self.assertEqual(query_llm.temperature, LLMSettings().query_temperature)
