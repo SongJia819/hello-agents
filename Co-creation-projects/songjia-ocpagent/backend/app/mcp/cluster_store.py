@@ -232,7 +232,9 @@ class MockClusterStore:
     def list_clusters(self) -> list[ClusterSummary]:
         self.initialize()
         with self._connect() as connection:
-            rows = connection.execute("SELECT cluster_id, cluster_name FROM clusters ORDER BY cluster_id").fetchall()
+            rows = connection.execute(
+                "SELECT cluster_id, cluster_name, cluster_ip, cluster_port FROM clusters ORDER BY cluster_id"
+            ).fetchall()
         return [ClusterSummary.model_validate(dict(row)) for row in rows]
 
     def list_nodes(self, cluster_id: str) -> list[Node]:

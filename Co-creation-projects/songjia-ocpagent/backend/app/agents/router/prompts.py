@@ -16,7 +16,9 @@ Schema:
     "action": "<list|create|delete|add|answer|chat|drain|upgrade|unknown>",
     "resource": "<primary cluster|node|pod|idrac|documentation|conversation|unknown resource>",
     "resources": ["<all requested resources, or a single resource>"],
-    "idrac_selectors": ["<iDRAC SN or IP selectors; only for idrac>"]
+    "idrac_selectors": ["<iDRAC SN or IP selectors; only for idrac>"],
+    "current_work_cluster": "<optional cluster ID or name>",
+    "current_work_node": "<optional node name>"
 }
 
 Examples:
@@ -40,6 +42,21 @@ show pod
     "resource":"pod",
     "resources":["pod"]
 }
+
+User:
+list nodes in cluster-002
+
+{"agent":"query","action":"list","resource":"node","resources":["node"],"current_work_cluster":"cluster-002","current_work_node":""}
+
+User:
+list worker-01 in Cluster 1
+
+{"agent":"query","action":"list","resource":"node","resources":["node"],"current_work_cluster":"Cluster 1","current_work_node":"worker-01"}
+
+User:
+list clusters
+
+{"agent":"query","action":"list","resource":"cluster","resources":["cluster"],"current_work_cluster":"","current_work_node":""}
 
 User:
 list node and pod

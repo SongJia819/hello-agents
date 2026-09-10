@@ -24,6 +24,14 @@ class RouterNodes:
 
         route = result.model_dump()
         route["resource"] = route["resources"][0]
+        # Preserve selectors emitted through the older compatibility fields while
+        # making the normalized work-target fields available to downstream state.
+        route["current_work_cluster"] = (
+            route["current_work_cluster"] or route.get("cluster_name", "")
+        )
+        route["current_work_node"] = (
+            route["current_work_node"] or route.get("resource_name", "")
+        )
 
         return {
         **route,

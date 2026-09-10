@@ -41,6 +41,15 @@ class FailingLLM:
 
 
 class QueryLLMAnswerTests(unittest.IsolatedAsyncioTestCase):
+    async def test_cluster_answer_context_includes_cluster_count(self):
+        chat = FakeLLM("当前共有一个集群。")
+        graph = QueryGraph(QueryNodes(FakeClusterService(), answer_llm=chat)).graph
+
+        result = await graph.ainvoke({"user_query": "有多少个集群？", "resources": ["cluster"]})
+
+        self.assertEqual(result["cluster_count"], 1)
+        self.assertIn("Cluster count: 1", chat.messages[1].content)
+
     async def test_single_resource_answer_receives_question_and_json_result(self):
         chat = FakeLLM("节点查询完成。")
         graph = QueryGraph(QueryNodes(FakeClusterService(), answer_llm=chat)).graph

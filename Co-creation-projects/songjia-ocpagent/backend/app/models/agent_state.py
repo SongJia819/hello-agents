@@ -12,6 +12,9 @@ class AgentState(TypedDict):
     current_task: str
     clusters: List[Cluster]
     current_cluster: Cluster
+    current_work_cluster: NotRequired[str]
+    current_work_node: NotRequired[str]
+    cluster_count: NotRequired[int]
     agent: str
     user_query: str
     user_message: NotRequired[str]

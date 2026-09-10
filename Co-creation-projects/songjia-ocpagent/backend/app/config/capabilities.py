@@ -13,6 +13,7 @@ CAPABILITIES = {
             "node": "list_nodes",
             "pod": "list_pods",
             "idrac": "list_idrac_nodes",
+            "cluster": "list_clusters",
             # "deployment": "list_deployments",
             # "namespace": "list_namespaces",
             # "service": "list_services",

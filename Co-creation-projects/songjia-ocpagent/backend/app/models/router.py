@@ -34,3 +34,6 @@ class RouterResult(BaseModel):
         default="",
         description="Cluster name if provided"
     )
+
+    current_work_cluster: str = ""
+    current_work_node: str = ""

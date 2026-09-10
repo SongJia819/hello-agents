@@ -18,6 +18,8 @@ class FakeClusterService:
         self.active_calls = 0
         self.max_active_calls = 0
         self.idrac_list_calls = []
+        self.node_cluster_ids = []
+        self.pod_cluster_ids = []
 
     async def _result(self, resource):
         self.active_calls += 1
@@ -27,9 +29,11 @@ class FakeClusterService:
         return [{"resource": resource}]
 
     async def list_nodes(self, cluster_id):
+        self.node_cluster_ids.append(cluster_id)
         return await self._result("node")
 
     async def list_pods(self, cluster_id):
+        self.pod_cluster_ids.append(cluster_id)
         return await self._result("pod")
 
     async def list_idrac_nodes(self, selectors=None):
@@ -62,7 +66,10 @@ class FakeClusterService:
         ]
 
     async def list_clusters(self):
-        return [ClusterSummary(cluster_id="cluster-001", cluster_name="Cluster 1")]
+        return [
+            ClusterSummary(cluster_id="cluster-001", cluster_name="Cluster 1", cluster_ip="10.0.0.1", cluster_port=6443),
+            ClusterSummary(cluster_id="cluster-002", cluster_name="Cluster 2", cluster_ip="10.0.0.2", cluster_port=6443),
+        ]
 
 
 class FakeAnswerLLM:
@@ -75,6 +82,14 @@ class FakeRouterLLM:
         return RouterResult(
             agent="query", action="list", resources=["idrac"],
             idrac_selectors=["DELLSN01", "168.0.0.2"],
+        )
+
+
+class FakeTargetRouterLLM:
+    async def ainvoke(self, _messages):
+        return RouterResult(
+            agent="query", action="list", resources=["node"],
+            current_work_cluster="Cluster 2", current_work_node="worker-02",
         )
 
 
@@ -112,6 +127,55 @@ class FakeMCPClient:
 
 
 class GeneralListTests(unittest.IsolatedAsyncioTestCase):
+    async def test_cluster_list_returns_all_cluster_summaries(self):
+        service = FakeClusterService()
+        result = await QueryNodes(service).list(
+            {
+                "current_cluster": (await service.list_clusters())[0],
+                "resources": ["cluster"],
+            }
+        )
+
+        self.assertEqual(result["cluster_count"], 2)
+        self.assertEqual(
+            [cluster.model_dump() for cluster in result["tool_result"]["cluster"]],
+            [
+                {"cluster_id": "cluster-001", "cluster_name": "Cluster 1", "cluster_ip": "10.0.0.1", "cluster_port": 6443},
+                {"cluster_id": "cluster-002", "cluster_name": "Cluster 2", "cluster_ip": "10.0.0.2", "cluster_port": 6443},
+            ],
+        )
+
+    async def test_explicit_cluster_selector_is_used_for_node_and_pod_lists(self):
+        service = FakeClusterService()
+        nodes = QueryNodes(service)
+        resolved = await nodes.resolve_cluster({"current_work_cluster": "Cluster 2"})
+        result = await nodes.list({**resolved, "resources": ["node", "pod"]})
+
+        self.assertEqual(resolved["current_cluster"].cluster_id, "cluster-002")
+        self.assertEqual(set(result["tool_result"]), {"node", "pod"})
+        self.assertEqual(service.node_cluster_ids, ["cluster-002"])
+        self.assertEqual(service.pod_cluster_ids, ["cluster-002"])
+
+    async def test_missing_cluster_selector_uses_first_cluster(self):
+        service = FakeClusterService()
+        nodes = QueryNodes(service)
+        resolved = await nodes.resolve_cluster({})
+        await nodes.list({**resolved, "resources": ["node"]})
+
+        self.assertEqual(resolved["current_cluster"].cluster_id, "cluster-001")
+        self.assertEqual(service.node_cluster_ids, ["cluster-001"])
+
+    async def test_unmatched_cluster_selector_does_not_list_first_cluster(self):
+        service = FakeClusterService()
+        nodes = QueryNodes(service)
+        resolved = await nodes.resolve_cluster({"current_work_cluster": "missing-cluster"})
+        result = await nodes.list({**resolved, "resources": ["node", "pod"]})
+
+        self.assertTrue(resolved["cluster_not_found"])
+        self.assertEqual(result["tool_result"], {"node": [], "pod": []})
+        self.assertEqual(service.node_cluster_ids, [])
+        self.assertEqual(service.pod_cluster_ids, [])
+
     async def test_single_resource_list_returns_resource_keyed_result(self):
         for resource in ("node", "pod", "idrac"):
             with self.subTest(resource=resource):
@@ -198,6 +262,18 @@ class GeneralListTests(unittest.IsolatedAsyncioTestCase):
 
 
 class RouterCapabilityTests(unittest.TestCase):
+    def test_route_preserves_cluster_and_node_selectors(self):
+        route = asyncio.run(RouterNodes(FakeTargetRouterLLM()).route({"user_query": "list worker-02 in Cluster 2"}))
+
+        self.assertEqual(route["current_work_cluster"], "Cluster 2")
+        self.assertEqual(route["current_work_node"], "worker-02")
+
+    def test_route_uses_empty_selectors_when_none_are_supplied(self):
+        route = asyncio.run(RouterNodes(FakeRouterLLM()).route({"user_query": "list iDRAC nodes"}))
+
+        self.assertEqual(route["current_work_cluster"], "")
+        self.assertEqual(route["current_work_node"], "")
+
     def test_route_preserves_ordered_idrac_selectors(self):
         route = asyncio.run(RouterNodes(FakeRouterLLM()).route({"user_query": "list iDRAC nodes"}))
 
@@ -208,7 +284,7 @@ class RouterCapabilityTests(unittest.TestCase):
     def test_supported_list_action_and_resources(self):
         result = RouterNodes.capability_check(
             None,
-            {"agent": "query", "action": "list", "resources": ["node", "pod", "idrac"]},
+            {"agent": "query", "action": "list", "resources": ["node", "pod", "idrac", "cluster"]},
         )
 
         self.assertTrue(result["supported"])

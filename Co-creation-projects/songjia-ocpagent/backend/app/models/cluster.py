@@ -5,6 +5,8 @@ from app.models.node import Node
 class ClusterSummary(BaseModel):
     cluster_id: str
     cluster_name: str
+    cluster_ip: str = ""
+    cluster_port: int = 0
 
 class Cluster(BaseModel):
     cluster_id: int
