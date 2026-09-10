@@ -23,6 +23,9 @@ CAPABILITIES = {
         "add": {
             "node": "node-add",
         },
+        "delete": {
+            "node": "ocp-node-delete",
+        },
     },
 
     AgentType.EXECUTION: {

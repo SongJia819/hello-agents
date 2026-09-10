@@ -1,7 +1,7 @@
 import unittest
 
 from app.agents.plan.nodes import PlanNodes
-from app.agents.plan.skills import NODE_ADD_SKILL
+from app.agents.plan.skills import NODE_ADD_SKILL, OCP_NODE_DELETE_SKILL
 from app.agents.router.graph import RouterGraph
 from app.agents.router.nodes import RouterNodes
 from app.models.plan import Plan, PlanStep
@@ -44,6 +44,29 @@ def valid_node_add_plan():
     )
 
 
+def valid_node_delete_plan():
+    steps = [
+        PlanStep(
+            id=step.id,
+            skill=OCP_NODE_DELETE_SKILL.name,
+            description=f"Plan {step.id} without executing it.",
+            inputs=list(step.inputs),
+            outputs=list(step.outputs),
+            depends_on=list(step.depends_on),
+        )
+        for step in OCP_NODE_DELETE_SKILL.step_interfaces
+    ]
+    return Plan(
+        skill=OCP_NODE_DELETE_SKILL.name,
+        action=OCP_NODE_DELETE_SKILL.action,
+        resources=list(OCP_NODE_DELETE_SKILL.resources),
+        required_inputs=list(OCP_NODE_DELETE_SKILL.required_inputs),
+        write_only_inputs=list(OCP_NODE_DELETE_SKILL.write_only_inputs),
+        final_outputs=list(OCP_NODE_DELETE_SKILL.final_outputs),
+        steps=steps,
+    )
+
+
 class PlanNodeTests(unittest.IsolatedAsyncioTestCase):
     async def test_node_add_plan_is_structured_and_does_not_expose_password(self):
         fake_llm = FakeStructuredLLM(valid_node_add_plan())
@@ -63,10 +86,37 @@ class PlanNodeTests(unittest.IsolatedAsyncioTestCase):
         self.assertNotIn("do-not-expose-this", str(plan.model_dump()))
         self.assertEqual(len(fake_llm.calls), 1)
 
-    async def test_unregistered_skill_does_not_invoke_llm(self):
+    async def test_node_delete_plan_preserves_schema_interfaces_without_execution(self):
+        fake_llm = FakeStructuredLLM(valid_node_delete_plan())
+        result = await PlanNodes(planner_llm=fake_llm).create_plan(
+            {"action": "delete", "resources": ["node"], "cluster_id": "cluster-001", "node_name": "worker-002"}
+        )
+
+        plan = result["plan"]
+        self.assertEqual(plan.skill, "ocp-node-delete")
+        self.assertEqual([step.id for step in plan.steps], ["cordon_node", "drain_node", "delete_node"])
+        self.assertEqual(plan.steps[0].inputs, ["cluster_id", "node_name"])
+        self.assertEqual(plan.steps[1].depends_on, ["cordon_node"])
+        self.assertEqual(plan.steps[1].inputs[-1], "drain.force")
+        self.assertEqual(plan.steps[2].outputs, ["node_deleted"])
+        self.assertEqual(len(fake_llm.calls), 1)
+
+    async def test_node_delete_step_interface_change_is_rejected(self):
+        invalid = valid_node_delete_plan()
+        invalid.steps[1] = invalid.steps[1].model_copy(update={"depends_on": []})
+
+        result = await PlanNodes(planner_llm=FakeStructuredLLM(invalid)).create_plan(
+            {"action": "delete", "resources": ["node"]}
+        )
+
+        self.assertFalse(result["supported"])
+        self.assertIsNone(result["plan"])
+        self.assertIn("step interfaces", result["answer"])
+
+    async def test_multiple_node_delete_resources_do_not_invoke_llm(self):
         fake_llm = FakeStructuredLLM(valid_node_add_plan())
         result = await PlanNodes(planner_llm=fake_llm).create_plan(
-            {"action": "delete", "resources": ["node"]}
+            {"action": "delete", "resources": ["node", "node"]}
         )
 
         self.assertFalse(result["supported"])
@@ -110,11 +160,11 @@ class PlanCapabilityTests(unittest.TestCase):
         )
         self.assertTrue(result["supported"])
 
-    def test_plan_capability_without_skill_is_rejected(self):
+    def test_node_delete_plan_capability_is_supported(self):
         result = RouterNodes.capability_check(
             None, {"agent": "plan", "action": "delete", "resources": ["node"]}
         )
-        self.assertFalse(result["supported"])
+        self.assertTrue(result["supported"])
 
 
 class KnowledgeCapabilityTests(unittest.TestCase):

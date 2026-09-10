@@ -84,9 +84,17 @@ class PlanNodes:
             raise InvalidPlanError("The generated plan does not preserve the skill procedure.")
 
         known_ids = set()
-        for step in plan.steps:
+        for index, step in enumerate(plan.steps):
             if step.skill != definition.name:
                 raise InvalidPlanError("A plan step references an unexpected skill.")
             if any(dependency not in known_ids for dependency in step.depends_on):
                 raise InvalidPlanError("Plan dependencies must reference earlier steps.")
+            if definition.step_interfaces:
+                expected = definition.step_interfaces[index]
+                if (
+                    tuple(step.inputs) != expected.inputs
+                    or tuple(step.outputs) != expected.outputs
+                    or tuple(step.depends_on) != expected.depends_on
+                ):
+                    raise InvalidPlanError("The generated plan does not preserve skill step interfaces.")
             known_ids.add(step.id)

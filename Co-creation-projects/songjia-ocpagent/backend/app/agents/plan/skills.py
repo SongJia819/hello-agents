@@ -5,6 +5,14 @@ from app.config.capabilities import CAPABILITIES, AgentType
 
 
 @dataclass(frozen=True)
+class SkillStepDefinition:
+    id: str
+    inputs: tuple[str, ...]
+    outputs: tuple[str, ...]
+    depends_on: tuple[str, ...]
+
+
+@dataclass(frozen=True)
 class SkillDefinition:
     name: str
     relative_path: str
@@ -14,6 +22,7 @@ class SkillDefinition:
     write_only_inputs: tuple[str, ...]
     final_outputs: tuple[str, ...]
     procedure_step_ids: tuple[str, ...]
+    step_interfaces: tuple[SkillStepDefinition, ...] = ()
 
 
 NODE_ADD_SKILL = SkillDefinition(
@@ -54,6 +63,38 @@ NODE_ADD_SKILL = SkillDefinition(
 )
 
 
+OCP_NODE_DELETE_SKILL = SkillDefinition(
+    name="ocp-node-delete",
+    relative_path="ocp-node-delete/SKILL.md",
+    action="delete",
+    resources=("node",),
+    required_inputs=("cluster_id", "node_name"),
+    write_only_inputs=(),
+    final_outputs=("success", "operation", "cluster_id", "node_name", "steps", "message"),
+    procedure_step_ids=("cordon_node", "drain_node", "delete_node"),
+    step_interfaces=(
+        SkillStepDefinition(
+            id="cordon_node",
+            inputs=("cluster_id", "node_name"),
+            outputs=("node_unschedulable",),
+            depends_on=(),
+        ),
+        SkillStepDefinition(
+            id="drain_node",
+            inputs=("cluster_id", "node_name", "node_unschedulable", "drain.force"),
+            outputs=("pods_drained",),
+            depends_on=("cordon_node",),
+        ),
+        SkillStepDefinition(
+            id="delete_node",
+            inputs=("cluster_id", "node_name", "pods_drained"),
+            outputs=("node_deleted",),
+            depends_on=("drain_node",),
+        ),
+    ),
+)
+
+
 class SkillResolutionError(ValueError):
     pass
 
@@ -63,7 +104,10 @@ class SkillRegistry:
 
     def __init__(self, skills_root: Path | None = None):
         self.skills_root = skills_root or Path(__file__).resolve().parents[2] / "skills"
-        self._definitions = {NODE_ADD_SKILL.name: NODE_ADD_SKILL}
+        self._definitions = {
+            NODE_ADD_SKILL.name: NODE_ADD_SKILL,
+            OCP_NODE_DELETE_SKILL.name: OCP_NODE_DELETE_SKILL,
+        }
 
     def resolve(self, action: str, resources: list[str]) -> tuple[SkillDefinition, str]:
         capability = CAPABILITIES[AgentType.PLAN].get(action, {})
