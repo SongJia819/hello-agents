@@ -9,7 +9,7 @@ class LLMSettings(BaseModel):
     think: bool = True
     router_max_tokens: int = Field(default=1024, gt=0)
     query_max_tokens: int = Field(default=2048, gt=0)
-    plan_max_tokens: int = Field(default=2048, gt=0)
+    plan_max_tokens: int = Field(default=4096, gt=0)
     knowledge_chat_max_tokens: int = Field(default=2048, gt=0)
     knowledge_rag_max_tokens: int = Field(default=4096, gt=0)
     router_temperature: float = Field(default=0.0, ge=0.0, le=1.0)
@@ -70,13 +70,19 @@ def create_llm(
     )
 
 query_llm = create_llm(llm_settings.query_max_tokens, temperature=llm_settings.query_temperature)
-# Planning needs concise JSON, not a long reasoning trace. Keep this scoped to
-# Plan so Router, Query, and Knowledge retain their independently configured mode.
-plan_llm = create_llm(
-    llm_settings.plan_max_tokens,
-    llm_settings.model_copy(update={"think": False}),
-    temperature=llm_settings.plan_temperature,
-)
+
+
+def create_plan_llm(settings: LLMSettings | None = None) -> ChatOpenAI:
+    """Create the deterministic, non-thinking client shared by Plan tooling."""
+    plan_settings = (settings or llm_settings).model_copy(update={"think": False})
+    return create_llm(
+        plan_settings.plan_max_tokens,
+        plan_settings,
+        temperature=plan_settings.plan_temperature,
+    )
+
+
+plan_llm = create_plan_llm()
 routing_llm = create_llm(llm_settings.router_max_tokens, temperature=llm_settings.router_temperature)
 
 # Compatibility alias for callers that have not yet selected a dedicated client.

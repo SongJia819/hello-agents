@@ -6,6 +6,7 @@ from app.config.llm import (
     LLMSettings,
     client_options,
     create_llm,
+    create_plan_llm,
     plan_llm,
     query_llm,
     routing_llm,
@@ -35,7 +36,7 @@ class LLMThinkConfigurationTests(unittest.TestCase):
 
         self.assertEqual(settings.router_max_tokens, 1024)
         self.assertEqual(settings.query_max_tokens, 2048)
-        self.assertEqual(settings.plan_max_tokens, 2048)
+        self.assertEqual(settings.plan_max_tokens, 4096)
         self.assertEqual(settings.knowledge_chat_max_tokens, 2048)
         self.assertEqual(settings.knowledge_rag_max_tokens, 4096)
         self.assertGreater(settings.knowledge_rag_max_tokens, settings.knowledge_chat_max_tokens)
@@ -84,6 +85,12 @@ class LLMThinkConfigurationTests(unittest.TestCase):
 
     def test_plan_client_disables_think_mode(self):
         self.assertEqual(plan_llm.extra_body, {"think": False})
+
+    def test_plan_factory_matches_runtime_client_settings(self):
+        client = create_plan_llm()
+        self.assertEqual(client.max_tokens, 4096)
+        self.assertEqual(client.extra_body, {"think": False})
+        self.assertEqual(client.temperature, 0.0)
 
     def test_runtime_clients_use_purpose_specific_temperatures(self):
         self.assertEqual(routing_llm.temperature, LLMSettings().router_temperature)

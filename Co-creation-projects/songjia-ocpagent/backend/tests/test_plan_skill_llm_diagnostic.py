@@ -5,7 +5,6 @@ from types import SimpleNamespace
 from unittest.mock import patch
 
 from app.agents.plan.skill_llm_diagnostic import (
-    MAX_TOKENS,
     TIMEOUT_SECONDS,
     PlanSkillDiagnosticError,
     build_messages,
@@ -39,14 +38,11 @@ class PlanSkillLLMDiagnosticTests(unittest.TestCase):
         self.assertIn("drain_node", rendered)
         self.assertIn("delete_node", rendered)
 
-    def test_client_uses_fixed_non_thinking_4096_token_settings(self):
-        with patch("app.agents.plan.skill_llm_diagnostic.create_llm") as create:
+    def test_client_uses_shared_non_thinking_plan_factory(self):
+        with patch("app.agents.plan.skill_llm_diagnostic.create_plan_llm") as create:
             create_chat_model()
 
-        max_tokens, settings = create.call_args.args
-        self.assertEqual(max_tokens, MAX_TOKENS)
-        self.assertEqual(MAX_TOKENS, 4096)
-        self.assertFalse(settings.think)
+        create.assert_called_once_with()
 
     def test_run_prints_complete_input_and_unvalidated_output(self):
         stdout, stderr = io.StringIO(), io.StringIO()

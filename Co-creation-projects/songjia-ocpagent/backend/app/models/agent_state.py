@@ -14,6 +14,7 @@ class AgentState(TypedDict):
     current_cluster: Cluster
     current_work_cluster: NotRequired[str]
     current_work_node: NotRequired[str]
+    routing_error: NotRequired[str]
     cluster_count: NotRequired[int]
     agent: str
     user_query: str
@@ -28,6 +29,7 @@ class AgentState(TypedDict):
     action: str
     plan: NotRequired[Plan | None]
     plan_input_values: NotRequired[dict[str, str]]
+    plan_llm_output: NotRequired[str]
     knowledge_result: NotRequired[KnowledgeResult | None]
 
 

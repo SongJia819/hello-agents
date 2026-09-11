@@ -10,12 +10,11 @@ from typing import Any, TextIO
 
 from langchain_core.messages import HumanMessage, SystemMessage
 
-from app.config.llm import LLMSettings, create_llm
+from app.config.llm import create_plan_llm
 
 from .prompts import PLAN_PROMPT
 from .skills import SkillRegistry
 
-MAX_TOKENS = 4096
 TIMEOUT_SECONDS = 600
 DEFAULT_CLUSTER_ID = "cluster-001"
 DEFAULT_NODE_NAME = "cluster-001-worker-001"
@@ -57,7 +56,7 @@ def build_messages(
 
 
 def create_chat_model() -> Any:
-    return create_llm(MAX_TOKENS, LLMSettings(think=False))
+    return create_plan_llm()
 
 
 async def invoke_once(

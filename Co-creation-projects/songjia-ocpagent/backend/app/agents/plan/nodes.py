@@ -9,9 +9,10 @@ from langchain_core.messages import HumanMessage, SystemMessage
 
 from app.config.llm import plan_llm
 from app.models.plan import ExecutionMethod, Plan
-from app.observability import await_llm, emit_progress
+from app.observability import await_llm, emit_answer_chunk, emit_progress
 
 from .prompts import PLAN_PROMPT
+from .skill_llm_diagnostic import build_messages as build_delete_node_messages
 from .skills import SkillDefinition, SkillRegistry, SkillResolutionError
 
 
@@ -25,10 +26,12 @@ class PlanNodes:
         planner_llm=None,
         skill_registry: SkillRegistry | None = None,
         *,
+        validate_plan_schema: bool = False,
         validate_raw_llm_schema: bool = False,
     ):
         self.planner_llm = planner_llm or plan_llm
         self.skill_registry = skill_registry or SkillRegistry()
+        self.validate_plan_schema = validate_plan_schema
         self.validate_raw_llm_schema = validate_raw_llm_schema
 
     async def create_plan(self, state):
@@ -39,14 +42,22 @@ class PlanNodes:
                 state.get("action", ""), resources
             )
             plan_input_values = self._plan_input_values(state, definition)
-            messages = [
-                SystemMessage(content=PLAN_PROMPT),
-                HumanMessage(
-                    content=self._planning_request(
-                        state, definition, skill_contract, plan_input_values
-                    )
-                ),
-            ]
+            messages = (
+                build_delete_node_messages(
+                    plan_input_values["cluster_id"],
+                    plan_input_values["node_name"],
+                    skill_registry=self.skill_registry,
+                )
+                if definition.name == "ocp-node-delete"
+                else [
+                    SystemMessage(content=PLAN_PROMPT),
+                    HumanMessage(
+                        content=self._planning_request(
+                            state, definition, skill_contract, plan_input_values
+                        )
+                    ),
+                ]
+            )
             result = await await_llm(
                 lambda: self.planner_llm.ainvoke(messages),
                 agent="plan",
@@ -54,6 +65,16 @@ class PlanNodes:
                 state=state,
                 invocation_metadata=self._invocation_metadata(messages),
             )
+            if not self.validate_plan_schema:
+                output = self._raw_llm_output(result)
+                emit_answer_chunk("plan", "create_plan", output, state=state)
+                emit_progress("plan", "create_plan", "plan_generation", "completed", "计划生成完成。", state=state)
+                return {
+                    "plan": None,
+                    "plan_input_values": plan_input_values,
+                    "plan_llm_output": output,
+                    "answer": output,
+                }
             plan = self._parse_plan(result)
             if self.validate_raw_llm_schema:
                 self._validate_raw_plan(plan, definition)
@@ -74,13 +95,18 @@ class PlanNodes:
         return {"plan": plan, "plan_input_values": plan_input_values}
 
     @staticmethod
+    def _raw_llm_output(result) -> str:
+        content = getattr(result, "content", result)
+        if not isinstance(content, str):
+            raise InvalidPlanError("The LLM returned non-text plan content.")
+        return content
+
+    @staticmethod
     def _parse_plan(raw_plan) -> Plan:
         if isinstance(raw_plan, Plan):
             return raw_plan
 
-        content = getattr(raw_plan, "content", raw_plan)
-        if not isinstance(content, str):
-            raise InvalidPlanError("The LLM returned non-text plan content.")
+        content = PlanNodes._raw_llm_output(raw_plan)
         payload = PlanNodes._json_object(content)
         try:
             return Plan.model_validate(payload)
