@@ -2,7 +2,7 @@ import asyncio
 import json
 import unittest
 from uuid import uuid4
-from unittest.mock import patch
+from unittest.mock import call, patch
 
 from app.agents.plan.nodes import PlanNodes
 from app.agents.plan.skill_llm_diagnostic import build_messages
@@ -91,6 +91,37 @@ def valid_node_delete_plan():
     )
 
 
+def valid_node_delete_response():
+    return {
+        "operation": "node.delete",
+        "cluster_id": "cluster-001",
+        "node_name": "cluster-001-worker-001",
+        "steps": [
+            {
+                "id": "cordon_node",
+                "intent": "oc adm cordon <node_name>",
+                "inputs": ["cluster_id", "node_name"],
+                "outputs": ["node_unschedulable"],
+                "depends_on": [],
+            },
+            {
+                "id": "drain_node",
+                "intent": "oc adm drain <node_name> --force=true",
+                "inputs": ["cluster_id", "node_name", "node_unschedulable"],
+                "outputs": ["pods_drained"],
+                "depends_on": ["cordon_node"],
+            },
+            {
+                "id": "delete_node",
+                "intent": "oc delete node <node_name>",
+                "inputs": ["cluster_id", "node_name", "pods_drained"],
+                "outputs": ["node_deleted"],
+                "depends_on": ["drain_node"],
+            },
+        ],
+    }
+
+
 class FakeDriftedDeleteRouterLLM:
     async def ainvoke(self, _messages):
         return RouterResult(
@@ -110,6 +141,16 @@ class FakeNodeStore:
 
 
 class PlanNodeTests(unittest.IsolatedAsyncioTestCase):
+    def test_delete_node_skill_uses_the_compact_contract(self):
+        self.assertEqual(
+            OCP_NODE_DELETE_SKILL.final_outputs,
+            ("operation", "cluster_id", "node_name", "steps"),
+        )
+        self.assertEqual(
+            OCP_NODE_DELETE_SKILL.step_interfaces[1].inputs,
+            ("cluster_id", "node_name", "node_unschedulable"),
+        )
+
     async def test_default_plan_client_does_not_enable_provider_structured_output(self):
         with patch("app.agents.plan.nodes.plan_llm") as plain_llm:
             nodes = PlanNodes()
@@ -150,40 +191,46 @@ class PlanNodeTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(len(fake_llm.calls), 1)
 
     async def test_node_delete_plan_uses_llm_without_execution(self):
-        fake_llm = FakeStructuredLLM(valid_node_delete_plan())
-        result = await PlanNodes(planner_llm=fake_llm, validate_plan_schema=True).create_plan(
-            {"action": "delete", "resources": ["node"], "current_work_cluster": "cluster-001", "current_work_node": "cluster-001-worker-002"}
-        )
+        response = valid_node_delete_response()
+        fake_llm = FakeTextLLM(json.dumps(response))
+        state = {
+            "action": "delete", "resources": ["node"],
+            "current_work_cluster": "cluster-001", "current_work_node": "cluster-001-worker-002",
+        }
+        with patch("app.agents.plan.nodes.emit_progress") as emit_progress:
+            result = await PlanNodes(planner_llm=fake_llm).create_plan(state)
 
-        plan = result["plan"]
-        self.assertEqual(plan.skill, "ocp-node-delete")
-        self.assertEqual([step.id for step in plan.steps], ["cordon_node", "drain_node", "delete_node"])
-        self.assertEqual(plan.steps[0].inputs, ["cluster_id", "node_name"])
-        self.assertEqual(plan.steps[1].depends_on, ["cordon_node"])
-        self.assertEqual(plan.steps[1].inputs[-1], "drain.force")
-        self.assertEqual(plan.steps[2].outputs, ["node_deleted"])
+        self.assertIsNone(result["plan"])
+        self.assertEqual(result["plan_llm_output"], json.dumps(response))
+        self.assertEqual(result["answer"], json.dumps(response))
+        self.assertEqual(result["validated_plan"], response)
         self.assertEqual(result["plan_input_values"], {"cluster_id": "cluster-001", "node_name": "cluster-001-worker-002"})
-        self.assertEqual(plan.status, "planned")
-        self.assertEqual(plan.target, {"cluster_id": "cluster-001", "node_name": "cluster-001-worker-002"})
-        self.assertEqual(plan.parameters, {"drain": {"force": True}})
-        self.assertEqual(plan.steps[0].method.model_dump(), {"type": "mcp", "name": "cordon_node"})
-        self.assertEqual(plan.steps[1].input_bindings["node_unschedulable"], "$.steps.cordon_node.outputs.node_unschedulable")
-        self.assertEqual(plan.final_output_mappings["node_deleted"], "$.steps.delete_node.outputs.node_deleted")
+        self.assertIn(
+            call(
+                "plan", "create_plan", "schema_validation", "completed",
+                "Schema validation succeeded.", state=state,
+            ),
+            emit_progress.call_args_list,
+        )
         self.assertEqual(len(fake_llm.calls), 1)
         self.assertEqual(
             [message.content for message in fake_llm.calls[0]],
             [message.content for message in build_messages("cluster-001", "cluster-001-worker-002")],
         )
 
-    async def test_plain_llm_json_is_converted_to_plan_state(self):
-        raw_json = "```json\n" + json.dumps(valid_node_delete_plan().model_dump()) + "\n```"
+    async def test_skill_shaped_json_with_extra_keys_and_noncanonical_values_is_accepted(self):
+        response = valid_node_delete_response()
+        response["extra"] = {"any": "value"}
+        response["success"] = "extra non-schema value"
+        response["steps"] = list(reversed(response["steps"]))
+        raw_json = "```json\n" + json.dumps(response) + "\n```"
         fake_llm = FakeTextLLM(raw_json)
-        result = await PlanNodes(planner_llm=fake_llm, validate_plan_schema=True).create_plan(
+        result = await PlanNodes(planner_llm=fake_llm).create_plan(
             {"action": "delete", "resources": ["node"], "current_work_cluster": "cluster-001", "current_work_node": "cluster-001-worker-002"}
         )
 
-        self.assertIsInstance(result["plan"], Plan)
-        self.assertEqual(result["plan"].target, {"cluster_id": "cluster-001", "node_name": "cluster-001-worker-002"})
+        self.assertIsNone(result["plan"])
+        self.assertEqual(result["answer"], raw_json)
         self.assertEqual(len(fake_llm.calls), 1)
 
     async def test_schema_validation_is_disabled_and_raw_llm_output_is_returned(self):
@@ -192,7 +239,9 @@ class PlanNodeTests(unittest.IsolatedAsyncioTestCase):
             "current_work_node": "cluster-001-worker-002", "trace_id": "test-raw-plan-output",
         }
         with patch("app.agents.plan.nodes.emit_answer_chunk") as emit_chunk:
-            result = await PlanNodes(planner_llm=FakeTextLLM("not JSON")).create_plan(state)
+            result = await PlanNodes(
+                planner_llm=FakeTextLLM("not JSON"), validate_plan_schema=False
+            ).create_plan(state)
 
         self.assertIsNone(result["plan"])
         self.assertEqual(result["plan_llm_output"], "not JSON")
@@ -221,27 +270,30 @@ class PlanNodeTests(unittest.IsolatedAsyncioTestCase):
         self.assertIn("cluster_id", result["answer"])
         self.assertEqual(fake_llm.calls, [])
 
-    async def test_incomplete_llm_delete_plan_is_completed_while_schema_validation_is_disabled(self):
-        incomplete = valid_node_delete_plan().model_copy(update={"target": {}})
-        incomplete.__pydantic_fields_set__.discard("target")
-        result = await PlanNodes(planner_llm=FakeStructuredLLM(incomplete), validate_plan_schema=True).create_plan(
-            {"action": "delete", "resources": ["node"], "current_work_cluster": "cluster-001", "current_work_node": "cluster-001-worker-002"}
-        )
-        self.assertEqual(result["plan"].target, {"cluster_id": "cluster-001", "node_name": "cluster-001-worker-002"})
-        self.assertEqual(result["plan"].final_output_mappings, {"node_deleted": "$.steps.delete_node.outputs.node_deleted"})
+    async def test_schema_validation_rejects_missing_root_key(self):
+        response = valid_node_delete_response()
+        response.pop("operation")
+        with patch("app.agents.plan.nodes.emit_progress") as emit_progress:
+            result = await PlanNodes(planner_llm=FakeTextLLM(json.dumps(response))).create_plan(
+                {"action": "delete", "resources": ["node"], "current_work_cluster": "cluster-001", "current_work_node": "cluster-001-worker-002"}
+            )
+        self.assertFalse(result["supported"])
+        self.assertIn("operation", result["answer"])
+        self.assertFalse(any(
+            progress.args[2] == "schema_validation" and progress.args[3] == "completed"
+            for progress in emit_progress.call_args_list
+        ))
 
-    async def test_raw_schema_validation_can_be_enabled_for_a_strict_plan_boundary(self):
-        incomplete = valid_node_delete_plan().model_copy(update={"target": {}})
-        incomplete.__pydantic_fields_set__.discard("target")
-        result = await PlanNodes(
-            planner_llm=FakeStructuredLLM(incomplete), validate_plan_schema=True,
-            validate_raw_llm_schema=True,
-        ).create_plan(
+    async def test_schema_validation_rejects_missing_step_key(self):
+        response = valid_node_delete_response()
+        response["steps"][1].pop("intent")
+        result = await PlanNodes(planner_llm=FakeTextLLM(json.dumps(response))).create_plan(
             {"action": "delete", "resources": ["node"], "current_work_cluster": "cluster-001", "current_work_node": "cluster-001-worker-002"}
         )
         self.assertFalse(result["supported"])
         self.assertIsNone(result["plan"])
-        self.assertIn("missing required schema fields", result["answer"])
+        self.assertIn("drain_node", result["answer"])
+        self.assertIn("intent", result["answer"])
 
     def test_plan_schema_rejects_unknown_fields_and_wrong_types(self):
         payload = valid_node_delete_plan().model_dump()
@@ -250,17 +302,16 @@ class PlanNodeTests(unittest.IsolatedAsyncioTestCase):
         with self.assertRaises(Exception):
             Plan.model_validate({**payload, "target": {"cluster_id": 1, "node_name": "worker-002"}}, strict=True)
 
-    async def test_node_delete_step_interface_change_is_rejected(self):
-        invalid = valid_node_delete_plan()
-        invalid.steps[1] = invalid.steps[1].model_copy(update={"depends_on": []})
-
-        result = await PlanNodes(planner_llm=FakeStructuredLLM(invalid), validate_plan_schema=True).create_plan(
+    async def test_schema_validation_rejects_missing_declared_step(self):
+        response = valid_node_delete_response()
+        response["steps"] = response["steps"][:2]
+        result = await PlanNodes(planner_llm=FakeTextLLM(json.dumps(response))).create_plan(
             {"action": "delete", "resources": ["node"], "current_work_cluster": "cluster-001", "current_work_node": "cluster-001-worker-001"}
         )
 
         self.assertFalse(result["supported"])
         self.assertIsNone(result["plan"])
-        self.assertIn("step interfaces", result["answer"])
+        self.assertIn("delete_node", result["answer"])
 
     async def test_multiple_node_delete_resources_do_not_invoke_llm(self):
         fake_llm = FakeStructuredLLM(valid_node_add_plan())

@@ -191,7 +191,7 @@ def _finish_streamed_answer() -> None:
     print(flush=True)
 
 
-_CONSOLE_PHASES = {"route_classification", "cluster_resolution", "resource_listing", "plan_generation", "recall", "rrf", "rerank", "llm_generation", "llm_thinking"}
+_CONSOLE_PHASES = {"route_classification", "cluster_resolution", "resource_listing", "plan_generation", "schema_validation", "recall", "rrf", "rerank", "llm_generation", "llm_thinking"}
 
 
 def format_progress(event: dict[str, Any]) -> str | None:

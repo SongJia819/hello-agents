@@ -4,10 +4,12 @@ import os
 import subprocess
 from functools import lru_cache
 from pathlib import Path
+from typing import cast
 
 from langchain_core.messages import HumanMessage, SystemMessage
 
 from app.config.llm import plan_llm
+from app.models.agent_state import ValidatedDeleteNodePlan, ValidatedDeleteNodePlanStep
 from app.models.plan import ExecutionMethod, Plan
 from app.observability import await_llm, emit_answer_chunk, emit_progress
 
@@ -26,7 +28,7 @@ class PlanNodes:
         planner_llm=None,
         skill_registry: SkillRegistry | None = None,
         *,
-        validate_plan_schema: bool = False,
+        validate_plan_schema: bool = True,
         validate_raw_llm_schema: bool = False,
     ):
         self.planner_llm = planner_llm or plan_llm
@@ -65,6 +67,24 @@ class PlanNodes:
                 state=state,
                 invocation_metadata=self._invocation_metadata(messages),
             )
+            if definition.name == "ocp-node-delete" and self.validate_plan_schema:
+                output = self._raw_llm_output(result)
+                response = self._json_object(output)
+                self._validate_skill_response_keys(response, definition, skill_contract)
+                validated_plan = self._validated_plan_projection(response, definition)
+                emit_progress(
+                    "plan", "create_plan", "schema_validation", "completed",
+                    "Schema validation succeeded.", state=state,
+                )
+                emit_answer_chunk("plan", "create_plan", output, state=state)
+                emit_progress("plan", "create_plan", "plan_generation", "completed", "计划生成完成。", state=state)
+                return {
+                    "plan": None,
+                    "plan_input_values": plan_input_values,
+                    "plan_llm_output": output,
+                    "validated_plan": validated_plan,
+                    "answer": output,
+                }
             if not self.validate_plan_schema:
                 output = self._raw_llm_output(result)
                 emit_answer_chunk("plan", "create_plan", output, state=state)
@@ -112,6 +132,78 @@ class PlanNodes:
             return Plan.model_validate(payload)
         except ValueError as error:
             raise InvalidPlanError(f"The LLM returned an invalid plan JSON object: {error}") from error
+
+    def _validate_skill_response_keys(
+        self, response: dict, definition: SkillDefinition, skill_contract: str
+    ) -> None:
+        output_schema = self.skill_registry.output_schema(skill_contract)
+        required_root_keys = output_schema.get("required", [])
+        if not isinstance(required_root_keys, list) or not all(
+            isinstance(key, str) for key in required_root_keys
+        ):
+            raise InvalidPlanError("The registered skill output schema has invalid required keys.")
+        missing_root_keys = [key for key in required_root_keys if key not in response]
+        if missing_root_keys:
+            raise InvalidPlanError(
+                f"The LLM response is missing required skill keys: {', '.join(missing_root_keys)}."
+            )
+
+        step_schema = (
+            output_schema.get("properties", {})
+            .get("steps", {})
+            .get("items", {})
+        )
+        required_step_keys = step_schema.get("required", []) if isinstance(step_schema, dict) else []
+        if not isinstance(required_step_keys, list) or not all(
+            isinstance(key, str) for key in required_step_keys
+        ):
+            raise InvalidPlanError("The registered skill output schema has invalid step required keys.")
+
+        response_steps = response.get("steps")
+        if not isinstance(response_steps, list):
+            raise InvalidPlanError("The LLM response is missing declared procedure steps.")
+        for step_id in definition.procedure_step_ids:
+            matched_step = next(
+                (
+                    step for step in response_steps
+                    if isinstance(step, dict) and step.get("id") == step_id
+                ),
+                None,
+            )
+            if matched_step is None:
+                raise InvalidPlanError(f"The LLM response is missing declared procedure step: {step_id}.")
+            missing_step_keys = [key for key in required_step_keys if key not in matched_step]
+            if missing_step_keys:
+                raise InvalidPlanError(
+                    f"The LLM response step {step_id} is missing required skill keys: "
+                    f"{', '.join(missing_step_keys)}."
+                )
+
+    @staticmethod
+    def _validated_plan_projection(
+        response: dict, definition: SkillDefinition
+    ) -> ValidatedDeleteNodePlan:
+        steps_by_id = {
+            step["id"]: step
+            for step in response["steps"]
+            if isinstance(step, dict) and step.get("id") in definition.procedure_step_ids
+        }
+        steps = [
+            cast(ValidatedDeleteNodePlanStep, {
+                "id": steps_by_id[step_id]["id"],
+                "intent": steps_by_id[step_id]["intent"],
+                "inputs": steps_by_id[step_id]["inputs"],
+                "outputs": steps_by_id[step_id]["outputs"],
+                "depends_on": steps_by_id[step_id]["depends_on"],
+            })
+            for step_id in definition.procedure_step_ids
+        ]
+        return cast(ValidatedDeleteNodePlan, {
+            "operation": response["operation"],
+            "cluster_id": response["cluster_id"],
+            "node_name": response["node_name"],
+            "steps": steps,
+        })
 
     @staticmethod
     def _json_object(content: str) -> dict:

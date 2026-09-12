@@ -1,7 +1,7 @@
 import asyncio
 import unittest
 
-from app.console_agent_test import MCPStartupError, console_loop, format_state, run_console, start_fresh_mcp_server
+from app.console_agent_test import MCPStartupError, console_loop, format_progress, format_state, run_console, start_fresh_mcp_server
 from app.models.plan import Plan, PlanStep
 
 
@@ -183,3 +183,10 @@ class ConsoleAgentTests(unittest.IsolatedAsyncioTestCase):
         rendered = format_state({"answer": "ok", "password": "secret"})
         self.assertIn('"answer": "ok"', rendered)
         self.assertNotIn("secret", rendered)
+
+    def test_console_renders_schema_validation_success_with_timestamp(self):
+        rendered = format_progress({
+            "event": "progress", "timestamp": "2026-09-12T12:00:00+00:00",
+            "phase": "schema_validation", "message": "Schema validation succeeded.",
+        })
+        self.assertRegex(rendered, r"^\[.*\] Schema validation succeeded\.$")

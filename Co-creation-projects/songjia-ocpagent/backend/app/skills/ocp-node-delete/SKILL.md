@@ -17,17 +17,13 @@ MCP execution tool, alter mock state, or request cluster credentials.
   "required": ["cluster_id", "node_name"],
   "properties": {
     "cluster_id": {"type": "string", "minLength": 1},
-    "node_name": {"type": "string", "minLength": 1},
-    "drain": {
-      "type": "object",
-      "properties": {"force": {"type": "boolean", "const": true, "default": true}}
-    }
+    "node_name": {"type": "string", "minLength": 1}
   }
 }
 ```
 
-`drain.force` is fixed to `true`; it is planning metadata and does not allow
-callers to execute a command.
+The drain command's `--force=true` option is fixed operational intent, not a
+plan input and does not allow callers to execute a command.
 
 ## Procedure
 
@@ -51,7 +47,7 @@ The generated plan MUST contain exactly these three steps in order.
    {
      "id": "drain_node",
      "intent": "oc adm drain <node_name> --force=true",
-     "inputs": ["cluster_id", "node_name", "node_unschedulable", "drain.force"],
+     "inputs": ["cluster_id", "node_name", "node_unschedulable"],
      "outputs": ["pods_drained"],
      "depends_on": ["cordon_node"]
    }
@@ -74,14 +70,25 @@ The generated plan MUST contain exactly these three steps in order.
 ```json
 {
   "type": "object",
-  "required": ["success", "operation", "cluster_id", "node_name", "steps", "message"],
+  "required": ["operation", "cluster_id", "node_name", "steps"],
   "properties": {
-    "success": {"type": "boolean"},
     "operation": {"const": "node.delete"},
     "cluster_id": {"type": "string"},
     "node_name": {"type": "string"},
-    "steps": {"type": "array"},
-    "message": {"type": "string"}
+    "steps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "intent", "inputs", "outputs", "depends_on"],
+        "properties": {
+          "id": {"type": "string"},
+          "intent": {"type": "string"},
+          "inputs": {"type": "array"},
+          "outputs": {"type": "array"},
+          "depends_on": {"type": "array"}
+        }
+      }
+    }
   }
 }
 ```

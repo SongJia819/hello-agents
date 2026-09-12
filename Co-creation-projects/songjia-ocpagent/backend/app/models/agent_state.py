@@ -5,6 +5,25 @@ from app.models.knowledge import KnowledgeResult
 from langgraph.graph.message import add_messages
 
 
+class ValidatedDeleteNodePlanStep(TypedDict):
+    """The required step projection from the delete-node skill output schema."""
+
+    id: str
+    intent: str
+    inputs: list[str]
+    outputs: list[str]
+    depends_on: list[str]
+
+
+class ValidatedDeleteNodePlan(TypedDict):
+    """The compact delete-node plan shape accepted by key-presence validation."""
+
+    operation: str
+    cluster_id: str
+    node_name: str
+    steps: list[ValidatedDeleteNodePlanStep]
+
+
 class AgentState(TypedDict):
     messages: Annotated[list, add_messages]
     plans: List[str]
@@ -30,6 +49,7 @@ class AgentState(TypedDict):
     plan: NotRequired[Plan | None]
     plan_input_values: NotRequired[dict[str, str]]
     plan_llm_output: NotRequired[str]
+    validated_plan: NotRequired[ValidatedDeleteNodePlan]
     knowledge_result: NotRequired[KnowledgeResult | None]
 
 

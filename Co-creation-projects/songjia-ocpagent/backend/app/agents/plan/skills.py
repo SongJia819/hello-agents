@@ -1,3 +1,4 @@
+import json
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -70,7 +71,7 @@ OCP_NODE_DELETE_SKILL = SkillDefinition(
     resources=("node",),
     required_inputs=("cluster_id", "node_name"),
     write_only_inputs=(),
-    final_outputs=("success", "operation", "cluster_id", "node_name", "steps", "message"),
+    final_outputs=("operation", "cluster_id", "node_name", "steps"),
     procedure_step_ids=("cordon_node", "drain_node", "delete_node"),
     step_interfaces=(
         SkillStepDefinition(
@@ -81,7 +82,7 @@ OCP_NODE_DELETE_SKILL = SkillDefinition(
         ),
         SkillStepDefinition(
             id="drain_node",
-            inputs=("cluster_id", "node_name", "node_unschedulable", "drain.force"),
+            inputs=("cluster_id", "node_name", "node_unschedulable"),
             outputs=("pods_drained",),
             depends_on=("cordon_node",),
         ),
@@ -129,3 +130,23 @@ class SkillRegistry:
             raise SkillResolutionError("The registered local skill is malformed.")
 
         return definition, content
+
+    @staticmethod
+    def output_schema(skill_contract: str) -> dict:
+        """Read the LLM response schema directly from an approved skill contract."""
+        _, marker, output_section = skill_contract.partition("## Output Schema")
+        if not marker:
+            raise SkillResolutionError("The registered local skill has no output schema.")
+        _, fence, schema_text = output_section.partition("```json")
+        if not fence:
+            raise SkillResolutionError("The registered local skill output schema is malformed.")
+        schema_text, closing_fence, _ = schema_text.partition("```")
+        if not closing_fence:
+            raise SkillResolutionError("The registered local skill output schema is malformed.")
+        try:
+            schema = json.loads(schema_text)
+        except json.JSONDecodeError as error:
+            raise SkillResolutionError("The registered local skill output schema is malformed.") from error
+        if not isinstance(schema, dict):
+            raise SkillResolutionError("The registered local skill output schema is malformed.")
+        return schema
