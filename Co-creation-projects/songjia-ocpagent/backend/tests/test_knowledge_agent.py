@@ -250,5 +250,7 @@ class KnowledgeRoutingTests(unittest.IsolatedAsyncioTestCase):
             async def invoke(self, state):
                 return state
 
-        graph = RouterGraph(RouterNodes(router_llm=FakeRouteLLM()), Agent(), Agent(), Agent()).graph
+        graph = RouterGraph(
+            RouterNodes(router_llm=FakeRouteLLM()), Agent(), Agent(), Agent(), Agent()
+        ).graph
         self.assertIn("knowledge", graph.get_graph().nodes)

@@ -190,3 +190,10 @@ class ConsoleAgentTests(unittest.IsolatedAsyncioTestCase):
             "phase": "schema_validation", "message": "Schema validation succeeded.",
         })
         self.assertRegex(rendered, r"^\[.*\] Schema validation succeeded\.$")
+
+    def test_console_renders_executor_execution_milestones_with_timestamp(self):
+        rendered = format_progress({
+            "event": "progress", "timestamp": "2026-09-12T12:00:00+00:00",
+            "phase": "plan_execution", "message": "步骤执行成功：cordon_node。",
+        })
+        self.assertRegex(rendered, r"^\[.*\] 步骤执行成功：cordon_node。$")

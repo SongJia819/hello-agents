@@ -9,6 +9,9 @@ from app.agents.query.agent import QueryAgent
 from app.agents.plan.nodes import PlanNodes
 from app.agents.plan.graph import PlanGraph
 from app.agents.plan.agent import PlanAgent
+from app.agents.executor.nodes import ExecutorNodes
+from app.agents.executor.graph import ExecutorGraph
+from app.agents.executor.agent import ExecutorAgent
 from app.agents.knowledge.nodes import KnowledgeNodes
 from app.agents.knowledge.graph import KnowledgeGraph
 from app.agents.knowledge.agent import KnowledgeAgent
@@ -40,6 +43,11 @@ class Container:
         self.plan_graph = PlanGraph(self.plan_nodes)
         self.plan_agent = PlanAgent(self.plan_graph.graph)
 
+        # Executor Agent (bounded to registered operations on the local mock MCP service)
+        self.executor_nodes = ExecutorNodes(self.mcp_client)
+        self.executor_graph = ExecutorGraph(self.executor_nodes)
+        self.executor_agent = ExecutorAgent(self.executor_graph.graph)
+
         # Knowledge Agent (local Qdrant/Ollama documentation answering)
         self.knowledge_service = KnowledgeAnswerService()
         self.knowledge_chat_service = KnowledgeChatService()
@@ -50,7 +58,8 @@ class Container:
         # Router Agent
         self.router_nodes = RouterNodes()
         self.router_graph = RouterGraph(
-            self.router_nodes, self.query_agent, self.plan_agent, self.knowledge_agent
+            self.router_nodes, self.query_agent, self.plan_agent, self.knowledge_agent,
+            self.executor_agent,
         )
         self.router_agent = RouterAgent(self.router_graph.graph)
 

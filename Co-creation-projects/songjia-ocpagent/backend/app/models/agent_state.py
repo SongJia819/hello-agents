@@ -1,4 +1,4 @@
-from typing import TypedDict, List, Annotated, Any, NotRequired
+from typing import TypedDict, List, Annotated, Any, Literal, NotRequired
 from app.models.cluster import Cluster
 from app.models.plan import Plan
 from app.models.knowledge import KnowledgeResult
@@ -22,6 +22,30 @@ class ValidatedDeleteNodePlan(TypedDict):
     cluster_id: str
     node_name: str
     steps: list[ValidatedDeleteNodePlanStep]
+
+
+class ExecutionStepState(TypedDict):
+    """One Executor outcome for a declared validated-plan step."""
+
+    id: str
+    depends_on: list[str]
+    status: Literal["succeeded", "failed", "blocked"]
+    result: NotRequired[dict[str, Any]]
+    error: NotRequired[str]
+    duration_ms: float
+
+
+class PlanExecutionResult(TypedDict):
+    """Aggregate outcome of executing one bounded mock plan."""
+
+    success: bool
+    status: Literal["completed", "failed"]
+    operation: str
+    cluster_id: str
+    node_name: str
+    completed_step_ids: list[str]
+    failed_step_id: NotRequired[str]
+    message: str
 
 
 class AgentState(TypedDict):
@@ -50,6 +74,8 @@ class AgentState(TypedDict):
     plan_input_values: NotRequired[dict[str, str]]
     plan_llm_output: NotRequired[str]
     validated_plan: NotRequired[ValidatedDeleteNodePlan]
+    execution_steps: NotRequired[list[ExecutionStepState]]
+    execution_result: NotRequired[PlanExecutionResult]
     knowledge_result: NotRequired[KnowledgeResult | None]
 
 
