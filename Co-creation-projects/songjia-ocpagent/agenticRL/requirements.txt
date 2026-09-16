@@ -1,0 +1,6 @@
+# Install a PyTorch build appropriate for the local CPU/CUDA environment first.
+torch>=2.2
+transformers>=4.48
+datasets>=3.0
+peft>=0.14
+accelerate>=1.0
