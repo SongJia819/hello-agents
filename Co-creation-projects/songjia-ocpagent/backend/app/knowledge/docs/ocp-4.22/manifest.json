@@ -1,0 +1,1644 @@
+{
+  "catalog_url": "/home/mystic/project/hello-agents/Co-creation-projects/songjia-ocpagent/backend/app/knowledge/docs/ocp-4.22/html-manifest.tsv",
+  "collected_at": "2026-09-05T05:41:30.315016+00:00",
+  "documents": {
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/advanced_networking/index": {
+      "error": null,
+      "output": "advanced_networking.md",
+      "status": "completed",
+      "title": "Advanced networking",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/advanced_networking/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/ai_applications/index": {
+      "error": null,
+      "output": "ai_applications.md",
+      "status": "completed",
+      "title": "AI applications",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/ai_applications/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/ai_workloads/index": {
+      "error": null,
+      "output": "ai_workloads.md",
+      "status": "completed",
+      "title": "AI workloads",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/ai_workloads/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/api_overview/index": {
+      "error": null,
+      "output": "api_overview.md",
+      "status": "completed",
+      "title": "API overview",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/api_overview/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/architecture/index": {
+      "error": null,
+      "output": "architecture.md",
+      "status": "completed",
+      "title": "Architecture",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/architecture/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/authentication_and_authorization/index": {
+      "error": null,
+      "output": "authentication_and_authorization.md",
+      "status": "completed",
+      "title": "Authentication and authorization",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/authentication_and_authorization/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/authorization_apis/index": {
+      "error": null,
+      "output": "authorization_apis.md",
+      "status": "completed",
+      "title": "Authorization APIs",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/authorization_apis/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/autoscale_apis/index": {
+      "error": null,
+      "output": "autoscale_apis.md",
+      "status": "completed",
+      "title": "Autoscale APIs",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/autoscale_apis/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/backup_and_restore/index": {
+      "error": null,
+      "output": "backup_and_restore.md",
+      "status": "completed",
+      "title": "Backup and restore",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/backup_and_restore/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/building_applications/index": {
+      "error": null,
+      "output": "building_applications.md",
+      "status": "completed",
+      "title": "Building applications",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/building_applications/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/builds_using_buildconfig/index": {
+      "error": null,
+      "output": "builds_using_buildconfig.md",
+      "status": "completed",
+      "title": "Builds using BuildConfig",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/builds_using_buildconfig/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/builds_using_shipwright/index": {
+      "error": null,
+      "output": "builds_using_shipwright.md",
+      "status": "completed",
+      "title": "Builds using Shipwright",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/builds_using_shipwright/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/cicd_overview/index": {
+      "error": null,
+      "output": "cicd_overview.md",
+      "status": "completed",
+      "title": "CI/CD overview",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/cicd_overview/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/cli_tools/index": {
+      "error": null,
+      "output": "cli_tools.md",
+      "status": "completed",
+      "title": "CLI tools",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/cli_tools/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/cluster_apis/index": {
+      "error": null,
+      "output": "cluster_apis.md",
+      "status": "completed",
+      "title": "Cluster APIs",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/cluster_apis/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/cluster_observability_operator/index": {
+      "error": null,
+      "output": "cluster_observability_operator.md",
+      "status": "completed",
+      "title": "Cluster Observability Operator",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/cluster_observability_operator/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/common_object_reference/index": {
+      "error": null,
+      "output": "common_object_reference.md",
+      "status": "completed",
+      "title": "Common object reference",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/common_object_reference/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/config_apis/index": {
+      "error": null,
+      "output": "config_apis.md",
+      "status": "completed",
+      "title": "Config APIs",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/config_apis/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/configuring_network_settings/index": {
+      "error": null,
+      "output": "configuring_network_settings.md",
+      "status": "completed",
+      "title": "Configuring network settings",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/configuring_network_settings/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/console_apis/index": {
+      "error": null,
+      "output": "console_apis.md",
+      "status": "completed",
+      "title": "Console APIs",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/console_apis/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/disconnected_environments/index": {
+      "error": null,
+      "output": "disconnected_environments.md",
+      "status": "completed",
+      "title": "Disconnected environments",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/disconnected_environments/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/distributed_tracing/index": {
+      "error": null,
+      "output": "distributed_tracing.md",
+      "status": "completed",
+      "title": "Distributed Tracing",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/distributed_tracing/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/edge_computing/index": {
+      "error": null,
+      "output": "edge_computing.md",
+      "status": "completed",
+      "title": "Edge computing",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/edge_computing/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/etcd/index": {
+      "error": null,
+      "output": "etcd.md",
+      "status": "completed",
+      "title": "etcd",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/etcd/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/extension_apis/index": {
+      "error": null,
+      "output": "extension_apis.md",
+      "status": "completed",
+      "title": "Extension APIs",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/extension_apis/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/extensions/index": {
+      "error": null,
+      "output": "extensions.md",
+      "status": "completed",
+      "title": "Extensions",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/extensions/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/gitops/index": {
+      "error": null,
+      "output": "gitops.md",
+      "status": "completed",
+      "title": "GitOps",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/gitops/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/hardware_accelerators/index": {
+      "error": null,
+      "output": "hardware_accelerators.md",
+      "status": "completed",
+      "title": "Hardware accelerators",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/hardware_accelerators/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/hardware_networks/index": {
+      "error": null,
+      "output": "hardware_networks.md",
+      "status": "completed",
+      "title": "Hardware networks",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/hardware_networks/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/hosted_control_planes/index": {
+      "error": null,
+      "output": "hosted_control_planes.md",
+      "status": "completed",
+      "title": "Hosted control planes",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/hosted_control_planes/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/image_apis/index": {
+      "error": null,
+      "output": "image_apis.md",
+      "status": "completed",
+      "title": "Image APIs",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/image_apis/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/images/index": {
+      "error": null,
+      "output": "images.md",
+      "status": "completed",
+      "title": "Images",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/images/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/ingress_and_load_balancing/index": {
+      "error": null,
+      "output": "ingress_and_load_balancing.md",
+      "status": "completed",
+      "title": "Ingress and load balancing",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/ingress_and_load_balancing/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/installation_configuration/index": {
+      "error": null,
+      "output": "installation_configuration.md",
+      "status": "completed",
+      "title": "Installation configuration",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/installation_configuration/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/installation_overview/index": {
+      "error": null,
+      "output": "installation_overview.md",
+      "status": "completed",
+      "title": "Installation overview",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/installation_overview/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/installing_a_two_node_openshift_cluster/index": {
+      "error": null,
+      "output": "installing_a_two_node_openshift_cluster.md",
+      "status": "completed",
+      "title": "Installing a Two Node OpenShift Cluster",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/installing_a_two_node_openshift_cluster/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/installing_an_on-premise_cluster_with_the_agent-based_installer/index": {
+      "error": null,
+      "output": "installing_an_on-premise_cluster_with_the_agent-based_installer.md",
+      "status": "completed",
+      "title": "Installing an on-premise cluster with the Agent-based Installer",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/installing_an_on-premise_cluster_with_the_agent-based_installer/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/installing_ibm_cloud_bare_metal_classic/index": {
+      "error": null,
+      "output": "installing_ibm_cloud_bare_metal_classic.md",
+      "status": "completed",
+      "title": "Installing IBM Cloud Bare Metal (Classic)",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/installing_ibm_cloud_bare_metal_classic/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/installing_on-premise_with_assisted_installer/index": {
+      "error": null,
+      "output": "installing_on-premise_with_assisted_installer.md",
+      "status": "completed",
+      "title": "Installing on-premise with Assisted Installer",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/installing_on-premise_with_assisted_installer/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/installing_on_a_single_node/index": {
+      "error": null,
+      "output": "installing_on_a_single_node.md",
+      "status": "completed",
+      "title": "Installing on a single node",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/installing_on_a_single_node/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/installing_on_alibaba_cloud/index": {
+      "error": null,
+      "output": "installing_on_alibaba_cloud.md",
+      "status": "completed",
+      "title": "Installing on Alibaba Cloud",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/installing_on_alibaba_cloud/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/installing_on_any_platform/index": {
+      "error": null,
+      "output": "installing_on_any_platform.md",
+      "status": "completed",
+      "title": "Installing on any platform",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/installing_on_any_platform/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/installing_on_aws/index": {
+      "error": null,
+      "output": "installing_on_aws.md",
+      "status": "completed",
+      "title": "Installing on AWS",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/installing_on_aws/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/installing_on_azure/index": {
+      "error": null,
+      "output": "installing_on_azure.md",
+      "status": "completed",
+      "title": "Installing on Azure",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/installing_on_azure/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/installing_on_azure_stack_hub/index": {
+      "error": null,
+      "output": "installing_on_azure_stack_hub.md",
+      "status": "completed",
+      "title": "Installing on Azure Stack Hub",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/installing_on_azure_stack_hub/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/installing_on_bare_metal/index": {
+      "error": null,
+      "output": "installing_on_bare_metal.md",
+      "status": "completed",
+      "title": "Installing on bare metal",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/installing_on_bare_metal/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/installing_on_google_cloud/index": {
+      "error": null,
+      "output": "installing_on_google_cloud.md",
+      "status": "completed",
+      "title": "Installing on Google Cloud",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/installing_on_google_cloud/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/installing_on_ibm_cloud/index": {
+      "error": null,
+      "output": "installing_on_ibm_cloud.md",
+      "status": "completed",
+      "title": "Installing on IBM Cloud",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/installing_on_ibm_cloud/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/installing_on_ibm_power/index": {
+      "error": null,
+      "output": "installing_on_ibm_power.md",
+      "status": "completed",
+      "title": "Installing on IBM Power",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/installing_on_ibm_power/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/installing_on_ibm_power_virtual_server/index": {
+      "error": null,
+      "output": "installing_on_ibm_power_virtual_server.md",
+      "status": "completed",
+      "title": "Installing on IBM Power Virtual Server",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/installing_on_ibm_power_virtual_server/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/installing_on_ibm_powervc/index": {
+      "error": null,
+      "output": "installing_on_ibm_powervc.md",
+      "status": "completed",
+      "title": "Installing on IBM PowerVC",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/installing_on_ibm_powervc/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/installing_on_ibm_z_and_ibm_linuxone/index": {
+      "error": null,
+      "output": "installing_on_ibm_z_and_ibm_linuxone.md",
+      "status": "completed",
+      "title": "Installing on IBM Z and IBM LinuxONE",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/installing_on_ibm_z_and_ibm_linuxone/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/installing_on_nutanix/index": {
+      "error": null,
+      "output": "installing_on_nutanix.md",
+      "status": "completed",
+      "title": "Installing on Nutanix",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/installing_on_nutanix/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/installing_on_openstack/index": {
+      "error": null,
+      "output": "installing_on_openstack.md",
+      "status": "completed",
+      "title": "Installing on OpenStack",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/installing_on_openstack/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/installing_on_oracle_database_appliance/index": {
+      "error": null,
+      "output": "installing_on_oracle_database_appliance.md",
+      "status": "completed",
+      "title": "Installing on Oracle Database Appliance",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/installing_on_oracle_database_appliance/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/installing_on_oracle_distributed_cloud/index": {
+      "error": null,
+      "output": "installing_on_oracle_distributed_cloud.md",
+      "status": "completed",
+      "title": "Installing on Oracle Distributed Cloud",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/installing_on_oracle_distributed_cloud/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/installing_on_oracle_edge_cloud/index": {
+      "error": null,
+      "output": "installing_on_oracle_edge_cloud.md",
+      "status": "completed",
+      "title": "Installing on Oracle Edge Cloud",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/installing_on_oracle_edge_cloud/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/installing_on_vmware_vsphere/index": {
+      "error": null,
+      "output": "installing_on_vmware_vsphere.md",
+      "status": "completed",
+      "title": "Installing on VMware vSphere",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/installing_on_vmware_vsphere/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/jenkins/index": {
+      "error": null,
+      "output": "jenkins.md",
+      "status": "completed",
+      "title": "Jenkins",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/jenkins/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/kubernetes_nmstate/index": {
+      "error": null,
+      "output": "kubernetes_nmstate.md",
+      "status": "completed",
+      "title": "Kubernetes NMState",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/kubernetes_nmstate/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/logging/index": {
+      "error": null,
+      "output": "logging.md",
+      "status": "completed",
+      "title": "Logging",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/logging/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/machine_apis/index": {
+      "error": null,
+      "output": "machine_apis.md",
+      "status": "completed",
+      "title": "Machine APIs",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/machine_apis/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/machine_configuration/index": {
+      "error": null,
+      "output": "machine_configuration.md",
+      "status": "completed",
+      "title": "Machine configuration",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/machine_configuration/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/machine_management/index": {
+      "error": null,
+      "output": "machine_management.md",
+      "status": "completed",
+      "title": "Machine management",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/machine_management/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/metadata_apis/index": {
+      "error": null,
+      "output": "metadata_apis.md",
+      "status": "completed",
+      "title": "Metadata APIs",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/metadata_apis/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/migrating_from_version_3_to_4/index": {
+      "error": null,
+      "output": "migrating_from_version_3_to_4.md",
+      "status": "completed",
+      "title": "Migrating from version 3 to 4",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/migrating_from_version_3_to_4/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/monitoring/index": {
+      "error": null,
+      "output": "monitoring.md",
+      "status": "completed",
+      "title": "Monitoring",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/monitoring/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/monitoring_apis/index": {
+      "error": null,
+      "output": "monitoring_apis.md",
+      "status": "completed",
+      "title": "Monitoring APIs",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/monitoring_apis/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/multiple_networks/index": {
+      "error": null,
+      "output": "multiple_networks.md",
+      "status": "completed",
+      "title": "Multiple networks",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/multiple_networks/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/network_apis/index": {
+      "error": null,
+      "output": "network_apis.md",
+      "status": "completed",
+      "title": "Network APIs",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/network_apis/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/network_observability/index": {
+      "error": null,
+      "output": "network_observability.md",
+      "status": "completed",
+      "title": "Network Observability",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/network_observability/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/network_observability_operator/index": {
+      "error": null,
+      "output": "network_observability_operator.md",
+      "status": "completed",
+      "title": "Network Observability Operator",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/network_observability_operator/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/network_security/index": {
+      "error": null,
+      "output": "network_security.md",
+      "status": "completed",
+      "title": "Network security",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/network_security/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/networking_operators/index": {
+      "error": null,
+      "output": "networking_operators.md",
+      "status": "completed",
+      "title": "Networking Operators",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/networking_operators/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/networking_overview/index": {
+      "error": null,
+      "output": "networking_overview.md",
+      "status": "completed",
+      "title": "Networking overview",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/networking_overview/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/node_apis/index": {
+      "error": null,
+      "output": "node_apis.md",
+      "status": "completed",
+      "title": "Node APIs",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/node_apis/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/nodes/index": {
+      "error": null,
+      "output": "nodes.md",
+      "status": "completed",
+      "title": "Nodes",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/nodes/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/oauth_apis/index": {
+      "error": null,
+      "output": "oauth_apis.md",
+      "status": "completed",
+      "title": "OAuth APIs",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/oauth_apis/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/observability_overview/index": {
+      "error": null,
+      "output": "observability_overview.md",
+      "status": "completed",
+      "title": "Observability overview",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/observability_overview/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/openshift_lightspeed/index": {
+      "error": null,
+      "output": "openshift_lightspeed.md",
+      "status": "completed",
+      "title": "OpenShift Lightspeed",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/openshift_lightspeed/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/openshift_sandboxed_containers/index": {
+      "error": null,
+      "output": "openshift_sandboxed_containers.md",
+      "status": "completed",
+      "title": "OpenShift sandboxed containers",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/openshift_sandboxed_containers/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/operator_apis/index": {
+      "error": null,
+      "output": "operator_apis.md",
+      "status": "completed",
+      "title": "Operator APIs",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/operator_apis/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/operatorhub_apis/index": {
+      "error": null,
+      "output": "operatorhub_apis.md",
+      "status": "completed",
+      "title": "OperatorHub APIs",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/operatorhub_apis/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/operators/index": {
+      "error": null,
+      "output": "operators.md",
+      "status": "completed",
+      "title": "Operators",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/operators/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/overview/index": {
+      "error": null,
+      "output": "overview.md",
+      "status": "completed",
+      "title": "Overview",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/overview/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/ovn-kubernetes_network_plugin/index": {
+      "error": null,
+      "output": "ovn-kubernetes_network_plugin.md",
+      "status": "completed",
+      "title": "OVN-Kubernetes network plugin",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/ovn-kubernetes_network_plugin/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/pipelines/index": {
+      "error": null,
+      "output": "pipelines.md",
+      "status": "completed",
+      "title": "Pipelines",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/pipelines/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/policy_apis/index": {
+      "error": null,
+      "output": "policy_apis.md",
+      "status": "completed",
+      "title": "Policy APIs",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/policy_apis/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/postinstallation_configuration/index": {
+      "error": null,
+      "output": "postinstallation_configuration.md",
+      "status": "completed",
+      "title": "Postinstallation configuration",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/postinstallation_configuration/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/power_monitoring/index": {
+      "error": null,
+      "output": "power_monitoring.md",
+      "status": "completed",
+      "title": "Power Monitoring",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/power_monitoring/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/project_apis/index": {
+      "error": null,
+      "output": "project_apis.md",
+      "status": "completed",
+      "title": "Project APIs",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/project_apis/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/provisioning_apis/index": {
+      "error": null,
+      "output": "provisioning_apis.md",
+      "status": "completed",
+      "title": "Provisioning APIs",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/provisioning_apis/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/rbac_apis/index": {
+      "error": null,
+      "output": "rbac_apis.md",
+      "status": "completed",
+      "title": "RBAC APIs",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/rbac_apis/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/red_hat_build_of_opentelemetry/index": {
+      "error": null,
+      "output": "red_hat_build_of_opentelemetry.md",
+      "status": "completed",
+      "title": "Red Hat build of OpenTelemetry",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/red_hat_build_of_opentelemetry/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/registry/index": {
+      "error": null,
+      "output": "registry.md",
+      "status": "completed",
+      "title": "Registry",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/registry/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/release_notes/index": {
+      "error": null,
+      "output": "release_notes.md",
+      "status": "completed",
+      "title": "Release notes",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/release_notes/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/role_apis/index": {
+      "error": null,
+      "output": "role_apis.md",
+      "status": "completed",
+      "title": "Role APIs",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/role_apis/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/scalability_and_performance/index": {
+      "error": null,
+      "output": "scalability_and_performance.md",
+      "status": "completed",
+      "title": "Scalability and performance",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/scalability_and_performance/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/schedule_and_quota_apis/index": {
+      "error": null,
+      "output": "schedule_and_quota_apis.md",
+      "status": "completed",
+      "title": "Schedule and quota APIs",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/schedule_and_quota_apis/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/security_and_compliance/index": {
+      "error": null,
+      "output": "security_and_compliance.md",
+      "status": "completed",
+      "title": "Security and compliance",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/security_and_compliance/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/security_apis/index": {
+      "error": null,
+      "output": "security_apis.md",
+      "status": "completed",
+      "title": "Security APIs",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/security_apis/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/serverless/index": {
+      "error": null,
+      "output": "serverless.md",
+      "status": "completed",
+      "title": "Serverless",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/serverless/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/service_mesh/index": {
+      "error": null,
+      "output": "service_mesh.md",
+      "status": "completed",
+      "title": "Service Mesh",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/service_mesh/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/specialized_hardware_and_driver_enablement/index": {
+      "error": null,
+      "output": "specialized_hardware_and_driver_enablement.md",
+      "status": "completed",
+      "title": "Specialized hardware and driver enablement",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/specialized_hardware_and_driver_enablement/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/storage/index": {
+      "error": null,
+      "output": "storage.md",
+      "status": "completed",
+      "title": "Storage",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/storage/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/storage_apis/index": {
+      "error": null,
+      "output": "storage_apis.md",
+      "status": "completed",
+      "title": "Storage APIs",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/storage_apis/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/support/index": {
+      "error": null,
+      "output": "support.md",
+      "status": "completed",
+      "title": "Support",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/support/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/template_apis/index": {
+      "error": null,
+      "output": "template_apis.md",
+      "status": "completed",
+      "title": "Template APIs",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/template_apis/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/tutorials/index": {
+      "error": null,
+      "output": "tutorials.md",
+      "status": "completed",
+      "title": "Tutorials",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/tutorials/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/updating_clusters/index": {
+      "error": null,
+      "output": "updating_clusters.md",
+      "status": "completed",
+      "title": "Updating clusters",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/updating_clusters/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/user_and_group_apis/index": {
+      "error": null,
+      "output": "user_and_group_apis.md",
+      "status": "completed",
+      "title": "User and group APIs",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/user_and_group_apis/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/validation_and_troubleshooting/index": {
+      "error": null,
+      "output": "validation_and_troubleshooting.md",
+      "status": "completed",
+      "title": "Validation and troubleshooting",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/validation_and_troubleshooting/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/virtualization/index": {
+      "error": null,
+      "output": "virtualization.md",
+      "status": "completed",
+      "title": "Virtualization",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/virtualization/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/virtualized_control_planes/index": {
+      "error": null,
+      "output": "virtualized_control_planes.md",
+      "status": "completed",
+      "title": "Virtualized control planes",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/virtualized_control_planes/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/web_console/index": {
+      "error": null,
+      "output": "web_console.md",
+      "status": "completed",
+      "title": "Web console",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/web_console/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/windows_container_support_for_openshift/index": {
+      "error": null,
+      "output": "windows_container_support_for_openshift.md",
+      "status": "completed",
+      "title": "Windows Container Support for OpenShift",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/windows_container_support_for_openshift/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/workloads_apis/index": {
+      "error": null,
+      "output": "workloads_apis.md",
+      "status": "completed",
+      "title": "Workloads APIs",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html-single/workloads_apis/index"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/advanced_networking": {
+      "error": null,
+      "output": "advanced_networking.md",
+      "status": "completed",
+      "title": "Advanced networking",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/advanced_networking"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/ai_applications": {
+      "error": null,
+      "output": "ai_applications.md",
+      "status": "completed",
+      "title": "AI applications",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/ai_applications"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/ai_workloads": {
+      "error": null,
+      "output": "ai_workloads.md",
+      "status": "completed",
+      "title": "AI workloads",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/ai_workloads"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/api_overview": {
+      "error": null,
+      "output": "api_overview.md",
+      "status": "completed",
+      "title": "API overview",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/api_overview"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/architecture": {
+      "error": null,
+      "output": "architecture.md",
+      "status": "completed",
+      "title": "Architecture",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/architecture"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/authentication_and_authorization": {
+      "error": null,
+      "output": "authentication_and_authorization.md",
+      "status": "completed",
+      "title": "Authentication and authorization",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/authentication_and_authorization"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/authorization_apis": {
+      "error": null,
+      "output": "authorization_apis.md",
+      "status": "completed",
+      "title": "Authorization APIs",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/authorization_apis"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/autoscale_apis": {
+      "error": null,
+      "output": "autoscale_apis.md",
+      "status": "completed",
+      "title": "Autoscale APIs",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/autoscale_apis"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/backup_and_restore": {
+      "error": null,
+      "output": "backup_and_restore.md",
+      "status": "completed",
+      "title": "Backup and restore",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/backup_and_restore"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/building_applications": {
+      "error": null,
+      "output": "building_applications.md",
+      "status": "completed",
+      "title": "Building applications",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/building_applications"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/builds_using_buildconfig": {
+      "error": null,
+      "output": "builds_using_buildconfig.md",
+      "status": "completed",
+      "title": "Builds using BuildConfig",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/builds_using_buildconfig"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/builds_using_shipwright": {
+      "error": null,
+      "output": "builds_using_shipwright.md",
+      "status": "completed",
+      "title": "Builds using Shipwright",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/builds_using_shipwright"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/cicd_overview": {
+      "error": null,
+      "output": "cicd_overview.md",
+      "status": "completed",
+      "title": "CI/CD overview",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/cicd_overview"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/cli_tools": {
+      "error": null,
+      "output": "cli_tools.md",
+      "status": "completed",
+      "title": "CLI tools",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/cli_tools"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/cluster_apis": {
+      "error": null,
+      "output": "cluster_apis.md",
+      "status": "completed",
+      "title": "Cluster APIs",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/cluster_apis"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/cluster_observability_operator": {
+      "error": null,
+      "output": "cluster_observability_operator.md",
+      "status": "completed",
+      "title": "Cluster Observability Operator",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/cluster_observability_operator"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/common_object_reference": {
+      "error": null,
+      "output": "common_object_reference.md",
+      "status": "completed",
+      "title": "Common object reference",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/common_object_reference"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/config_apis": {
+      "error": null,
+      "output": "config_apis.md",
+      "status": "completed",
+      "title": "Config APIs",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/config_apis"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/configuring_network_settings": {
+      "error": null,
+      "output": "configuring_network_settings.md",
+      "status": "completed",
+      "title": "Configuring network settings",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/configuring_network_settings"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/console_apis": {
+      "error": null,
+      "output": "console_apis.md",
+      "status": "completed",
+      "title": "Console APIs",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/console_apis"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/disconnected_environments": {
+      "error": null,
+      "output": "disconnected_environments.md",
+      "status": "completed",
+      "title": "Disconnected environments",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/disconnected_environments"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/distributed_tracing": {
+      "error": null,
+      "output": "distributed_tracing.md",
+      "status": "completed",
+      "title": "Distributed Tracing",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/distributed_tracing"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/edge_computing": {
+      "error": null,
+      "output": "edge_computing.md",
+      "status": "completed",
+      "title": "Edge computing",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/edge_computing"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/etcd": {
+      "error": null,
+      "output": "etcd.md",
+      "status": "completed",
+      "title": "etcd",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/etcd"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/extension_apis": {
+      "error": null,
+      "output": "extension_apis.md",
+      "status": "completed",
+      "title": "Extension APIs",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/extension_apis"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/extensions": {
+      "error": null,
+      "output": "extensions.md",
+      "status": "completed",
+      "title": "Extensions",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/extensions"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/gitops": {
+      "error": null,
+      "output": "gitops.md",
+      "status": "completed",
+      "title": "GitOps",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/gitops"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/hardware_accelerators": {
+      "error": null,
+      "output": "hardware_accelerators.md",
+      "status": "completed",
+      "title": "Hardware accelerators",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/hardware_accelerators"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/hardware_networks": {
+      "error": null,
+      "output": "hardware_networks.md",
+      "status": "completed",
+      "title": "Hardware networks",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/hardware_networks"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/hosted_control_planes": {
+      "error": null,
+      "output": "hosted_control_planes.md",
+      "status": "completed",
+      "title": "Hosted control planes",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/hosted_control_planes"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/image_apis": {
+      "error": null,
+      "output": "image_apis.md",
+      "status": "completed",
+      "title": "Image APIs",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/image_apis"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/images": {
+      "error": null,
+      "output": "images.md",
+      "status": "completed",
+      "title": "Images",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/images"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/ingress_and_load_balancing": {
+      "error": null,
+      "output": "ingress_and_load_balancing.md",
+      "status": "completed",
+      "title": "Ingress and load balancing",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/ingress_and_load_balancing"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/installation_configuration": {
+      "error": null,
+      "output": "installation_configuration.md",
+      "status": "completed",
+      "title": "Installation configuration",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/installation_configuration"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/installation_overview": {
+      "error": null,
+      "output": "installation_overview.md",
+      "status": "completed",
+      "title": "Installation overview",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/installation_overview"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/installing_a_two_node_openshift_cluster": {
+      "error": null,
+      "output": "installing_a_two_node_openshift_cluster.md",
+      "status": "completed",
+      "title": "Installing a Two Node OpenShift Cluster",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/installing_a_two_node_openshift_cluster"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/installing_an_on-premise_cluster_with_the_agent-based_installer": {
+      "error": null,
+      "output": "installing_an_on-premise_cluster_with_the_agent-based_installer.md",
+      "status": "completed",
+      "title": "Installing an on-premise cluster with the Agent-based Installer",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/installing_an_on-premise_cluster_with_the_agent-based_installer"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/installing_ibm_cloud_bare_metal_classic": {
+      "error": null,
+      "output": "installing_ibm_cloud_bare_metal_classic.md",
+      "status": "completed",
+      "title": "Installing IBM Cloud Bare Metal (Classic)",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/installing_ibm_cloud_bare_metal_classic"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/installing_on-premise_with_assisted_installer": {
+      "error": null,
+      "output": "installing_on-premise_with_assisted_installer.md",
+      "status": "completed",
+      "title": "Installing on-premise with Assisted Installer",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/installing_on-premise_with_assisted_installer"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/installing_on_a_single_node": {
+      "error": null,
+      "output": "installing_on_a_single_node.md",
+      "status": "completed",
+      "title": "Installing on a single node",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/installing_on_a_single_node"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/installing_on_alibaba_cloud": {
+      "error": null,
+      "output": "installing_on_alibaba_cloud.md",
+      "status": "completed",
+      "title": "Installing on Alibaba Cloud",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/installing_on_alibaba_cloud"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/installing_on_any_platform": {
+      "error": null,
+      "output": "installing_on_any_platform.md",
+      "status": "completed",
+      "title": "Installing on any platform",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/installing_on_any_platform"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/installing_on_aws": {
+      "error": null,
+      "output": "installing_on_aws.md",
+      "status": "completed",
+      "title": "Installing on AWS",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/installing_on_aws"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/installing_on_azure": {
+      "error": null,
+      "output": "installing_on_azure.md",
+      "status": "completed",
+      "title": "Installing on Azure",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/installing_on_azure"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/installing_on_azure_stack_hub": {
+      "error": null,
+      "output": "installing_on_azure_stack_hub.md",
+      "status": "completed",
+      "title": "Installing on Azure Stack Hub",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/installing_on_azure_stack_hub"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/installing_on_bare_metal": {
+      "error": null,
+      "output": "installing_on_bare_metal.md",
+      "status": "completed",
+      "title": "Installing on bare metal",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/installing_on_bare_metal"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/installing_on_google_cloud": {
+      "error": null,
+      "output": "installing_on_google_cloud.md",
+      "status": "completed",
+      "title": "Installing on Google Cloud",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/installing_on_google_cloud"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/installing_on_ibm_cloud": {
+      "error": null,
+      "output": "installing_on_ibm_cloud.md",
+      "status": "completed",
+      "title": "Installing on IBM Cloud",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/installing_on_ibm_cloud"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/installing_on_ibm_power": {
+      "error": null,
+      "output": "installing_on_ibm_power.md",
+      "status": "completed",
+      "title": "Installing on IBM Power",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/installing_on_ibm_power"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/installing_on_ibm_power_virtual_server": {
+      "error": null,
+      "output": "installing_on_ibm_power_virtual_server.md",
+      "status": "completed",
+      "title": "Installing on IBM Power Virtual Server",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/installing_on_ibm_power_virtual_server"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/installing_on_ibm_powervc": {
+      "error": null,
+      "output": "installing_on_ibm_powervc.md",
+      "status": "completed",
+      "title": "Installing on IBM PowerVC",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/installing_on_ibm_powervc"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/installing_on_ibm_z_and_ibm_linuxone": {
+      "error": null,
+      "output": "installing_on_ibm_z_and_ibm_linuxone.md",
+      "status": "completed",
+      "title": "Installing on IBM Z and IBM LinuxONE",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/installing_on_ibm_z_and_ibm_linuxone"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/installing_on_nutanix": {
+      "error": null,
+      "output": "installing_on_nutanix.md",
+      "status": "completed",
+      "title": "Installing on Nutanix",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/installing_on_nutanix"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/installing_on_openstack": {
+      "error": null,
+      "output": "installing_on_openstack.md",
+      "status": "completed",
+      "title": "Installing on OpenStack",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/installing_on_openstack"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/installing_on_oracle_database_appliance": {
+      "error": null,
+      "output": "installing_on_oracle_database_appliance.md",
+      "status": "completed",
+      "title": "Installing on Oracle Database Appliance",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/installing_on_oracle_database_appliance"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/installing_on_oracle_distributed_cloud": {
+      "error": null,
+      "output": "installing_on_oracle_distributed_cloud.md",
+      "status": "completed",
+      "title": "Installing on Oracle Distributed Cloud",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/installing_on_oracle_distributed_cloud"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/installing_on_oracle_edge_cloud": {
+      "error": null,
+      "output": "installing_on_oracle_edge_cloud.md",
+      "status": "completed",
+      "title": "Installing on Oracle Edge Cloud",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/installing_on_oracle_edge_cloud"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/installing_on_vmware_vsphere": {
+      "error": null,
+      "output": "installing_on_vmware_vsphere.md",
+      "status": "completed",
+      "title": "Installing on VMware vSphere",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/installing_on_vmware_vsphere"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/jenkins": {
+      "error": null,
+      "output": "jenkins.md",
+      "status": "completed",
+      "title": "Jenkins",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/jenkins"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/kubernetes_nmstate": {
+      "error": null,
+      "output": "kubernetes_nmstate.md",
+      "status": "completed",
+      "title": "Kubernetes NMState",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/kubernetes_nmstate"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/logging": {
+      "error": null,
+      "output": "logging.md",
+      "status": "completed",
+      "title": "Logging",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/logging"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/machine_apis": {
+      "error": null,
+      "output": "machine_apis.md",
+      "status": "completed",
+      "title": "Machine APIs",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/machine_apis"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/machine_configuration": {
+      "error": null,
+      "output": "machine_configuration.md",
+      "status": "completed",
+      "title": "Machine configuration",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/machine_configuration"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/machine_management": {
+      "error": null,
+      "output": "machine_management.md",
+      "status": "completed",
+      "title": "Machine management",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/machine_management"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/metadata_apis": {
+      "error": null,
+      "output": "metadata_apis.md",
+      "status": "completed",
+      "title": "Metadata APIs",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/metadata_apis"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/migrating_from_version_3_to_4": {
+      "error": null,
+      "output": "migrating_from_version_3_to_4.md",
+      "status": "completed",
+      "title": "Migrating from version 3 to 4",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/migrating_from_version_3_to_4"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/monitoring": {
+      "error": null,
+      "output": "monitoring.md",
+      "status": "completed",
+      "title": "Monitoring",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/monitoring"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/monitoring_apis": {
+      "error": null,
+      "output": "monitoring_apis.md",
+      "status": "completed",
+      "title": "Monitoring APIs",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/monitoring_apis"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/multiple_networks": {
+      "error": null,
+      "output": "multiple_networks.md",
+      "status": "completed",
+      "title": "Multiple networks",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/multiple_networks"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/network_apis": {
+      "error": null,
+      "output": "network_apis.md",
+      "status": "completed",
+      "title": "Network APIs",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/network_apis"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/network_observability": {
+      "error": null,
+      "output": "network_observability.md",
+      "status": "completed",
+      "title": "Network Observability",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/network_observability"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/network_observability_operator": {
+      "error": null,
+      "output": "network_observability_operator.md",
+      "status": "completed",
+      "title": "Network Observability Operator",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/network_observability_operator"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/network_security": {
+      "error": null,
+      "output": "network_security.md",
+      "status": "completed",
+      "title": "Network security",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/network_security"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/networking_operators": {
+      "error": null,
+      "output": "networking_operators.md",
+      "status": "completed",
+      "title": "Networking Operators",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/networking_operators"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/networking_overview": {
+      "error": null,
+      "output": "networking_overview.md",
+      "status": "completed",
+      "title": "Networking overview",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/networking_overview"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/node_apis": {
+      "error": null,
+      "output": "node_apis.md",
+      "status": "completed",
+      "title": "Node APIs",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/node_apis"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/nodes": {
+      "error": null,
+      "output": "nodes.md",
+      "status": "completed",
+      "title": "Nodes",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/nodes"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/oauth_apis": {
+      "error": null,
+      "output": "oauth_apis.md",
+      "status": "completed",
+      "title": "OAuth APIs",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/oauth_apis"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/observability_overview": {
+      "error": null,
+      "output": "observability_overview.md",
+      "status": "completed",
+      "title": "Observability overview",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/observability_overview"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/openshift_lightspeed": {
+      "error": null,
+      "output": "openshift_lightspeed.md",
+      "status": "completed",
+      "title": "OpenShift Lightspeed",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/openshift_lightspeed"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/openshift_sandboxed_containers": {
+      "error": null,
+      "output": "openshift_sandboxed_containers.md",
+      "status": "completed",
+      "title": "OpenShift sandboxed containers",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/openshift_sandboxed_containers"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/operator_apis": {
+      "error": null,
+      "output": "operator_apis.md",
+      "status": "completed",
+      "title": "Operator APIs",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/operator_apis"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/operatorhub_apis": {
+      "error": null,
+      "output": "operatorhub_apis.md",
+      "status": "completed",
+      "title": "OperatorHub APIs",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/operatorhub_apis"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/operators": {
+      "error": null,
+      "output": "operators.md",
+      "status": "completed",
+      "title": "Operators",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/operators"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/overview": {
+      "error": null,
+      "output": "overview.md",
+      "status": "completed",
+      "title": "Overview",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/overview"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/ovn-kubernetes_network_plugin": {
+      "error": null,
+      "output": "ovn-kubernetes_network_plugin.md",
+      "status": "completed",
+      "title": "OVN-Kubernetes network plugin",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/ovn-kubernetes_network_plugin"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/pipelines": {
+      "error": null,
+      "output": "pipelines.md",
+      "status": "completed",
+      "title": "Pipelines",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/pipelines"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/policy_apis": {
+      "error": null,
+      "output": "policy_apis.md",
+      "status": "completed",
+      "title": "Policy APIs",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/policy_apis"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/postinstallation_configuration": {
+      "error": null,
+      "output": "postinstallation_configuration.md",
+      "status": "completed",
+      "title": "Postinstallation configuration",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/postinstallation_configuration"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/power_monitoring": {
+      "error": null,
+      "output": "power_monitoring.md",
+      "status": "completed",
+      "title": "Power Monitoring",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/power_monitoring"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/project_apis": {
+      "error": null,
+      "output": "project_apis.md",
+      "status": "completed",
+      "title": "Project APIs",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/project_apis"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/provisioning_apis": {
+      "error": null,
+      "output": "provisioning_apis.md",
+      "status": "completed",
+      "title": "Provisioning APIs",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/provisioning_apis"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/rbac_apis": {
+      "error": null,
+      "output": "rbac_apis.md",
+      "status": "completed",
+      "title": "RBAC APIs",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/rbac_apis"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/red_hat_build_of_opentelemetry": {
+      "error": null,
+      "output": "red_hat_build_of_opentelemetry.md",
+      "status": "completed",
+      "title": "Red Hat build of OpenTelemetry",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/red_hat_build_of_opentelemetry"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/registry": {
+      "error": null,
+      "output": "registry.md",
+      "status": "completed",
+      "title": "Registry",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/registry"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/release_notes": {
+      "error": null,
+      "output": "release_notes.md",
+      "status": "completed",
+      "title": "Release notes",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/release_notes"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/role_apis": {
+      "error": null,
+      "output": "role_apis.md",
+      "status": "completed",
+      "title": "Role APIs",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/role_apis"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/scalability_and_performance": {
+      "error": null,
+      "output": "scalability_and_performance.md",
+      "status": "completed",
+      "title": "Scalability and performance",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/scalability_and_performance"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/schedule_and_quota_apis": {
+      "error": null,
+      "output": "schedule_and_quota_apis.md",
+      "status": "completed",
+      "title": "Schedule and quota APIs",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/schedule_and_quota_apis"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/security_and_compliance": {
+      "error": null,
+      "output": "security_and_compliance.md",
+      "status": "completed",
+      "title": "Security and compliance",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/security_and_compliance"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/security_apis": {
+      "error": null,
+      "output": "security_apis.md",
+      "status": "completed",
+      "title": "Security APIs",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/security_apis"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/serverless": {
+      "error": null,
+      "output": "serverless.md",
+      "status": "completed",
+      "title": "Serverless",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/serverless"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/service_mesh": {
+      "error": null,
+      "output": "service_mesh.md",
+      "status": "completed",
+      "title": "Service Mesh",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/service_mesh"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/specialized_hardware_and_driver_enablement": {
+      "error": null,
+      "output": "specialized_hardware_and_driver_enablement.md",
+      "status": "completed",
+      "title": "Specialized hardware and driver enablement",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/specialized_hardware_and_driver_enablement"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/storage": {
+      "error": null,
+      "output": "storage.md",
+      "status": "completed",
+      "title": "Storage",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/storage"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/storage_apis": {
+      "error": null,
+      "output": "storage_apis.md",
+      "status": "completed",
+      "title": "Storage APIs",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/storage_apis"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/support": {
+      "error": null,
+      "output": "support.md",
+      "status": "completed",
+      "title": "Support",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/support"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/template_apis": {
+      "error": null,
+      "output": "template_apis.md",
+      "status": "completed",
+      "title": "Template APIs",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/template_apis"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/tutorials": {
+      "error": null,
+      "output": "tutorials.md",
+      "status": "completed",
+      "title": "Tutorials",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/tutorials"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/updating_clusters": {
+      "error": null,
+      "output": "updating_clusters.md",
+      "status": "completed",
+      "title": "Updating clusters",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/updating_clusters"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/user_and_group_apis": {
+      "error": null,
+      "output": "user_and_group_apis.md",
+      "status": "completed",
+      "title": "User and group APIs",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/user_and_group_apis"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/validation_and_troubleshooting": {
+      "error": null,
+      "output": "validation_and_troubleshooting.md",
+      "status": "completed",
+      "title": "Validation and troubleshooting",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/validation_and_troubleshooting"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/virtualization": {
+      "error": null,
+      "output": "virtualization.md",
+      "status": "completed",
+      "title": "Virtualization",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/virtualization"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/virtualized_control_planes": {
+      "error": null,
+      "output": "virtualized_control_planes.md",
+      "status": "completed",
+      "title": "Virtualized control planes",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/virtualized_control_planes"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/web_console": {
+      "error": null,
+      "output": "web_console.md",
+      "status": "completed",
+      "title": "Web console",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/web_console"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/windows_container_support_for_openshift": {
+      "error": null,
+      "output": "windows_container_support_for_openshift.md",
+      "status": "completed",
+      "title": "Windows Container Support for OpenShift",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/windows_container_support_for_openshift"
+    },
+    "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/workloads_apis": {
+      "error": null,
+      "output": "workloads_apis.md",
+      "status": "completed",
+      "title": "Workloads APIs",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/workloads_apis"
+    }
+  }
+}
